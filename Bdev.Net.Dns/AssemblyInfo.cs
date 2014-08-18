@@ -1,4 +1,5 @@
 #region
+
 //
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
@@ -7,14 +8,16 @@
 
 #endregion
 
+using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
+
 [assembly: AssemblyTitle("Bdev.Net.Dns")]
 [assembly: AssemblyDescription("DNS query component")]
 [assembly: AssemblyConfiguration("")]
@@ -22,9 +25,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
-[assembly: System.CLSCompliant(true)]
-[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant(true)]
+[assembly: ComVisible(false)]
 //
 // Version information for an assembly consists of the following four values:
 //
@@ -63,6 +66,7 @@ using System.Runtime.CompilerServices;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
+
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("..\\..\\key.snk")]
 [assembly: AssemblyKeyName("")]
