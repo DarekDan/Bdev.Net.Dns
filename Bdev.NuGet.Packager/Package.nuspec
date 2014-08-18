@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Bdev.Net.Dns</id>
+    <version>1.0.0</version>
+    <title>C# .NET DNS query component</title>
+    <authors>Rob Philpott</authors>    
+    <owners></owners>
+    <description>
+      As originally published on Code Project. 
+    </description>
+    <releaseNotes>
+      Packaged and Deployed by Darek Danielewski
+    </releaseNotes>
+    <summary>
+      .Net DNS query library
+    </summary>
+    <language>en-US</language>
+    <projectUrl>http://www.codeproject.com/Articles/12072/C-NET-DNS-query-component</projectUrl>
+    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <copyright>Copyright Rob Philpott 2005-2014</copyright>
+    <dependencies>
+        <group targetFramework="net40">
+          <!--<dependency id="log4net" version="1.2.10" />-->
+        </group>
+    </dependencies>
+    <references></references>
+    <tags></tags>
+  </metadata>
+  <files>
+    <file src="lib\" target="lib" />
+    <file src="tools\" target="tools" />
+    <file src="content\" target="content" />
+  </files>
+</package>
