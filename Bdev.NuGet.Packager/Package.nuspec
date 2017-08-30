@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Bdev.Net.Dns</id>
-    <version>1.0.0</version>
+    <version>1.0.3</version>
     <title>C# .NET DNS query component</title>
     <authors>Rob Philpott</authors>    
     <owners></owners>
