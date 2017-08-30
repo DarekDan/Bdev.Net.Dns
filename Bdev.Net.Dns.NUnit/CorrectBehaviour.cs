@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Bdev.Net.Dns.NUnit
@@ -24,23 +25,34 @@ namespace Bdev.Net.Dns.NUnit
                     .Distinct();
         }
 
-        private Action<Action<IPAddress>> multiDnsServerAction = action =>
+        private readonly Action<Action<IPAddress>> _multiDnsServerAction = action =>
         {
             var dnsServers = GetDnsServers().Where(w1 => w1.AddressFamily.Equals(AddressFamily.InterNetwork)).ToList();
-            foreach (var dnsServer in dnsServers)
+            Parallel.ForEach(dnsServers, dnsServer =>
             {
                 try
                 {
                     action.Invoke(dnsServer);
-                    break;
                 }
                 catch (Exception e)
                 {
-                    Trace.WriteLine(e);
                     //sink, it might be dead DNS Server
+                    Trace.WriteLine(e);
                 }
-            }
+            });
         };
+
+        [TestCase("apx-international.com")]
+        [TestCase("Google.com")]
+        public void DomainsMustPass(string name)
+        {
+            var req = new Request();
+            req.AddQuestion(new Question(name, DnsType.ANAME, DnsClass.IN));
+            var dnsServers = GetDnsServers().Where(w=>w.AddressFamily.Equals(AddressFamily.InterNetwork)).ToList();
+            Response res = Resolver.Lookup(req, dnsServers.First());
+            Assert.AreEqual(ReturnCode.Success, res.ReturnCode);
+            Assert.IsNotNullOrEmpty(((ANameRecord)res.Answers.First().Record).IPAddress.ToString());
+        }
 
         [Test]
         public void CorrectANameForCodeProject()
@@ -54,7 +66,7 @@ namespace Bdev.Net.Dns.NUnit
 
             // send the request
             Response response = null;
-            multiDnsServerAction.Invoke( dnsServer => response = Resolver.Lookup(request, dnsServer));
+            _multiDnsServerAction.Invoke( dnsServer => response = Resolver.Lookup(request, dnsServer));
 
             // check the reponse
             Assert.AreEqual(ReturnCode.Success, response.ReturnCode);
@@ -68,7 +80,7 @@ namespace Bdev.Net.Dns.NUnit
         {
             // also 194.72.0.114
             MXRecord[] records = null;
-            multiDnsServerAction.Invoke(dnsServer => records = Resolver.MXLookup("codeproject.com", dnsServer));                    
+            _multiDnsServerAction.Invoke(dnsServer => records = Resolver.MXLookup("codeproject.com", dnsServer));                    
 
             Assert.IsNotNull(records, "MXLookup returning null denoting lookup failure");
             Assert.IsTrue(records.Length>0);
@@ -86,7 +98,7 @@ namespace Bdev.Net.Dns.NUnit
 
             // send the request
             Response response = null;
-            multiDnsServerAction.Invoke(dnsServer => response= Resolver.Lookup(request, dnsServer));
+            _multiDnsServerAction.Invoke(dnsServer => response= Resolver.Lookup(request, dnsServer));
 
             // check the reponse
             Assert.AreEqual(ReturnCode.Success, response.ReturnCode);
@@ -115,7 +127,7 @@ namespace Bdev.Net.Dns.NUnit
             {
                 // send the request
                 Response response = null;
-                multiDnsServerAction.Invoke( dnsServer => response = Resolver.Lookup(request, dnsServer));
+                _multiDnsServerAction.Invoke( dnsServer => response = Resolver.Lookup(request, dnsServer));
 
                 // check the reponse
                 Assert.AreEqual(ReturnCode.Success, response.ReturnCode);
