@@ -19,11 +19,6 @@ namespace Bdev.Net.Dns
     public class ResourceRecord
     {
         // private, constructor initialised fields
-        private readonly int _Ttl;
-        private readonly DnsClass _dnsClass;
-        private readonly DnsType _dnsType;
-        private readonly string _domain;
-        private readonly RecordBase _record;
 
         /// <summary>
         ///     Construct a resource record from a pointer to a byte array
@@ -32,63 +27,48 @@ namespace Bdev.Net.Dns
         internal ResourceRecord(Pointer pointer)
         {
             // extract the domain, question type, question class and Ttl
-            _domain = pointer.ReadDomain();
-            _dnsType = (DnsType) pointer.ReadShort();
-            _dnsClass = (DnsClass) pointer.ReadShort();
-            _Ttl = pointer.ReadInt();
+            Domain = pointer.ReadDomain();
+            Type = (DnsType) pointer.ReadShort();
+            Class = (DnsClass) pointer.ReadShort();
+            Ttl = pointer.ReadInt();
 
             // the next short is the record length, we only use it for unrecognised record types
             int recordLength = pointer.ReadShort();
 
             // and create the appropriate RDATA record based on the dnsType
-            switch (_dnsType)
+            switch (Type)
             {
                 case DnsType.NS:
-                    _record = new NSRecord(pointer);
+                    Record = new NSRecord(pointer);
                     break;
                 case DnsType.MX:
-                    _record = new MXRecord(pointer);
+                    Record = new MXRecord(pointer);
                     break;
                 case DnsType.ANAME:
-                    _record = new ANameRecord(pointer);
+                    Record = new ANameRecord(pointer);
                     break;
                 case DnsType.SOA:
-                    _record = new SoaRecord(pointer);
+                    Record = new SoaRecord(pointer);
                     break;
                 default:
                 {
                     // move the pointer over this unrecognised record
-                    pointer += recordLength;
+                    pointer.Seek(recordLength);
                     break;
                 }
             }
         }
 
         // read only properties applicable for all records
-        public string Domain
-        {
-            get { return _domain; }
-        }
+        public string Domain { get; }
 
-        public DnsType Type
-        {
-            get { return _dnsType; }
-        }
+        public DnsType Type { get; }
 
-        public DnsClass Class
-        {
-            get { return _dnsClass; }
-        }
+        public DnsClass Class { get; }
 
-        public int Ttl
-        {
-            get { return _Ttl; }
-        }
+        public int Ttl { get; }
 
-        public RecordBase Record
-        {
-            get { return _record; }
-        }
+        public RecordBase Record { get; }
     }
 
     // Answers, Name Servers and Additional Records all share the same RR format

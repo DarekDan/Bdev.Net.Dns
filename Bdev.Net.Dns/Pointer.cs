@@ -8,6 +8,7 @@
 
 #endregion
 
+using System.IO;
 using System.Text;
 
 namespace Bdev.Net.Dns
@@ -152,6 +153,11 @@ namespace Bdev.Net.Dns
 
             // and return
             return domain.ToString();
+        }
+
+        public void Seek(int offset)
+        {
+            _position += offset;
         }
     }
 }
