@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Bdev.Net.Dns.Helpers;
 using NUnit.Framework;
 
 namespace Bdev.Net.Dns.NUnit
@@ -44,14 +45,12 @@ namespace Bdev.Net.Dns.NUnit
 
         [TestCase("apx-international.com")]
         [TestCase("Google.com")]
+        [TestCase("ibm.com")]
         public void DomainsMustPass(string name)
         {
-            var req = new Request();
-            req.AddQuestion(new Question(name, DnsType.ANAME, DnsClass.IN));
-            var dnsServers = GetDnsServers().Where(w=>w.AddressFamily.Equals(AddressFamily.InterNetwork)).ToList();
-            Response res = Resolver.Lookup(req, dnsServers.First());
-            Assert.AreEqual(ReturnCode.Success, res.ReturnCode);
-            Assert.IsNotNullOrEmpty(((ANameRecord)res.Answers.First().Record).IPAddress.ToString());
+            var res = DnsServers.Resolve(name);
+            Assert.IsNotNullOrEmpty(res.First().IPAddress.ToString());
+            Trace.WriteLine(String.Join(Environment.NewLine, res.Select(s=>s.IPAddress)));
         }
 
         [Test]

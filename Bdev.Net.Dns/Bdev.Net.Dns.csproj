@@ -111,6 +111,7 @@
     <Compile Include="Enums.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\DnsServers.cs" />
     <Compile Include="InvalidResponseException.cs">
       <SubType>Code</SubType>
     </Compile>

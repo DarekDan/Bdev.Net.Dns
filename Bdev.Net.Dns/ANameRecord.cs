@@ -8,6 +8,8 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace Bdev.Net.Dns
@@ -15,7 +17,7 @@ namespace Bdev.Net.Dns
     /// <summary>
     ///     ANAME Resource Record (RR) (RFC1035 3.4.1)
     /// </summary>
-    public class ANameRecord : RecordBase
+    public class ANameRecord : RecordBase, IEquatable<ANameRecord>
     {
         // An ANAME records consists simply of an IP address
         internal IPAddress _ipAddress;
@@ -42,9 +44,35 @@ namespace Bdev.Net.Dns
             get { return _ipAddress; }
         }
 
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ANameRecord);
+        }
+
+        public bool Equals(ANameRecord other)
+        {
+            return other != null &&
+                   EqualityComparer<IPAddress>.Default.Equals(IPAddress, other.IPAddress);
+        }
+
+        public override int GetHashCode()
+        {
+            return -2138420020 + EqualityComparer<IPAddress>.Default.GetHashCode(IPAddress);
+        }
+
         public override string ToString()
         {
             return _ipAddress.ToString();
+        }
+
+        public static bool operator ==(ANameRecord record1, ANameRecord record2)
+        {
+            return EqualityComparer<ANameRecord>.Default.Equals(record1, record2);
+        }
+
+        public static bool operator !=(ANameRecord record1, ANameRecord record2)
+        {
+            return !(record1 == record2);
         }
     }
 }
