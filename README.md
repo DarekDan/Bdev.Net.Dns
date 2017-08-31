@@ -10,3 +10,23 @@ Return all available ANAME records for Google
 
     DnsServer.Resolve("google.com")
 	
+Return all MX Records for a domain
+
+    DnsServers.Resolve<MXRecord>("codeproject.com", DnsType.MX, DnsClass.IN);
+	
+Resolve a record on a DNS server
+
+    // create a new request
+    var request = new Request();
+    // add the codeproject ANAME question
+    request.AddQuestion(new Question("codeproject.com", DnsType.NS, DnsClass.IN));
+    // send the request
+    Response response = Resolver.Lookup(request, DnsServers.IP4.First());
+	
+Get all known DNS Servers on all active network interfaces
+
+    DnsServers.All
+	
+	DnsServers.IP4
+	
+	DnsServers.IP6

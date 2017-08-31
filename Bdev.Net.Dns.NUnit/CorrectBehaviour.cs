@@ -36,13 +36,26 @@ namespace Bdev.Net.Dns.NUnit
         }
 
         [Test]
+        public void CorrectMXForCodeProjectCompare()
+        {
+            var result = DnsServers.Resolve<MXRecord>("codeproject.com", DnsType.MX, DnsClass.IN);
+
+            MXRecord[] records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());
+            Assert.IsNotNull(records, "MXLookup returning null denoting lookup failure");
+            Assert.IsTrue(records.Length > 0);
+
+            Assert.IsTrue(records.All(a=>result.Contains(a)));
+            Assert.IsTrue(result.All(a=>records.Contains(a)));
+        }
+
+        [Test]
         public void CorrectMXForCodeProject()
         {
             // also 194.72.0.114
-            MXRecord[] records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());                    
+            MXRecord[] records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());
 
             Assert.IsNotNull(records, "MXLookup returning null denoting lookup failure");
-            Assert.IsTrue(records.Length>0);
+            Assert.IsTrue(records.Length > 0);
         }
 
         [Test]
