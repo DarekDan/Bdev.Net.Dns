@@ -14,6 +14,16 @@ Return all MX Records for a domain
 
     DnsServers.Resolve<MXRecord>("codeproject.com", DnsType.MX, DnsClass.IN);
 	
+Get all known DNS Servers on all active network interfaces
+
+    DnsServers.All
+	
+	DnsServers.IP4
+	
+	DnsServers.IP6
+
+### Specifying DNS lookup
+
 Resolve a record on a DNS server
 
     // create a new request
@@ -23,10 +33,3 @@ Resolve a record on a DNS server
     // send the request
     Response response = Resolver.Lookup(request, DnsServers.IP4.First());
 	
-Get all known DNS Servers on all active network interfaces
-
-    DnsServers.All
-	
-	DnsServers.IP4
-	
-	DnsServers.IP6
