@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -37,11 +38,18 @@ namespace Bdev.Net.Dns.Helpers
             var bag = new ConcurrentBag<RecordBase>();
             Parallel.ForEach(IP4, server =>
             {
-                var res = Resolver.Lookup(req, server);
-                if (res.ReturnCode.Equals(ReturnCode.Success))
-                    Parallel.ForEach(res.Answers, answer => bag.Add(answer.Record));
+                try
+                {
+                    var res = Resolver.Lookup(req, server);
+                    if (res.ReturnCode.Equals(ReturnCode.Success))
+                        Parallel.ForEach(res.Answers, answer => bag.Add(answer.Record));
+                }
+                catch (Exception)
+                {
+                    //sink it, server might be dead or down
+                }
             });
-            return bag.Cast<T>().ToList().Distinct();
+            return bag.Cast<T>().Distinct().ToList();
         }
     }
 }

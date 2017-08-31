@@ -8,12 +8,15 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
+
 namespace Bdev.Net.Dns
 {
     /// <summary>
     ///     An SOA Resource Record (RR) (RFC1035 3.3.13)
     /// </summary>
-    public class SoaRecord : RecordBase
+    public class SoaRecord : RecordBase, IEquatable<SoaRecord>
     {
         // these fields constitute an SOA RR
         private readonly int _defaultTtl;
@@ -41,39 +44,48 @@ namespace Bdev.Net.Dns
         }
 
         // expose these fields public read/only
-        public string PrimaryNameServer
+        public string PrimaryNameServer => _primaryNameServer;
+
+        public string ResponsibleMailAddress => _responsibleMailAddress;
+
+        public int Serial => _serial;
+
+        public int Refresh => _refresh;
+
+        public int Retry => _retry;
+
+        public int Expire => _expire;
+
+        public int DefaultTtl => _defaultTtl;
+
+        public override bool Equals(object obj)
         {
-            get { return _primaryNameServer; }
+            return Equals(obj as SoaRecord);
         }
 
-        public string ResponsibleMailAddress
+        public bool Equals(SoaRecord other)
         {
-            get { return _responsibleMailAddress; }
+            return other != null &&
+                   PrimaryNameServer == other.PrimaryNameServer &&
+                   ResponsibleMailAddress == other.ResponsibleMailAddress &&
+                   Serial == other.Serial &&
+                   Refresh == other.Refresh &&
+                   Retry == other.Retry &&
+                   Expire == other.Expire &&
+                   DefaultTtl == other.DefaultTtl;
         }
 
-        public int Serial
+        public override int GetHashCode()
         {
-            get { return _serial; }
-        }
-
-        public int Refresh
-        {
-            get { return _refresh; }
-        }
-
-        public int Retry
-        {
-            get { return _retry; }
-        }
-
-        public int Expire
-        {
-            get { return _expire; }
-        }
-
-        public int DefaultTtl
-        {
-            get { return _defaultTtl; }
+            var hashCode = 1152426255;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PrimaryNameServer);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ResponsibleMailAddress);
+            hashCode = hashCode * -1521134295 + Serial.GetHashCode();
+            hashCode = hashCode * -1521134295 + Refresh.GetHashCode();
+            hashCode = hashCode * -1521134295 + Retry.GetHashCode();
+            hashCode = hashCode * -1521134295 + Expire.GetHashCode();
+            hashCode = hashCode * -1521134295 + DefaultTtl.GetHashCode();
+            return hashCode;
         }
 
         public override string ToString()
@@ -88,6 +100,16 @@ namespace Bdev.Net.Dns
                     _retry,
                     _expire,
                     _defaultTtl);
+        }
+
+        public static bool operator ==(SoaRecord record1, SoaRecord record2)
+        {
+            return EqualityComparer<SoaRecord>.Default.Equals(record1, record2);
+        }
+
+        public static bool operator !=(SoaRecord record1, SoaRecord record2)
+        {
+            return !(record1 == record2);
         }
     }
 }

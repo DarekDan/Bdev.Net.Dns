@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace Bdev.Net.Dns
 {
@@ -16,7 +17,7 @@ namespace Bdev.Net.Dns
     ///     An MX (Mail Exchanger) Resource Record (RR) (RFC1035 3.3.9)
     /// </summary>
     [Serializable]
-    public class MXRecord : RecordBase, IComparable
+    public class MXRecord : RecordBase, IComparable, IEquatable<MXRecord>
     {
         // an MX record is a domain name and an integer preference
         private readonly string _domainName;
@@ -33,46 +34,72 @@ namespace Bdev.Net.Dns
         }
 
         // expose these fields public read/only
-        public string DomainName
-        {
-            get { return _domainName; }
-        }
+        public string DomainName => _domainName;
 
-        public int Preference
-        {
-            get { return _preference; }
-        }
+        public int Preference => _preference;
 
         public override string ToString()
         {
-            return string.Format("Mail Server = {0}, Preference = {1}", _domainName, _preference);
+            return $"Mail Server = {_domainName}, Preference = {_preference}";
         }
+
 
         #region IComparable Members
 
+        /// <inheritdoc />
         /// <summary>
         ///     Implements the IComparable interface so that we can sort the MX records by their
         ///     lowest preference
         /// </summary>
         /// <param name="other">the other MxRecord to compare against</param>
         /// <returns>1, 0, -1</returns>
-        public int CompareTo(object obj)
+        public int CompareTo(object other)
         {
-            var mxOther = (MXRecord) obj;
+            var mxOther = (MXRecord) other;
 
             // we want to be able to sort them by preference
             if (mxOther._preference < _preference) return 1;
             if (mxOther._preference > _preference) return -1;
 
             // order mail servers of same preference by name
-            return -mxOther._domainName.CompareTo(_domainName);
+            return -String.Compare(mxOther._domainName, _domainName, StringComparison.Ordinal);
         }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as MXRecord);
+        }
+
+        public bool Equals(MXRecord other)
+        {
+            return other != null &&
+                   DomainName == other.DomainName &&
+                   Preference == other.Preference;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1394496566;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(DomainName);
+            hashCode = hashCode * -1521134295 + Preference.GetHashCode();
+            return hashCode;
+        }
+
+        public static bool operator<(MXRecord record1, MXRecord record2)
+		{
+			if (record1._preference > record2._preference) return false;
+			return false;
+		}
+
+		public static bool operator>(MXRecord record1, MXRecord record2)
+		{
+			if (record1._preference < record2._preference) return false;
+			return false;
+		}
 
         public static bool operator ==(MXRecord record1, MXRecord record2)
         {
-            if (record1 == null) throw new ArgumentNullException("record1");
-
-            return record1.Equals(record2);
+            return EqualityComparer<MXRecord>.Default.Equals(record1, record2);
         }
 
         public static bool operator !=(MXRecord record1, MXRecord record2)
@@ -80,47 +107,11 @@ namespace Bdev.Net.Dns
             return !(record1 == record2);
         }
 
-/*
-		public static bool operator<(MXRecord record1, MXRecord record2)
-		{
-			if (record1._preference > record2._preference) return false;
-			if (record1._domainName > record2._domainName) return false;
-			return false;
-		}
 
-		public static bool operator>(MXRecord record1, MXRecord record2)
-		{
-			if (record1._preference < record2._preference) return false;
-			if (record1._domainName < record2._domainName) return false;
-			return false;
-		}
-*/
 
-        public override bool Equals(object obj)
-        {
-            // this object isn't null
-            if (obj == null) return false;
-
-            // must be of same type
-            if (GetType() != obj.GetType()) return false;
-
-            var mxOther = (MXRecord) obj;
-
-            // preference must match
-            if (mxOther._preference != _preference) return false;
-
-            // and so must the domain name
-            if (mxOther._domainName != _domainName) return false;
-
-            // its a match
-            return true;
-        }
-
-        public override int GetHashCode()
-        {
-            return _preference;
-        }
 
         #endregion
+
+
     }
 }

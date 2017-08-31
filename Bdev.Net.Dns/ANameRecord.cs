@@ -39,10 +39,7 @@ namespace Bdev.Net.Dns
             _ipAddress = IPAddress.Parse(string.Format("{0}.{1}.{2}.{3}", b1, b2, b3, b4));
         }
 
-        public IPAddress IPAddress
-        {
-            get { return _ipAddress; }
-        }
+        public IPAddress IPAddress => _ipAddress;
 
         public override bool Equals(object obj)
         {

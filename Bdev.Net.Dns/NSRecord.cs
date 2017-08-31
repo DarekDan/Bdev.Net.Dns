@@ -8,12 +8,15 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
+
 namespace Bdev.Net.Dns
 {
     /// <summary>
     ///     A Name Server Resource Record (RR) (RFC1035 3.3.11)
     /// </summary>
-    public class NSRecord : RecordBase
+    public class NSRecord : RecordBase, IEquatable<NSRecord>
     {
         // the fields exposed outside the assembly
         private readonly string _domainName;
@@ -29,14 +32,37 @@ namespace Bdev.Net.Dns
             _domainName = pointer.ReadDomain();
         }
 
-        public string DomainName
+        public string DomainName => _domainName;
+
+        public override bool Equals(object obj)
         {
-            get { return _domainName; }
+            return Equals(obj as NSRecord);
+        }
+
+        public bool Equals(NSRecord other)
+        {
+            return other != null &&
+                   DomainName == other.DomainName;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1022487930 + EqualityComparer<string>.Default.GetHashCode(DomainName);
         }
 
         public override string ToString()
         {
             return _domainName;
+        }
+
+        public static bool operator ==(NSRecord record1, NSRecord record2)
+        {
+            return EqualityComparer<NSRecord>.Default.Equals(record1, record2);
+        }
+
+        public static bool operator !=(NSRecord record1, NSRecord record2)
+        {
+            return !(record1 == record2);
         }
     }
 }
