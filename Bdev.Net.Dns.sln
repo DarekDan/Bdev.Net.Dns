@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.779
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bdev.Net.Dns.NUnit", "Bdev.Net.Dns.NUnit\Bdev.Net.Dns.NUnit.csproj", "{7026C4B0-FA7C-488E-BFBE-FF13F72E6AA5}"
 EndProject
@@ -8,7 +8,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bdev.Net.Dns", "Bdev.Net.Dn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnsExample", "DnsExample\DnsExample.csproj", "{2D7481E0-6E80-4C2C-B8D2-92500741F791}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bdev.NuGet.Packager", "Bdev.NuGet.Packager\Bdev.NuGet.Packager.csproj", "{0451BAEF-DF2E-4B98-8644-94EE9415E389}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A45044D9-72D3-4537-9121-FB2A7825D78C}"
+	ProjectSection(SolutionItems) = preProject
+		build-nuget-packages.cmd = build-nuget-packages.cmd
+		build-nuget-packages.ps1 = build-nuget-packages.ps1
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,11 +33,11 @@ Global
 		{2D7481E0-6E80-4C2C-B8D2-92500741F791}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D7481E0-6E80-4C2C-B8D2-92500741F791}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D7481E0-6E80-4C2C-B8D2-92500741F791}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9AC25F63-D623-4F43-B51A-D2F967BE19B0}
 	EndGlobalSection
 EndGlobal

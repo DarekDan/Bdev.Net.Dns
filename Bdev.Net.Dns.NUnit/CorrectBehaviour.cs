@@ -15,7 +15,7 @@ namespace Bdev.Net.Dns.NUnit
     public class CorrectBehaviour
     {
 
-        [TestCase("apx-international.com")]
+        [TestCase("mercedes-benz.com")]
         [TestCase("Google.com")]
         [TestCase("ibm.com")]
         public void DomainsMustPass(string name)
