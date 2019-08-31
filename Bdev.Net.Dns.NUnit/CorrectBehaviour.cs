@@ -81,7 +81,7 @@ namespace Bdev.Net.Dns.NUnit
         [ExpectedException(typeof(NoResponseException))]
         public void NoResponseForBadDnsAddress()
         {
-            var records = Resolver.MXLookup("codeproject.com", IPAddress.Parse("127.0.0.1"));
+            Resolver.MXLookup("codeproject.com", IPAddress.Parse("127.0.0.1"));
         }
 
         [Test]

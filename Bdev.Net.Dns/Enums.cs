@@ -8,6 +8,7 @@
 
 #endregion
 
+// ReSharper disable UnusedMember.Global
 namespace Bdev.Net.Dns
 {
     /// <summary>
@@ -57,20 +58,20 @@ namespace Bdev.Net.Dns
     public enum Opcode
     {
         StandardQuery = 0,
-        InverseQuerty = 1,
+        InverseQuery = 1,
         StatusRequest = 2,
-        Reserverd3 = 3,
-        Reserverd4 = 4,
-        Reserverd5 = 5,
-        Reserverd6 = 6,
-        Reserverd7 = 7,
-        Reserverd8 = 8,
-        Reserverd9 = 9,
-        Reserverd10 = 10,
-        Reserverd11 = 11,
-        Reserverd12 = 12,
-        Reserverd13 = 13,
-        Reserverd14 = 14,
-        Reserverd15 = 15
+        Reserved3 = 3,
+        Reserved4 = 4,
+        Reserved5 = 5,
+        Reserved6 = 6,
+        Reserved7 = 7,
+        Reserved8 = 8,
+        Reserved9 = 9,
+        Reserved10 = 10,
+        Reserved11 = 11,
+        Reserved12 = 12,
+        Reserved13 = 13,
+        Reserved14 = 14,
+        Reserved15 = 15
     }
 }

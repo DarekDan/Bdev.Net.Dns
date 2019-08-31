@@ -16,83 +16,84 @@ namespace Bdev.Net.Dns.NUnit
         [ExpectedException(typeof(ArgumentNullException))]
         public void LookupNullBothParameters()
         {
-            var response = Resolver.Lookup(null, null);
+            Resolver.Lookup(null, null);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void LookupNullFirstParameter()
         {
-            var response = Resolver.Lookup(null, IPAddress.Parse("127.0.0.1"));
+            Resolver.Lookup(null, IPAddress.Parse("127.0.0.1"));
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void LookupNullSecondParameter()
         {
-            var response = Resolver.Lookup(new Request(), null);
+            Resolver.Lookup(new Request(), null);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void MXLookupBadDomainName()
         {
-            var records = Resolver.MXLookup("!£$%^&*()", IPAddress.Parse("127.0.0.1"));
+            Resolver.MXLookup("!£$%^&*()", IPAddress.Parse("127.0.0.1"));
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void MXLookupEmptyDomainName()
         {
-            var records = Resolver.MXLookup(string.Empty, IPAddress.Parse("127.0.0.1"));
+            Resolver.MXLookup(string.Empty, IPAddress.Parse("127.0.0.1"));
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void MXLookupNullBothParameters()
         {
-            var records = Resolver.MXLookup(null, null);
+            Resolver.MXLookup(null, null);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void MXLookupNullFirstParameter()
         {
-            var records = Resolver.MXLookup(null, IPAddress.Parse("127.0.0.1"));
+            Resolver.MXLookup(null, IPAddress.Parse("127.0.0.1"));
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void MXLookupNullSecondParameter()
         {
-            var records = Resolver.MXLookup("codeproject.com", null);
+            Resolver.MXLookup("codeproject.com", null);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void NewQuestionBadClass()
         {
-            var question = new Question("codeproject.com", DnsType.ANAME, (DnsClass) 1999);
+            new Question("codeproject.com", DnsType.ANAME, (DnsClass) 1999);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void NewQuestionBadType()
         {
-            var question = new Question("codeproject.com", (DnsType) 1999, DnsClass.IN);
+            new Question("codeproject.com", (DnsType) 1999, DnsClass.IN);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void NewQuestionDomainBad()
         {
-            var question = new Question("$$$$$.com", DnsType.MX, DnsClass.IN);
+            new Question("$$$$$.com", DnsType.MX, DnsClass.IN);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void NewQuestionDomainNull()
         {
+            // ReSharper disable once UnusedVariable
             var question = new Question(null, DnsType.MX, DnsClass.IN);
         }
     }
