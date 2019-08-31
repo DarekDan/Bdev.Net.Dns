@@ -23,15 +23,15 @@ namespace DnsExample
             // in the meantime - we are going to have to ask for it :(
             //
             Console.Write("Please enter the address of the DNS server to query: ");
-            string ip = Console.ReadLine();
+            var ip = Console.ReadLine();
 
-            IPAddress dnsServer = IPAddress.Parse(ip);
+            var dnsServer = IPAddress.Parse(ip);
             Console.WriteLine("DNS Query Tool, type 'quit' to exit");
 
             while (true)
             {
                 Console.Write(">");
-                string domain = Console.ReadLine();
+                var domain = Console.ReadLine();
 
                 // break out on quit command
                 if (domain.ToLower() == "quit") break;
@@ -56,12 +56,12 @@ namespace DnsExample
                     .Where(w => w.AddressFamily.Equals(AddressFamily.InterNetwork))
                     .Distinct()
                     .ToList();
-            bool isValid = dnsServers.Any(
+            var isValid = dnsServers.Any(
                 a =>
                 {
                     try
                     {
-                        MXRecord[] mx = Resolver.MXLookup(domain, a);
+                        var mx = Resolver.MXLookup(domain, a);
                         return mx.Any();
                     }
                     catch (Exception)
@@ -83,7 +83,7 @@ namespace DnsExample
                 request.AddQuestion(new Question(domain, type, DnsClass.IN));
 
                 // send it to the DNS server and get the response
-                Response response = Resolver.Lookup(request, dnsServer);
+                var response = Resolver.Lookup(request, dnsServer);
 
                 // check we have a response
                 if (response == null)
@@ -91,35 +91,26 @@ namespace DnsExample
                     Console.WriteLine("No answer");
                     return;
                 }
+
                 // display each RR returned
                 Console.WriteLine("--------------------------------------------------------------");
 
                 // display whether this is an authoritative answer or not
                 if (response.AuthoritativeAnswer)
-                {
                     Console.WriteLine("authoritative answer");
-                }
                 else
-                {
                     Console.WriteLine("Non-authoritative answer");
-                }
 
                 // Dump all the records - answers/name servers/additional records
-                foreach (Answer answer in response.Answers)
-                {
+                foreach (var answer in response.Answers)
                     Console.WriteLine("{0} ({1}) : {2}", answer.Type, answer.Domain, answer.Record);
-                }
 
-                foreach (NameServer nameServer in response.NameServers)
-                {
+                foreach (var nameServer in response.NameServers)
                     Console.WriteLine("{0} ({1}) : {2}", nameServer.Type, nameServer.Domain, nameServer.Record);
-                }
 
-                foreach (AdditionalRecord additionalRecord in response.AdditionalRecords)
-                {
+                foreach (var additionalRecord in response.AdditionalRecords)
                     Console.WriteLine("{0} ({1}) : {2}", additionalRecord.Type, additionalRecord.Domain,
                         additionalRecord.Record);
-                }
             }
             catch (Exception ex)
             {

@@ -19,7 +19,6 @@ namespace Bdev.Net.Dns
     public class NSRecord : RecordBase, IEquatable<NSRecord>
     {
         // the fields exposed outside the assembly
-        private readonly string _domainName;
 
         // expose this domain name address r/o to the world
 
@@ -29,20 +28,20 @@ namespace Bdev.Net.Dns
         /// <param name="pointer">A logical pointer to the bytes holding the record</param>
         internal NSRecord(Pointer pointer)
         {
-            _domainName = pointer.ReadDomain();
+            DomainName = pointer.ReadDomain();
         }
 
-        public string DomainName => _domainName;
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as NSRecord);
-        }
+        public string DomainName { get; }
 
         public bool Equals(NSRecord other)
         {
             return other != null &&
                    DomainName == other.DomainName;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as NSRecord);
         }
 
         public override int GetHashCode()
@@ -52,7 +51,7 @@ namespace Bdev.Net.Dns
 
         public override string ToString()
         {
-            return _domainName;
+            return DomainName;
         }
 
         public static bool operator ==(NSRecord record1, NSRecord record2)

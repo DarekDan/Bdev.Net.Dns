@@ -30,10 +30,10 @@ namespace Bdev.Net.Dns
         /// <param name="pointer">A logical pointer to the bytes holding the record</param>
         internal ANameRecord(Pointer pointer)
         {
-            byte b1 = pointer.ReadByte();
-            byte b2 = pointer.ReadByte();
-            byte b3 = pointer.ReadByte();
-            byte b4 = pointer.ReadByte();
+            var b1 = pointer.ReadByte();
+            var b2 = pointer.ReadByte();
+            var b3 = pointer.ReadByte();
+            var b4 = pointer.ReadByte();
 
             // this next line's not brilliant - couldn't find a better way though
             _ipAddress = IPAddress.Parse(string.Format("{0}.{1}.{2}.{3}", b1, b2, b3, b4));
@@ -41,15 +41,15 @@ namespace Bdev.Net.Dns
 
         public IPAddress IPAddress => _ipAddress;
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ANameRecord);
-        }
-
         public bool Equals(ANameRecord other)
         {
             return other != null &&
                    EqualityComparer<IPAddress>.Default.Equals(IPAddress, other.IPAddress);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ANameRecord);
         }
 
         public override int GetHashCode()

@@ -25,8 +25,6 @@ namespace Bdev.Net.Dns
         // A request is a series of questions, an 'opcode' (RFC1035 4.1.1) and a flag to denote
         // whether recursion is required (don't ask..., just assume it is)
         private readonly ArrayList _questions;
-        private Opcode _opCode;
-        private bool _recursionDesired;
 
         /// <summary>
         ///     Construct this object with the default values and create an ArrayList to hold
@@ -35,24 +33,16 @@ namespace Bdev.Net.Dns
         public Request()
         {
             // default for a request is that recursion is desired and using standard query
-            _recursionDesired = true;
-            _opCode = Opcode.StandardQuery;
+            RecursionDesired = true;
+            Opcode = Opcode.StandardQuery;
 
             // create an expandable list of questions
             _questions = new ArrayList();
         }
 
-        public bool RecursionDesired
-        {
-            get { return _recursionDesired; }
-            set { _recursionDesired = value; }
-        }
+        public bool RecursionDesired { get; set; }
 
-        public Opcode Opcode
-        {
-            get { return _opCode; }
-            set { _opCode = value; }
-        }
+        public Opcode Opcode { get; set; }
 
         /// <summary>
         ///     Adds a question to the request to be sent to the DNS server.
@@ -82,7 +72,7 @@ namespace Bdev.Net.Dns
             data.Add((byte) 0);
 
             // write the bitfields
-            data.Add((byte) (((byte) _opCode << 3) | (_recursionDesired ? 0x01 : 0)));
+            data.Add((byte) (((byte) Opcode << 3) | (RecursionDesired ? 0x01 : 0)));
             data.Add((byte) 0);
 
             // tell it how many questions
@@ -127,8 +117,8 @@ namespace Bdev.Net.Dns
         /// <param name="domainName">the domain name to encode and add to the array</param>
         private static void AddDomain(ArrayList data, string domainName)
         {
-            int position = 0;
-            int length = 0;
+            var position = 0;
+            var length = 0;
 
             // start from the beginning and go to the end
             while (position < domainName.Length)
@@ -143,10 +133,7 @@ namespace Bdev.Net.Dns
                 data.Add((byte) length);
 
                 // copy a char at a time to the array
-                while (length-- > 0)
-                {
-                    data.Add((byte) domainName[position++]);
-                }
+                while (length-- > 0) data.Add((byte) domainName[position++]);
 
                 // step over '.'
                 position++;

@@ -52,7 +52,7 @@ namespace Bdev.Net.Dns
             request.AddQuestion(new Question(domain, DnsType.MX, DnsClass.IN));
 
             // fire it off
-            Response response = Lookup(request, dnsServer);
+            var response = Lookup(request, dnsServer);
 
             // if we didn't get a response, then return null
             if (response == null) return null;
@@ -61,15 +61,11 @@ namespace Bdev.Net.Dns
             var resourceRecords = new ArrayList();
 
             // add each of the answers to the array
-            foreach (Answer answer in response.Answers)
-            {
+            foreach (var answer in response.Answers)
                 // if the answer is an MX record
-                if (answer.Record.GetType() == typeof (MXRecord))
-                {
+                if (answer.Record.GetType() == typeof(MXRecord))
                     // add it to our array
                     resourceRecords.Add(answer.Record);
-                }
-            }
 
             // create array of MX records
             var mxRecords = new MXRecord[resourceRecords.Count];
@@ -104,10 +100,10 @@ namespace Bdev.Net.Dns
             var server = new IPEndPoint(dnsServer, _dnsPort);
 
             // get the message
-            byte[] requestMessage = request.GetMessage();
+            var requestMessage = request.GetMessage();
 
             // send the request and get the response
-            byte[] responseMessage = UdpTransfer(server, requestMessage);
+            var responseMessage = UdpTransfer(server, requestMessage);
 
             // and populate a response object from that and return it
             return new Response(responseMessage);
@@ -116,7 +112,7 @@ namespace Bdev.Net.Dns
         private static byte[] UdpTransfer(IPEndPoint server, byte[] requestMessage)
         {
             // UDP can fail - if it does try again keeping track of how many attempts we've made
-            int attempts = 0;
+            var attempts = 0;
 
             // try repeatedly in case of failure
             while (attempts <= _udpRetryAttempts)
@@ -148,10 +144,8 @@ namespace Bdev.Net.Dns
 
                     // make sure the message returned is ours
                     if (responseMessage[0] == requestMessage[0] && responseMessage[1] == requestMessage[1])
-                    {
                         // its a valid response - return it, this is our successful exit point
                         return responseMessage;
-                    }
                 }
                 catch (SocketException)
                 {

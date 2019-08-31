@@ -22,9 +22,6 @@ namespace Bdev.Net.Dns
     public class Question
     {
         // A question is these three things combined
-        private readonly DnsClass _dnsClass;
-        private readonly DnsType _dnsType;
-        private readonly string _domain;
 
         /// <summary>
         ///     Construct the question from parameters, checking for safety
@@ -40,27 +37,21 @@ namespace Bdev.Net.Dns
             // do a sanity check on the domain name to make sure its legal
             if (domain.Length == 0 || domain.Length > 255 ||
                 !Regex.IsMatch(domain, @"^[a-z|A-Z|0-9|\-|_]{1,63}(\.[a-z|A-Z|0-9|\-|_]{1,63})+$"))
-            {
                 // domain names can't be bigger tan 255 chars, and individal labels can't be bigger than 63 chars
                 throw new ArgumentException("The supplied domain name was not in the correct form", "domain");
-            }
 
             // sanity check the DnsType parameter
-            if (!Enum.IsDefined(typeof (DnsType), dnsType) || dnsType == DnsType.None)
-            {
+            if (!Enum.IsDefined(typeof(DnsType), dnsType) || dnsType == DnsType.None)
                 throw new ArgumentOutOfRangeException("dnsType", "Not a valid value");
-            }
 
             // sanity check the DnsClass parameter
-            if (!Enum.IsDefined(typeof (DnsClass), dnsClass) || dnsClass == DnsClass.None)
-            {
+            if (!Enum.IsDefined(typeof(DnsClass), dnsClass) || dnsClass == DnsClass.None)
                 throw new ArgumentOutOfRangeException("dnsClass", "Not a valid value");
-            }
 
             // just remember the values
-            _domain = domain;
-            _dnsType = dnsType;
-            _dnsClass = dnsClass;
+            Domain = domain;
+            Type = dnsType;
+            Class = dnsClass;
         }
 
         /// <summary>
@@ -71,25 +62,16 @@ namespace Bdev.Net.Dns
         internal Question(Pointer pointer)
         {
             // extract from the message
-            _domain = pointer.ReadDomain();
-            _dnsType = (DnsType) pointer.ReadShort();
-            _dnsClass = (DnsClass) pointer.ReadShort();
+            Domain = pointer.ReadDomain();
+            Type = (DnsType) pointer.ReadShort();
+            Class = (DnsClass) pointer.ReadShort();
         }
 
         // expose them read/only to the world
-        public string Domain
-        {
-            get { return _domain; }
-        }
+        public string Domain { get; }
 
-        public DnsType Type
-        {
-            get { return _dnsType; }
-        }
+        public DnsType Type { get; }
 
-        public DnsClass Class
-        {
-            get { return _dnsClass; }
-        }
+        public DnsClass Class { get; }
     }
 }

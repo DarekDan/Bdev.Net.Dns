@@ -20,8 +20,6 @@ namespace Bdev.Net.Dns
     public class MXRecord : RecordBase, IComparable, IEquatable<MXRecord>
     {
         // an MX record is a domain name and an integer preference
-        private readonly string _domainName;
-        private readonly int _preference;
 
         /// <summary>
         ///     Constructs an MX record by reading bytes from a return message
@@ -29,18 +27,18 @@ namespace Bdev.Net.Dns
         /// <param name="pointer">A logical pointer to the bytes holding the record</param>
         internal MXRecord(Pointer pointer)
         {
-            _preference = pointer.ReadShort();
-            _domainName = pointer.ReadDomain();
+            Preference = pointer.ReadShort();
+            DomainName = pointer.ReadDomain();
         }
 
         // expose these fields public read/only
-        public string DomainName => _domainName;
+        public string DomainName { get; }
 
-        public int Preference => _preference;
+        public int Preference { get; }
 
         public override string ToString()
         {
-            return $"Mail Server = {_domainName}, Preference = {_preference}";
+            return $"Mail Server = {DomainName}, Preference = {Preference}";
         }
 
 
@@ -58,11 +56,11 @@ namespace Bdev.Net.Dns
             var mxOther = (MXRecord) other;
 
             // we want to be able to sort them by preference
-            if (mxOther._preference < _preference) return 1;
-            if (mxOther._preference > _preference) return -1;
+            if (mxOther.Preference < Preference) return 1;
+            if (mxOther.Preference > Preference) return -1;
 
             // order mail servers of same preference by name
-            return -String.Compare(mxOther._domainName, _domainName, StringComparison.Ordinal);
+            return -string.Compare(mxOther.DomainName, DomainName, StringComparison.Ordinal);
         }
 
         public override bool Equals(object obj)
@@ -85,17 +83,17 @@ namespace Bdev.Net.Dns
             return hashCode;
         }
 
-        public static bool operator<(MXRecord record1, MXRecord record2)
-		{
-			if (record1._preference > record2._preference) return false;
-			return false;
-		}
+        public static bool operator <(MXRecord record1, MXRecord record2)
+        {
+            if (record1.Preference > record2.Preference) return false;
+            return false;
+        }
 
-		public static bool operator>(MXRecord record1, MXRecord record2)
-		{
-			if (record1._preference < record2._preference) return false;
-			return false;
-		}
+        public static bool operator >(MXRecord record1, MXRecord record2)
+        {
+            if (record1.Preference < record2.Preference) return false;
+            return false;
+        }
 
         public static bool operator ==(MXRecord record1, MXRecord record2)
         {
@@ -107,11 +105,6 @@ namespace Bdev.Net.Dns
             return !(record1 == record2);
         }
 
-
-
-
         #endregion
-
-
     }
 }

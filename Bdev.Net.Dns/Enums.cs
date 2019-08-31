@@ -71,6 +71,6 @@ namespace Bdev.Net.Dns
         Reserverd12 = 12,
         Reserverd13 = 13,
         Reserverd14 = 14,
-        Reserverd15 = 15,
+        Reserverd15 = 15
     }
 }

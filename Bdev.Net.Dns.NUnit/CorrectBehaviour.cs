@@ -14,7 +14,6 @@ namespace Bdev.Net.Dns.NUnit
     [TestFixture]
     public class CorrectBehaviour
     {
-
         [TestCase("mercedes-benz.com")]
         [TestCase("Google.com")]
         [TestCase("ibm.com")]
@@ -22,7 +21,7 @@ namespace Bdev.Net.Dns.NUnit
         {
             var res = DnsServers.Resolve(name);
             Assert.IsNotNullOrEmpty(res.First().IPAddress.ToString());
-            Trace.WriteLine(String.Join(Environment.NewLine, res.Select(s=>s.IPAddress)));
+            Trace.WriteLine(string.Join(Environment.NewLine, res.Select(s => s.IPAddress)));
         }
 
         [Test]
@@ -36,26 +35,26 @@ namespace Bdev.Net.Dns.NUnit
         }
 
         [Test]
+        public void CorrectMXForCodeProject()
+        {
+            // also 194.72.0.114
+            var records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());
+
+            Assert.IsNotNull(records, "MXLookup returning null denoting lookup failure");
+            Assert.IsTrue(records.Length > 0);
+        }
+
+        [Test]
         public void CorrectMXForCodeProjectCompare()
         {
             var result = DnsServers.Resolve<MXRecord>("codeproject.com", DnsType.MX, DnsClass.IN);
 
-            MXRecord[] records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());
+            var records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());
             Assert.IsNotNull(records, "MXLookup returning null denoting lookup failure");
             Assert.IsTrue(records.Length > 0);
 
-            Assert.IsTrue(records.All(a=>result.Contains(a)));
-            Assert.IsTrue(result.All(a=>records.Contains(a)));
-        }
-
-        [Test]
-        public void CorrectMXForCodeProject()
-        {
-            // also 194.72.0.114
-            MXRecord[] records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());
-
-            Assert.IsNotNull(records, "MXLookup returning null denoting lookup failure");
-            Assert.IsTrue(records.Length > 0);
+            Assert.IsTrue(records.All(a => result.Contains(a)));
+            Assert.IsTrue(result.All(a => records.Contains(a)));
         }
 
         [Test]
@@ -69,21 +68,20 @@ namespace Bdev.Net.Dns.NUnit
             request.AddQuestion(new Question("codeproject.com", DnsType.NS, DnsClass.IN));
 
             // send the request
-            Response response = Resolver.Lookup(request, DnsServers.IP4.First());
+            var response = Resolver.Lookup(request, DnsServers.IP4.First());
 
             // check the reponse
             Assert.AreEqual(ReturnCode.Success, response.ReturnCode);
 
             // we expect 4 records
-            Assert.IsTrue(response.Answers.Length>0);
-
+            Assert.IsTrue(response.Answers.Length > 0);
         }
 
         [Test]
-        [ExpectedException(typeof (NoResponseException))]
+        [ExpectedException(typeof(NoResponseException))]
         public void NoResponseForBadDnsAddress()
         {
-            MXRecord[] records = Resolver.MXLookup("codeproject.com", IPAddress.Parse("127.0.0.1"));
+            var records = Resolver.MXLookup("codeproject.com", IPAddress.Parse("127.0.0.1"));
         }
 
         [Test]

@@ -8,7 +8,6 @@
 
 #endregion
 
-using System.IO;
 using System.Text;
 
 namespace Bdev.Net.Dns
@@ -85,7 +84,7 @@ namespace Bdev.Net.Dns
         /// <returns>the byte at the pointer</returns>
         public short ReadShort()
         {
-            return (short) (ReadByte() << 8 | ReadByte());
+            return (short) ((ReadByte() << 8) | ReadByte());
         }
 
         /// <summary>
@@ -94,7 +93,7 @@ namespace Bdev.Net.Dns
         /// <returns>the byte at the pointer</returns>
         public int ReadInt()
         {
-            return (ushort) ReadShort() << 16 | (ushort) ReadShort();
+            return ((ushort) ReadShort() << 16) | (ushort) ReadShort();
         }
 
         /// <summary>
@@ -121,7 +120,7 @@ namespace Bdev.Net.Dns
         public string ReadDomain()
         {
             var domain = new StringBuilder();
-            int length = 0;
+            var length = 0;
 
             // get  the length of the first label
             while ((length = ReadByte()) != 0)
@@ -130,10 +129,10 @@ namespace Bdev.Net.Dns
                 if ((length & 0xc0) == 0xc0)
                 {
                     // work out the existing domain name, copy this pointer
-                    Pointer newPointer = Copy();
+                    var newPointer = Copy();
 
                     // and move it to where specified here
-                    newPointer.SetPosition((length & 0x3f) << 8 | ReadByte());
+                    newPointer.SetPosition(((length & 0x3f) << 8) | ReadByte());
 
                     // repeat call recursively
                     domain.Append(newPointer.ReadDomain());

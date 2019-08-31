@@ -19,13 +19,6 @@ namespace Bdev.Net.Dns
     public class SoaRecord : RecordBase, IEquatable<SoaRecord>
     {
         // these fields constitute an SOA RR
-        private readonly int _defaultTtl;
-        private readonly int _expire;
-        private readonly string _primaryNameServer;
-        private readonly int _refresh;
-        private readonly string _responsibleMailAddress;
-        private readonly int _retry;
-        private readonly int _serial;
 
         /// <summary>
         ///     Constructs an SOA record by reading bytes from a return message
@@ -34,34 +27,29 @@ namespace Bdev.Net.Dns
         internal SoaRecord(Pointer pointer)
         {
             // read all fields RFC1035 3.3.13
-            _primaryNameServer = pointer.ReadDomain();
-            _responsibleMailAddress = pointer.ReadDomain();
-            _serial = pointer.ReadInt();
-            _refresh = pointer.ReadInt();
-            _retry = pointer.ReadInt();
-            _expire = pointer.ReadInt();
-            _defaultTtl = pointer.ReadInt();
+            PrimaryNameServer = pointer.ReadDomain();
+            ResponsibleMailAddress = pointer.ReadDomain();
+            Serial = pointer.ReadInt();
+            Refresh = pointer.ReadInt();
+            Retry = pointer.ReadInt();
+            Expire = pointer.ReadInt();
+            DefaultTtl = pointer.ReadInt();
         }
 
         // expose these fields public read/only
-        public string PrimaryNameServer => _primaryNameServer;
+        public string PrimaryNameServer { get; }
 
-        public string ResponsibleMailAddress => _responsibleMailAddress;
+        public string ResponsibleMailAddress { get; }
 
-        public int Serial => _serial;
+        public int Serial { get; }
 
-        public int Refresh => _refresh;
+        public int Refresh { get; }
 
-        public int Retry => _retry;
+        public int Retry { get; }
 
-        public int Expire => _expire;
+        public int Expire { get; }
 
-        public int DefaultTtl => _defaultTtl;
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as SoaRecord);
-        }
+        public int DefaultTtl { get; }
 
         public bool Equals(SoaRecord other)
         {
@@ -73,6 +61,11 @@ namespace Bdev.Net.Dns
                    Retry == other.Retry &&
                    Expire == other.Expire &&
                    DefaultTtl == other.DefaultTtl;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as SoaRecord);
         }
 
         public override int GetHashCode()
@@ -93,13 +86,13 @@ namespace Bdev.Net.Dns
             return
                 string.Format(
                     "primary name server = {0}\nresponsible mail addr = {1}\nserial  = {2}\nrefresh = {3}\nretry   = {4}\nexpire  = {5}\ndefault TTL = {6}",
-                    _primaryNameServer,
-                    _responsibleMailAddress,
-                    _serial,
-                    _refresh,
-                    _retry,
-                    _expire,
-                    _defaultTtl);
+                    PrimaryNameServer,
+                    ResponsibleMailAddress,
+                    Serial,
+                    Refresh,
+                    Retry,
+                    Expire,
+                    DefaultTtl);
         }
 
         public static bool operator ==(SoaRecord record1, SoaRecord record2)
