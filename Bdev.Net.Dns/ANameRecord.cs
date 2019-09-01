@@ -20,9 +20,7 @@ namespace Bdev.Net.Dns
     public class ANameRecord : RecordBase, IEquatable<ANameRecord>
     {
         // An ANAME records consists simply of an IP address
-        internal IPAddress _ipAddress;
 
-        // expose this IP address r/o to the world
 
         /// <summary>
         ///     Constructs an ANAME record by reading bytes from a return message
@@ -36,10 +34,11 @@ namespace Bdev.Net.Dns
             var b4 = pointer.ReadByte();
 
             // this next line's not brilliant - couldn't find a better way though
-            _ipAddress = IPAddress.Parse(string.Format("{0}.{1}.{2}.{3}", b1, b2, b3, b4));
+            IPAddress = IPAddress.Parse($"{b1}.{b2}.{b3}.{b4}");
         }
 
-        public IPAddress IPAddress => _ipAddress;
+        // expose this IP address r/o to the world
+        public IPAddress IPAddress { get; }
 
         public bool Equals(ANameRecord other)
         {
@@ -59,7 +58,7 @@ namespace Bdev.Net.Dns
 
         public override string ToString()
         {
-            return _ipAddress.ToString();
+            return IPAddress.ToString();
         }
 
         public static bool operator ==(ANameRecord record1, ANameRecord record2)

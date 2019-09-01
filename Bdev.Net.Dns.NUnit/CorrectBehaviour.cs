@@ -25,6 +25,41 @@ namespace Bdev.Net.Dns.NUnit
         }
 
         [Test]
+        public void CompareTwoRecords()
+        {
+            var request = new Request();
+            request.AddQuestion(new Question("google.com", DnsType.ANAME));
+
+            var first = Resolver.Lookup(request, IPAddress.Parse("1.1.1.1")).Answers.OrderBy(o => o.Record).First();
+            var second = Resolver.Lookup(request, IPAddress.Parse("1.0.0.1")).Answers.OrderBy(o => o.Record).First();
+            Assert.True(first.Equals(second));
+        }
+
+        [Test]
+        public void CompareTwoRecordsOneDefault()
+        {
+            var request = new Request {RecursionDesired = true};
+            var value = "google.com";
+            request.AddQuestion(new Question(value, DnsType.ANAME));
+
+            var firstAnswers = Resolver.Lookup(value).Answers;
+            var first = firstAnswers.OrderBy(o => o.Record).First();
+            var secondAnswers = Resolver.Lookup(request, IPAddress.Parse("192.168.3.1")).Answers;
+            var second = secondAnswers.OrderBy(o => o.Record).First();
+            Assert.True(first.Equals(second));
+        }
+
+        [Test]
+        public void TextRecordsMustExist()
+        {
+            var request = new Request {RecursionDesired = true}.WithQuestion(new Question("quaterne.com", DnsType.TXT));
+            var result = Resolver.Lookup(request);
+            var l= result.Answers.Select(s => s.Record).OfType<TXTRecord>().ToList();
+            var list = result.Answers.Select(s => s.Record).OfType<TXTRecord>().Select(s => s.Value).ToList();
+            Assert.True(result.Answers.Any());
+        }
+
+        [Test]
         public void CorrectANameForCodeProject()
         {
             var response = DnsServers.Resolve("codeproject.com").ToList();
@@ -65,7 +100,7 @@ namespace Bdev.Net.Dns.NUnit
             var request = new Request();
 
             // add the codeproject ANAME question
-            request.AddQuestion(new Question("codeproject.com", DnsType.NS, DnsClass.IN));
+            request.AddQuestion(new Question("codeproject.com", DnsType.NS));
 
             // send the request
             var response = Resolver.Lookup(request, DnsServers.IP4.First());

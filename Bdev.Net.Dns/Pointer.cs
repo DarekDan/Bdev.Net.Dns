@@ -8,6 +8,9 @@
 
 #endregion
 
+using System;
+using System.CodeDom;
+using System.Linq;
 using System.Text;
 
 namespace Bdev.Net.Dns
@@ -93,7 +96,7 @@ namespace Bdev.Net.Dns
         /// <returns>the byte at the pointer</returns>
         public int ReadInt()
         {
-            return ((ushort) ReadShort() << 16) | (ushort) ReadShort();
+            return (ReadByte() << 24 | ReadByte() << 16 | ReadByte() << 8 | ReadByte());
         }
 
         /// <summary>
@@ -158,5 +161,11 @@ namespace Bdev.Net.Dns
         {
             _position += offset;
         }
+
+        public override string ToString()
+        {
+            return string.Concat(_message.Select(s => $"{s:x2}"));
+        }
+
     }
 }

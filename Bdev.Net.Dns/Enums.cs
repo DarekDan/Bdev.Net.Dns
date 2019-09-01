@@ -16,26 +16,36 @@ namespace Bdev.Net.Dns
     ///     enumeration goes against naming guidelines, but I have done this as an ANAME is most
     ///     definetely an 'ANAME' and not an 'Aname'
     /// </summary>
+    /// <see cref="https://tools.ietf.org/html/rfc1035#section-3.2.2" />
     public enum DnsType
     {
-        None = 0,
-        ANAME = 1,
-        NS = 2,
-        SOA = 6,
-        MX = 15
+        None = 0, //INVALID
+        ANAME = 1, //host address
+        NS = 2, //authoritative name server
+        MD = 3, //mail destination - obsolete, use MX
+        MF = 4, //mail forwarder -  obsolte, use MX
+        CNAME = 5, //canonical name for an alias
+        SOA = 6, //start of a zone authority
+        WKS = 11, //well known service description
+        PTR = 12, //domain name pointer
+        HINFO = 13, //host information
+        MINFO = 14, //mailbox or mail list information
+        MX = 15, //mail exchange
+        TXT = 16 //text strings
     }
 
     /// <summary>
     ///     The DNS CLASS (RFC1035 3.2.4/5)
-    ///     Internet will be the one we'll be using (IN), the others are for completeness
+    ///     Internet will be the one we'll be using (IN), the others are for completeness///
     /// </summary>
+    /// <see cref="https://tools.ietf.org/html/rfc1035#section-3.2.4" />
     public enum DnsClass
     {
-        None = 0,
-        IN = 1,
-        CS = 2,
-        CH = 3,
-        HS = 4
+        None = 0, //INVALID
+        IN = 1, //Internet
+        CS = 2, //OBSOLETE
+        CH = 3, //CHAOS
+        HS = 4 //HESIOD
     }
 
     /// <summary>

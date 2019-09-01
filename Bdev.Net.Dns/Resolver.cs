@@ -10,8 +10,10 @@
 
 using System;
 using System.Collections;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Bdev.Net.Dns.Helpers;
 
 namespace Bdev.Net.Dns
 {
@@ -49,7 +51,7 @@ namespace Bdev.Net.Dns
             var request = new Request();
 
             // add one question - the MX IN lookup for the supplied domain
-            request.AddQuestion(new Question(domain, DnsType.MX, DnsClass.IN));
+            request.AddQuestion(new Question(domain, DnsType.MX));
 
             // fire it off
             var response = Lookup(request, dnsServer);
@@ -80,6 +82,11 @@ namespace Bdev.Net.Dns
             return mxRecords;
         }
 
+        public static MXRecord[] MXLookup(string domain)
+        {
+            return MXLookup(domain, DnsServers.IP4.First());
+        }
+
         /// <summary>
         ///     The principal look up function, which sends a request message to the given
         ///     DNS server and collects a response. This implementation re-sends the message
@@ -107,6 +114,20 @@ namespace Bdev.Net.Dns
 
             // and populate a response object from that and return it
             return new Response(responseMessage);
+        }
+
+
+
+        public static Response Lookup(string value, DnsType type = DnsType.ANAME, IPAddress dnsServer = null)
+        {
+            var reuqest = new Request();
+            reuqest.AddQuestion(new Question(value, type));
+            return Lookup(reuqest, dnsServer ?? DnsServers.IP4.First());
+        }
+
+        public static Response Lookup(Request request)
+        {
+            return Lookup(request, DnsServers.IP4.First());
         }
 
         private static byte[] UdpTransfer(IPEndPoint server, byte[] requestMessage)

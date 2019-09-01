@@ -16,10 +16,8 @@ namespace Bdev.Net.Dns
     ///     Represents a Resource Record as detailed in RFC1035 4.1.3
     /// </summary>
     [Serializable]
-    public class ResourceRecord
+    public class ResourceRecord : IEquatable<ResourceRecord>
     {
-        // private, constructor initialised fields
-
         /// <summary>
         ///     Construct a resource record from a pointer to a byte array
         /// </summary>
@@ -32,7 +30,7 @@ namespace Bdev.Net.Dns
             Class = (DnsClass) pointer.ReadShort();
             Ttl = pointer.ReadInt();
 
-            // the next short is the record length, we only use it for unrecognised record types
+            // the next short is the record length, we only use it for unrecognized record types
             int recordLength = pointer.ReadShort();
 
             // and create the appropriate RDATA record based on the dnsType
@@ -50,9 +48,12 @@ namespace Bdev.Net.Dns
                 case DnsType.SOA:
                     Record = new SoaRecord(pointer);
                     break;
+                case DnsType.TXT:
+                    Record = new TXTRecord(pointer);
+                    break;
                 default:
                 {
-                    // move the pointer over this unrecognised record
+                    // move the pointer over this unrecognized record
                     pointer.Seek(recordLength);
                     break;
                 }
@@ -69,6 +70,12 @@ namespace Bdev.Net.Dns
         public int Ttl { get; }
 
         public RecordBase Record { get; }
+
+        public bool Equals(ResourceRecord other)
+        {
+            return Type.Equals(other.Type) && Class.Equals(other.Class) && Domain.Equals(other.Domain) &&
+                   Record.Equals(other.Record);
+        }
     }
 
     // Answers, Name Servers and Additional Records all share the same RR format

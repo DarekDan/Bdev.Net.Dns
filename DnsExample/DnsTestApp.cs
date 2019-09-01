@@ -80,7 +80,7 @@ namespace DnsExample
                 var request = new Request();
 
                 // create a question for this domain and DNS CLASS
-                request.AddQuestion(new Question(domain, type, DnsClass.IN));
+                request.AddQuestion(new Question(domain, type));
 
                 // send it to the DNS server and get the response
                 var response = Resolver.Lookup(request, dnsServer);

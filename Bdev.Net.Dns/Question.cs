@@ -29,7 +29,7 @@ namespace Bdev.Net.Dns
         /// <param name="domain">the domain name to query eg. bigdevelopments.co.uk</param>
         /// <param name="dnsType">the QTYPE of query eg. DnsType.MX</param>
         /// <param name="dnsClass">the CLASS of query, invariably DnsClass.IN</param>
-        public Question(string domain, DnsType dnsType, DnsClass dnsClass)
+        public Question(string domain, DnsType dnsType, DnsClass dnsClass = DnsClass.IN)
         {
             // check the input parameters
             if (domain == null) throw new ArgumentNullException("domain");

@@ -40,6 +40,12 @@ namespace Bdev.Net.Dns
             _questions = new ArrayList();
         }
 
+        public Request WithQuestion(Question question)
+        {
+            this.AddQuestion(question);
+            return this;
+        }
+
         public bool RecursionDesired { get; set; }
 
         public Opcode Opcode { get; set; }
