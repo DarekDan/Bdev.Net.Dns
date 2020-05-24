@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using Bdev.Net.Dns;
 using Bdev.Net.Dns.Helpers;
 
@@ -14,12 +11,6 @@ namespace DnsExample
         [STAThread]
         private static void Main(string[] args)
         {
-            // I'd love to know if there a programmatic way of retrieving the computer's default DNS servers
-            // in managed code, if you how to do this, please let me know at rob@bigdevelopments.co.uk so I
-            // can update the code, I have searched fruitlessly for sometime for a simple answer to this
-            //
-            // in the meantime - we are going to have to ask for it :(
-            //
             Console.Write("Please enter the address of the DNS server to query (or hit enter for first IP4 available): ");
             var ip = Console.ReadLine();
 
@@ -32,7 +23,7 @@ namespace DnsExample
                 var domain = Console.ReadLine();
 
                 // break out on quit command
-                if (domain.ToLower() == "quit") break;
+                if (domain?.ToLower() == "quit") break;
 
                 // Information
                 Console.WriteLine("Querying DNS records for domain: " + domain);
@@ -69,10 +60,7 @@ namespace DnsExample
                 Console.WriteLine("--------------------------------------------------------------");
 
                 // display whether this is an authoritative answer or not
-                if (response.AuthoritativeAnswer)
-                    Console.WriteLine("authoritative answer");
-                else
-                    Console.WriteLine("Non-authoritative answer");
+                Console.WriteLine(response.AuthoritativeAnswer ? "authoritative answer" : "Non-authoritative answer");
 
                 // Dump all the records - answers/name servers/additional records
                 foreach (var answer in response.Answers)

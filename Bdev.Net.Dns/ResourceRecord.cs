@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using Bdev.Net.Dns.Records;
 
 namespace Bdev.Net.Dns
 {

@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using Bdev.Net.Dns.Exceptions;
 
 namespace Bdev.Net.Dns
 {
@@ -54,7 +55,7 @@ namespace Bdev.Net.Dns
             for (var index = 0; index < Questions.Length; index++)
                 try
                 {
-                    // try to build a quesion from the response
+                    // try to build a question from the response
                     Questions[index] = new Question(pointer);
                 }
                 catch (Exception ex)

@@ -1,9 +1,10 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Bdev.Net.Dns.Exceptions;
 using Bdev.Net.Dns.Helpers;
+using Bdev.Net.Dns.Records;
 using NUnit.Framework;
 
 namespace Bdev.Net.Dns.NUnit
@@ -19,7 +20,7 @@ namespace Bdev.Net.Dns.NUnit
         [TestCase("ibm.com")]
         public void DomainsMustPass(string name)
         {
-            var res = DnsServers.Resolve(name);
+            var res = DnsServers.Resolve(name).ToList();
             Assert.IsNotNullOrEmpty(res.First().IPAddress.ToString());
             Console.WriteLine(string.Join(Environment.NewLine, res.Select(s => s.IPAddress)));
         }
@@ -39,7 +40,7 @@ namespace Bdev.Net.Dns.NUnit
         public void CompareTwoRecordsOneDefault()
         {
             var request = new Request {RecursionDesired = true};
-            var value = "google.com";
+            const string value = "google.com";
             request.AddQuestion(new Question(value, DnsType.ANAME));
 
             var firstAnswers = Resolver.Lookup(value).Answers;
@@ -72,7 +73,7 @@ namespace Bdev.Net.Dns.NUnit
         {
             var response = DnsServers.Resolve("codeproject.com").ToList();
 
-            // check the reponse
+            // check the response
             Assert.AreEqual(1, response.Count);
             Assert.AreEqual(IPAddress.Parse("76.74.234.210"), response.First().IPAddress);
         }
@@ -113,7 +114,7 @@ namespace Bdev.Net.Dns.NUnit
             // send the request
             var response = Resolver.Lookup(request, DnsServers.IP4.First());
 
-            // check the reponse
+            // check the response
             Assert.AreEqual(ReturnCode.Success, response.ReturnCode);
 
             // we expect 4 records
@@ -130,12 +131,12 @@ namespace Bdev.Net.Dns.NUnit
         [Test]
         public void RepeatedANameLookups()
         {
-            Parallel.For(0, 100, i =>
+            Parallel.For(0, 10, i =>
             {
                 // send the request
                 var response = DnsServers.Resolve("codeproject.com").ToArray();
 
-                // check the reponse
+                // check the response
                 Assert.AreEqual(1, response.Length);
             });
         }

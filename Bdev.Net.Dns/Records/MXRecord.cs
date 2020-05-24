@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Bdev.Net.Dns
+namespace Bdev.Net.Dns.Records
 {
     /// <summary>
     ///     An MX (Mail Exchanger) Resource Record (RR) (RFC1035 3.3.9)

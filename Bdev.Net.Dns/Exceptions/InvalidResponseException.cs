@@ -11,30 +11,30 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Bdev.Net.Dns
+namespace Bdev.Net.Dns.Exceptions
 {
     /// <summary>
-    ///     Thrown when the server does not respond
+    ///     Thrown when the server delivers a response we are not expecting to hear
     /// </summary>
     [Serializable]
-    public class NoResponseException : SystemException
+    public class InvalidResponseException : SystemException
     {
-        public NoResponseException()
+        public InvalidResponseException()
         {
             // no implementation
         }
 
-        public NoResponseException(Exception innerException) : base(null, innerException)
+        public InvalidResponseException(Exception innerException) : base(null, innerException)
         {
             // no implementation
         }
 
-        public NoResponseException(string message, Exception innerException) : base(message, innerException)
+        public InvalidResponseException(string message, Exception innerException) : base(message, innerException)
         {
             // no implementation
         }
 
-        protected NoResponseException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected InvalidResponseException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
             // no implementation
         }

@@ -32,21 +32,21 @@ namespace Bdev.Net.Dns
         public Question(string domain, DnsType dnsType, DnsClass dnsClass = DnsClass.IN)
         {
             // check the input parameters
-            if (domain == null) throw new ArgumentNullException("domain");
+            if (domain == null) throw new ArgumentNullException(nameof(domain));
 
             // do a sanity check on the domain name to make sure its legal
             if (domain.Length == 0 || domain.Length > 255 ||
                 !Regex.IsMatch(domain, @"^[a-z|A-Z|0-9|\-|_]{1,63}(\.[a-z|A-Z|0-9|\-|_]{1,63})+$"))
-                // domain names can't be bigger tan 255 chars, and individal labels can't be bigger than 63 chars
-                throw new ArgumentException("The supplied domain name was not in the correct form", "domain");
+                // domain names can't be bigger tan 255 chars, and individual labels can't be bigger than 63 chars
+                throw new ArgumentException("The supplied domain name was not in the correct form", nameof(domain));
 
             // sanity check the DnsType parameter
             if (!Enum.IsDefined(typeof(DnsType), dnsType) || dnsType == DnsType.None)
-                throw new ArgumentOutOfRangeException("dnsType", "Not a valid value");
+                throw new ArgumentOutOfRangeException(nameof(dnsType), "Not a valid value");
 
             // sanity check the DnsClass parameter
             if (!Enum.IsDefined(typeof(DnsClass), dnsClass) || dnsClass == DnsClass.None)
-                throw new ArgumentOutOfRangeException("dnsClass", "Not a valid value");
+                throw new ArgumentOutOfRangeException(nameof(dnsClass), "Not a valid value");
 
             // just remember the values
             Domain = domain;

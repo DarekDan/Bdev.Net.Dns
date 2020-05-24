@@ -8,7 +8,7 @@
 
 #endregion
 
-namespace Bdev.Net.Dns
+namespace Bdev.Net.Dns.Records
 {
     /// <summary>
     ///     A simple base class for the different ResourceRecords, ANAME, MX, SOA, NS etc.
