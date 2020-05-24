@@ -10,6 +10,8 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Bdev.Net.Dns
 {
@@ -24,10 +26,10 @@ namespace Bdev.Net.Dns
     {
         // A request is a series of questions, an 'opcode' (RFC1035 4.1.1) and a flag to denote
         // whether recursion is required (don't ask..., just assume it is)
-        private readonly ArrayList _questions;
+        private readonly List<Question> _questions = new List<Question>();
 
         /// <summary>
-        ///     Construct this object with the default values and create an ArrayList to hold
+        ///     Construct this object with the default values and a List to hold
         ///     the questions as they are added
         /// </summary>
         public Request()
@@ -36,13 +38,11 @@ namespace Bdev.Net.Dns
             RecursionDesired = true;
             Opcode = Opcode.StandardQuery;
 
-            // create an expandable list of questions
-            _questions = new ArrayList();
         }
 
         public Request WithQuestion(Question question)
         {
-            this.AddQuestion(question);
+            AddQuestion(question);
             return this;
         }
 
@@ -57,7 +57,7 @@ namespace Bdev.Net.Dns
         public void AddQuestion(Question question)
         {
             // abandon if null
-            if (question == null) throw new ArgumentNullException("question");
+            if (question == null) throw new ArgumentNullException(nameof(question));
 
             // add this question to our collection
             _questions.Add(question);
@@ -69,84 +69,78 @@ namespace Bdev.Net.Dns
         /// <returns></returns>
         public byte[] GetMessage()
         {
-            // construct a message for this request. This will be a byte array but we're using
-            // an arraylist as we don't know how big it will be
-            var data = new ArrayList();
-
-            // the id of this message - this will be filled in by the resolver
-            data.Add((byte) 0);
-            data.Add((byte) 0);
-
-            // write the bitfields
-            data.Add((byte) (((byte) Opcode << 3) | (RecursionDesired ? 0x01 : 0)));
-            data.Add((byte) 0);
-
-            // tell it how many questions
-            unchecked
+            using (var data = new MemoryStream())
             {
-                data.Add((byte) (_questions.Count >> 8));
-                data.Add((byte) _questions.Count);
-            }
+                // the id of this message - this will be filled in by the resolver
+                data.WriteByte(0);
+                data.WriteByte(0);
 
-            // the are no requests, name servers or additional records in a request
-            data.Add((byte) 0);
-            data.Add((byte) 0);
-            data.Add((byte) 0);
-            data.Add((byte) 0);
-            data.Add((byte) 0);
-            data.Add((byte) 0);
+                // write the bit fields
+                data.WriteByte((byte) (((byte) Opcode << 3) | (RecursionDesired ? 0x01 : 0)));
+                data.WriteByte(0);
 
-            // that's the header done - now add the questions
-            foreach (Question question in _questions)
-            {
-                AddDomain(data, question.Domain);
+                // tell it how many questions
                 unchecked
                 {
-                    data.Add((byte) 0);
-                    data.Add((byte) question.Type);
-                    data.Add((byte) 0);
-                    data.Add((byte) question.Class);
+                    data.WriteByte((byte) (_questions.Count >> 8));
+                    data.WriteByte((byte) _questions.Count);
                 }
-            }
 
-            // and convert that to an array
-            var message = new byte[data.Count];
-            data.CopyTo(message);
-            return message;
+                // the are no requests, name servers or additional records in a request
+                data.WriteByte(0);
+                data.WriteByte(0);
+                data.WriteByte(0);
+                data.WriteByte(0);
+                data.WriteByte(0);
+                data.WriteByte(0);
+
+                // that's the header done - now add the questions
+                foreach (Question question in _questions)
+                {
+                    AddDomain(data, question.Domain);
+                    unchecked
+                    {
+                        data.WriteByte(0);
+                        data.WriteByte((byte) question.Type);
+                        data.WriteByte(0);
+                        data.WriteByte((byte) question.Class);
+                    }
+                }
+                return data.GetBuffer();
+            }
         }
 
         /// <summary>
-        ///     Adds a domain name to the ArrayList of bytes. This implementation does not use
+        ///     Adds a domain name to the array of bytes. This implementation does not use
         ///     the domain name compression used in the class Pointer - maybe it should.
         /// </summary>
-        /// <param name="data">The ArrayList representing the byte array message</param>
+        /// <param name="data">The memory stream to which add</param>
         /// <param name="domainName">the domain name to encode and add to the array</param>
-        private static void AddDomain(ArrayList data, string domainName)
+        private static void AddDomain(Stream data, string domainName)
         {
             var position = 0;
-            var length = 0;
 
             // start from the beginning and go to the end
             while (position < domainName.Length)
             {
                 // look for a period, after where we are
-                length = domainName.IndexOf('.', position) - position;
+                var length = domainName.IndexOf('.', position) - position;
 
                 // if there isn't one then this labels length is to the end of the string
                 if (length < 0) length = domainName.Length - position;
 
                 // add the length
-                data.Add((byte) length);
+                data.WriteByte((byte) length);
 
                 // copy a char at a time to the array
-                while (length-- > 0) data.Add((byte) domainName[position++]);
+                while (length-- > 0) data.WriteByte((byte) domainName[position++]);
 
                 // step over '.'
                 position++;
             }
 
             // end of domain names
-            data.Add((byte) 0);
+            data.WriteByte(0);
         }
     }
 }

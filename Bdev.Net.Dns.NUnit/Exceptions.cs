@@ -72,29 +72,28 @@ namespace Bdev.Net.Dns.NUnit
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void NewQuestionBadClass()
         {
-            new Question("codeproject.com", DnsType.ANAME, (DnsClass) 1999);
+            _ = new Question("codeproject.com", DnsType.ANAME, (DnsClass)1999);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void NewQuestionBadType()
         {
-            new Question("codeproject.com", (DnsType) 1999);
+            _ = new Question("codeproject.com", (DnsType) 1999);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void NewQuestionDomainBad()
         {
-            new Question("$$$$$.com", DnsType.MX);
+            _ = new Question("$$$$$.com", DnsType.MX);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void NewQuestionDomainNull()
         {
-            // ReSharper disable once UnusedVariable
-            var question = new Question(null, DnsType.MX);
+            _ = new Question(null, DnsType.MX);
         }
     }
 }

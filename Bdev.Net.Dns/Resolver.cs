@@ -13,39 +13,33 @@ using System.Collections;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Bdev.Net.Dns.Exceptions;
 using Bdev.Net.Dns.Helpers;
+using Bdev.Net.Dns.Records;
 
 namespace Bdev.Net.Dns
 {
     /// <summary>
     ///     Summary description for Dns.
     /// </summary>
-    public sealed class Resolver
+    public static class Resolver
     {
-        private const int _dnsPort = 53;
-        private const int _udpRetryAttempts = 2;
+        private const int DnsPort = 53;
+        private const int UdpRetryAttempts = 2;
         private static int _uniqueId;
 
         /// <summary>
-        ///     Private constructor - this static class should never be instantiated
-        /// </summary>
-        private Resolver()
-        {
-            // no implementation
-        }
-
-        /// <summary>
-        ///     Shorthand form to make MX querying easier, essentially wraps up the retreival
+        ///     Shorthand form to make MX querying easier, essentially wraps up the retrieval
         ///     of the MX records, and sorts them by preference
         /// </summary>
-        /// <param name="domain">domain name to retreive MX RRs for</param>
+        /// <param name="domain">domain name to retrieve MX RRs for</param>
         /// <param name="dnsServer">the server we're going to ask</param>
         /// <returns>An array of MXRecords</returns>
         public static MXRecord[] MXLookup(string domain, IPAddress dnsServer)
         {
             // check the inputs
-            if (domain == null) throw new ArgumentNullException("domain");
-            if (dnsServer == null) throw new ArgumentNullException("dnsServer");
+            if (domain == null) throw new ArgumentNullException(nameof(domain));
+            if (dnsServer == null) throw new ArgumentNullException(nameof(dnsServer));
 
             // create a request for this
             var request = new Request();
@@ -59,27 +53,11 @@ namespace Bdev.Net.Dns
             // if we didn't get a response, then return null
             if (response == null) return null;
 
-            // create a growable array of MX records
-            var resourceRecords = new ArrayList();
+            // create a expandable array of MX records
+            var resourceRecords = response.Answers.Where(w => w.Record is MXRecord).Select(s => s.Record as MXRecord)
+                .OrderBy(o => o.Preference).ToArray();
 
-            // add each of the answers to the array
-            foreach (var answer in response.Answers)
-                // if the answer is an MX record
-                if (answer.Record.GetType() == typeof(MXRecord))
-                    // add it to our array
-                    resourceRecords.Add(answer.Record);
-
-            // create array of MX records
-            var mxRecords = new MXRecord[resourceRecords.Count];
-
-            // copy from the array list
-            resourceRecords.CopyTo(mxRecords);
-
-            // sort into lowest preference order
-            Array.Sort(mxRecords);
-
-            // and return
-            return mxRecords;
+            return resourceRecords;
         }
 
         public static MXRecord[] MXLookup(string domain)
@@ -98,13 +76,13 @@ namespace Bdev.Net.Dns
         public static Response Lookup(Request request, IPAddress dnsServer)
         {
             // check the inputs
-            if (request == null) throw new ArgumentNullException("request");
-            if (dnsServer == null) throw new ArgumentNullException("dnsServer");
+            if (request == null) throw new ArgumentNullException(nameof(request));
+            if (dnsServer == null) throw new ArgumentNullException(nameof(dnsServer));
 
             // We will not catch exceptions here, rather just refer them to the caller
 
             // create an end point to communicate with
-            var server = new IPEndPoint(dnsServer, _dnsPort);
+            var server = new IPEndPoint(dnsServer, DnsPort);
 
             // get the message
             var requestMessage = request.GetMessage();
@@ -120,9 +98,9 @@ namespace Bdev.Net.Dns
 
         public static Response Lookup(string value, DnsType type = DnsType.ANAME, IPAddress dnsServer = null)
         {
-            var reuqest = new Request();
-            reuqest.AddQuestion(new Question(value, type));
-            return Lookup(reuqest, dnsServer ?? DnsServers.IP4.First());
+            var request = new Request();
+            request.AddQuestion(new Question(value, type));
+            return Lookup(request, dnsServer ?? DnsServers.IP4.First());
         }
 
         public static Response Lookup(Request request)
@@ -136,7 +114,7 @@ namespace Bdev.Net.Dns
             var attempts = 0;
 
             // try repeatedly in case of failure
-            while (attempts <= _udpRetryAttempts)
+            while (attempts <= UdpRetryAttempts)
             {
                 // firstly, uniquely mark this request with an id
                 unchecked
@@ -160,7 +138,7 @@ namespace Bdev.Net.Dns
 
                 try
                 {
-                    // wait for a response upto 1 second
+                    // wait for a response up to 1 second
                     socket.Receive(responseMessage);
 
                     // make sure the message returned is ours

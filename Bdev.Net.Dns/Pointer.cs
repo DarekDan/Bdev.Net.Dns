@@ -8,8 +8,6 @@
 
 #endregion
 
-using System;
-using System.CodeDom;
 using System.Linq;
 using System.Text;
 
@@ -110,7 +108,7 @@ namespace Bdev.Net.Dns
 
         /// <summary>
         ///     Reads a domain name from the byte array. The method by which this works is described
-        ///     in RFC1035 - 4.1.4. Essentially to minimise the size of the message, if part of a domain
+        ///     in RFC1035 - 4.1.4. Essentially to minimize the size of the message, if part of a domain
         ///     name already been seen in the message, rather than repeating it, a pointer to the existing
         ///     definition is used. Each word in a domain name is a label, and is preceded by its length
         ///     eg. bigdevelopments.co.uk
@@ -123,7 +121,7 @@ namespace Bdev.Net.Dns
         public string ReadDomain()
         {
             var domain = new StringBuilder();
-            var length = 0;
+            int length;
 
             // get  the length of the first label
             while ((length = ReadByte()) != 0)

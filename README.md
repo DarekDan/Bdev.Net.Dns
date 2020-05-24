@@ -48,3 +48,16 @@ Resolve a record on a DNS server
 
     // send the request
     Response response = Resolver.Lookup(request, DnsServers.IP4.First());
+
+
+### Release history
+1.0.10 Quality improvements
+
+1.0.9 Support for .Net Core 3.1 and .Net 4.8
+
+1.0.8 Added support for CNAME
+
+#### Breaking changes
+
+##### 1.0.10
+New project organization will require to update imports of references for records and custom exceptions. 

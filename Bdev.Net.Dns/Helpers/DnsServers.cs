@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Bdev.Net.Dns.Records;
 
 namespace Bdev.Net.Dns.Helpers
 {
@@ -26,7 +27,7 @@ namespace Bdev.Net.Dns.Helpers
                 .Where(w1 => w1.OperationalStatus.Equals(OperationalStatus.Up));
         }
 
-        internal static Dictionary<Type,DnsType> _map = new Dictionary<Type, DnsType>()
+        private static readonly Dictionary<Type,DnsType> RecordTypeToDnsTypeMapper = new Dictionary<Type, DnsType>()
         {
             {typeof(ANameRecord), DnsType.A},
             {typeof(CNameRecord), DnsType.CNAME},
@@ -42,8 +43,8 @@ namespace Bdev.Net.Dns.Helpers
         }
         public static IEnumerable<T> Resolve<T>(string name)
         {
-            if(!_map.ContainsKey(typeof(T))) throw new NotImplementedException("This record type has not yet been implemented");
-            return Resolve<T>(name, _map[typeof(T)], DnsClass.IN);
+            if(!RecordTypeToDnsTypeMapper.ContainsKey(typeof(T))) throw new NotImplementedException("This record type has not yet been implemented");
+            return Resolve<T>(name, RecordTypeToDnsTypeMapper[typeof(T)], DnsClass.IN);
         }
 
         public static IEnumerable<T> Resolve<T>(string name, DnsType type, DnsClass @class, bool recursionDesired = true)

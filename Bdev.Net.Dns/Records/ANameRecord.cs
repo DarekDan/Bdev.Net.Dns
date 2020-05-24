@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace Bdev.Net.Dns
+namespace Bdev.Net.Dns.Records
 {
     /// <summary>
     ///     ANAME Resource Record (RR) (RFC1035 3.4.1)

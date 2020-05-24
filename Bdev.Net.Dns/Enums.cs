@@ -14,9 +14,8 @@ namespace Bdev.Net.Dns
     /// <summary>
     ///     The DNS TYPE (RFC1035 3.2.2/3) - 4 types are currently supported. Also, I know that this
     ///     enumeration goes against naming guidelines, but I have done this as an ANAME is most
-    ///     definetely an 'ANAME' and not an 'Aname'
+    ///     definitely an 'ANAME' and not an 'Aname'. See also https://tools.ietf.org/html/rfc1035#section-3.2.2
     /// </summary>
-    /// <see cref="https://tools.ietf.org/html/rfc1035#section-3.2.2" />
     public enum DnsType
     {
         None = 0, //INVALID
@@ -24,7 +23,7 @@ namespace Bdev.Net.Dns
         ANAME = 1, //host address
         NS = 2, //authoritative name server
         MD = 3, //mail destination - obsolete, use MX
-        MF = 4, //mail forwarder -  obsolte, use MX
+        MF = 4, //mail forwarder -  obsolete, use MX
         CNAME = 5, //canonical name for an alias
         SOA = 6, //start of a zone authority
         WKS = 11, //well known service description
@@ -37,9 +36,9 @@ namespace Bdev.Net.Dns
 
     /// <summary>
     ///     The DNS CLASS (RFC1035 3.2.4/5)
-    ///     Internet will be the one we'll be using (IN), the others are for completeness///
+    ///     Internet will be the one we'll be using (IN), the others are for completeness
+    ///     https://tools.ietf.org/html/rfc1035#section-3.2.4
     /// </summary>
-    /// <see cref="https://tools.ietf.org/html/rfc1035#section-3.2.4" />
     public enum DnsClass
     {
         None = 0, //INVALID

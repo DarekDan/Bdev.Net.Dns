@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Bdev.Net.Dns
+namespace Bdev.Net.Dns.Records
 {
     /// <summary>
     ///     An SOA Resource Record (RR) (RFC1035 3.3.13)
@@ -84,15 +84,7 @@ namespace Bdev.Net.Dns
         public override string ToString()
         {
             return
-                string.Format(
-                    "primary name server = {0}\nresponsible mail addr = {1}\nserial  = {2}\nrefresh = {3}\nretry   = {4}\nexpire  = {5}\ndefault TTL = {6}",
-                    PrimaryNameServer,
-                    ResponsibleMailAddress,
-                    Serial,
-                    Refresh,
-                    Retry,
-                    Expire,
-                    DefaultTtl);
+                $"primary name server = {PrimaryNameServer}\nresponsible mail addr = {ResponsibleMailAddress}\nserial  = {Serial}\nrefresh = {Refresh}\nretry   = {Retry}\nexpire  = {Expire}\ndefault TTL = {DefaultTtl}";
         }
 
         public static bool operator ==(SoaRecord record1, SoaRecord record2)

@@ -1,7 +1,6 @@
-using System;
 using System.Text;
 
-namespace Bdev.Net.Dns
+namespace Bdev.Net.Dns.Records
 {
     public class TXTRecord : RecordBase
     {
