@@ -46,9 +46,9 @@ namespace Bdev.Net.Dns.Helpers
             return Resolve<T>(name, _map[typeof(T)], DnsClass.IN);
         }
 
-        public static IEnumerable<T> Resolve<T>(string name, DnsType type, DnsClass @class)
+        public static IEnumerable<T> Resolve<T>(string name, DnsType type, DnsClass @class, bool recursionDesired = true)
         {
-            var req = new Request();
+            var req = new Request(){RecursionDesired = recursionDesired};
             req.AddQuestion(new Question(name, type, @class));
             var bag = new ConcurrentBag<RecordBase>();
             Parallel.ForEach(IP4, server =>

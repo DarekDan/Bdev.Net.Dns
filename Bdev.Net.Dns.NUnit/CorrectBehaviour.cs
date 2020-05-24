@@ -21,7 +21,7 @@ namespace Bdev.Net.Dns.NUnit
         {
             var res = DnsServers.Resolve(name);
             Assert.IsNotNullOrEmpty(res.First().IPAddress.ToString());
-            Trace.WriteLine(string.Join(Environment.NewLine, res.Select(s => s.IPAddress)));
+            Console.WriteLine(string.Join(Environment.NewLine, res.Select(s => s.IPAddress)));
         }
 
         [Test]
@@ -63,6 +63,7 @@ namespace Bdev.Net.Dns.NUnit
         public void CNameRecordMustExist()
         {
             var result = DnsServers.Resolve<CNameRecord>("mail.google.com").First();
+            Console.WriteLine(result);
             Assert.IsNotEmpty(result.Value);
         }
 
