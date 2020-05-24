@@ -4,6 +4,8 @@ A .Net library to execute DNS lookups from one, or multiple DNS server.
 
 ## Sample usage
 
+    Install-Package Bdev.Net.Dns
+
 ### Helpers
 
 Return all available ANAME records for Google
@@ -13,6 +15,14 @@ Return all available ANAME records for Google
 Return all MX Records for a domain
 
     DnsServers.Resolve<MXRecord>("codeproject.com", DnsType.MX, DnsClass.IN);
+
+Return all TXT records for a domain
+
+    Resolver.Lookup(new Request { RecursionDesired = true }.WithQuestion(new Question("google.com", DnsType.TXT)));
+
+or with a helper
+
+     DnsServers.Resolve<TXTRecord>("google.com");
 
 Get all known DNS Servers on all active network interfaces
 

@@ -26,9 +26,23 @@ namespace Bdev.Net.Dns.Helpers
                 .Where(w1 => w1.OperationalStatus.Equals(OperationalStatus.Up));
         }
 
+        internal static Dictionary<Type,DnsType> _map = new Dictionary<Type, DnsType>()
+        {
+            {typeof(ANameRecord), DnsType.ANAME},
+            {typeof(MXRecord), DnsType.MX},
+            {typeof(NSRecord), DnsType.NS},
+            {typeof(SoaRecord), DnsType.SOA},
+            {typeof(TXTRecord), DnsType.TXT}
+        };
+
         public static IEnumerable<ANameRecord> Resolve(string name)
         {
-            return Resolve<ANameRecord>(name, DnsType.ANAME, DnsClass.IN);
+            return Resolve<ANameRecord>(name);
+        }
+        public static IEnumerable<T> Resolve<T>(string name)
+        {
+            if(!_map.ContainsKey(typeof(T))) throw new NotImplementedException("This record type has not yet been implemented");
+            return Resolve<T>(name, _map[typeof(T)], DnsClass.IN);
         }
 
         public static IEnumerable<T> Resolve<T>(string name, DnsType type, DnsClass @class)

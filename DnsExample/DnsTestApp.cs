@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Bdev.Net.Dns;
+using Bdev.Net.Dns.Helpers;
 
 namespace DnsExample
 {
@@ -13,19 +14,16 @@ namespace DnsExample
         [STAThread]
         private static void Main(string[] args)
         {
-            Query(IPAddress.Parse("208.67.222.222"), "bisoftware.com", DnsType.MX);
-            Query("bisoftware.com", DnsType.MX);
-
-            // I'd love to know if there a programmatic way of retreiving the computer's default DNS servers
+            // I'd love to know if there a programmatic way of retrieving the computer's default DNS servers
             // in managed code, if you how to do this, please let me know at rob@bigdevelopments.co.uk so I
             // can update the code, I have searched fruitlessly for sometime for a simple answer to this
             //
             // in the meantime - we are going to have to ask for it :(
             //
-            Console.Write("Please enter the address of the DNS server to query: ");
+            Console.Write("Please enter the address of the DNS server to query (or hit enter for first IP4 available): ");
             var ip = Console.ReadLine();
 
-            var dnsServer = IPAddress.Parse(ip);
+            var dnsServer = String.IsNullOrWhiteSpace(ip) ? DnsServers.IP4.First() : IPAddress.Parse(ip);
             Console.WriteLine("DNS Query Tool, type 'quit' to exit");
 
             while (true)
@@ -45,31 +43,6 @@ namespace DnsExample
                 Query(dnsServer, domain, DnsType.NS);
                 Query(dnsServer, domain, DnsType.SOA);
             }
-        }
-
-
-        private static void Query(string domain, DnsType type)
-        {
-            IEnumerable<IPAddress> dnsServers =
-                NetworkInterface.GetAllNetworkInterfaces()
-                    .SelectMany(s => s.GetIPProperties().DnsAddresses)
-                    .Where(w => w.AddressFamily.Equals(AddressFamily.InterNetwork))
-                    .Distinct()
-                    .ToList();
-            var isValid = dnsServers.Any(
-                a =>
-                {
-                    try
-                    {
-                        var mx = Resolver.MXLookup(domain, a);
-                        return mx.Any();
-                    }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
-                });
-            Console.WriteLine(isValid);
         }
 
         private static void Query(IPAddress dnsServer, string domain, DnsType type)

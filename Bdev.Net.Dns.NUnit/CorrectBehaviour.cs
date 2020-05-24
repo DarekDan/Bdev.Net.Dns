@@ -52,11 +52,11 @@ namespace Bdev.Net.Dns.NUnit
         [Test]
         public void TextRecordsMustExist()
         {
-            var request = new Request {RecursionDesired = true}.WithQuestion(new Question("quaterne.com", DnsType.TXT));
-            var result = Resolver.Lookup(request);
-            var l= result.Answers.Select(s => s.Record).OfType<TXTRecord>().ToList();
-            var list = result.Answers.Select(s => s.Record).OfType<TXTRecord>().Select(s => s.Value).ToList();
-            Assert.True(result.Answers.Any());
+            var result = Resolver.Lookup(new Request { RecursionDesired = true }.WithQuestion(new Question("google.com", DnsType.TXT)));
+            var l = DnsServers.Resolve<TXTRecord>("google.com");
+            var list = result.Answers.Select(s => s.Record).OfType<TXTRecord>().Select(s => s.Value).OrderBy(o=>o).ToList();
+            Assert.True(result.Answers.Length>1);
+            Assert.IsTrue(list.SequenceEqual(l.Select(s=>s.Value).OrderBy(o => o).ToList()));
         }
 
         [Test]

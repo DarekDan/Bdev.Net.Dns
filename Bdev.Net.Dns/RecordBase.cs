@@ -15,6 +15,5 @@ namespace Bdev.Net.Dns
     /// </summary>
     public abstract class RecordBase
     {
-        // no implementation
     }
 }

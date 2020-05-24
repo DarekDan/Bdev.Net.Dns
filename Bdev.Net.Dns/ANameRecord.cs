@@ -39,7 +39,7 @@ namespace Bdev.Net.Dns
 
         // expose this IP address r/o to the world
         public IPAddress IPAddress { get; }
-
+ 
         public bool Equals(ANameRecord other)
         {
             return other != null &&
