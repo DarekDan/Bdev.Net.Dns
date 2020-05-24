@@ -16,7 +16,8 @@
     <RepositoryUrl>https://github.com/DarekDan/Bdev.Net.Dns</RepositoryUrl>
     <Version>1.0.10</Version>
     <ApplicationIcon></ApplicationIcon>    
-    <PackageReleaseNotes>1.0.9 Support for .Net Core 3.1 and .Net 4.8
+    <PackageReleaseNotes>1.0.10 Only code quality imporvements
+1.0.9 Support for .Net Core 3.1 and .Net 4.8
 1.0.8 Added support for CNAME</PackageReleaseNotes>    
     <PackageLicenseExpression>MIT</PackageLicenseExpression>    
     <PackageIcon>dns_128_px.png</PackageIcon>
