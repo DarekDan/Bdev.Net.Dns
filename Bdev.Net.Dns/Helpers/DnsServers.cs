@@ -28,7 +28,8 @@ namespace Bdev.Net.Dns.Helpers
 
         internal static Dictionary<Type,DnsType> _map = new Dictionary<Type, DnsType>()
         {
-            {typeof(ANameRecord), DnsType.ANAME},
+            {typeof(ANameRecord), DnsType.A},
+            {typeof(CNameRecord), DnsType.CNAME},
             {typeof(MXRecord), DnsType.MX},
             {typeof(NSRecord), DnsType.NS},
             {typeof(SoaRecord), DnsType.SOA},

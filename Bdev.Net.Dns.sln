@@ -1,10 +1,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.779
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bdev.Net.Dns.NUnit", "Bdev.Net.Dns.NUnit\Bdev.Net.Dns.NUnit.csproj", "{7026C4B0-FA7C-488E-BFBE-FF13F72E6AA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bdev.Net.Dns", "Bdev.Net.Dns\Bdev.Net.Dns.csproj", "{6D765924-73E9-49AE-8A97-DA24958A540C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bdev.Net.Dns", "Bdev.Net.Dns\Bdev.Net.Dns.csproj", "{6D765924-73E9-49AE-8A97-DA24958A540C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnsExample", "DnsExample\DnsExample.csproj", "{2D7481E0-6E80-4C2C-B8D2-92500741F791}"
 EndProject
@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		build-nuget-packages.cmd = build-nuget-packages.cmd
 		build-nuget-packages.ps1 = build-nuget-packages.ps1
+		dns_128_px.png = dns_128_px.png
 		README.md = README.md
 	EndProjectSection
 EndProject
