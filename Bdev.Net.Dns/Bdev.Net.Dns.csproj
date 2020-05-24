@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	
 	  <PropertyGroup>
-    <TargetFrameworks>net45;net462;net472;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net48;net45;net462;net472;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <Title>Bdev.Net.Dns</Title>
     <Description>.NET DNS query library</Description>
     <Authors>Rob Philpott and Dariusz Danielewski</Authors>
@@ -13,20 +13,32 @@
     <PackageProjectUrl>https://www.codeproject.com/Articles/12072/C-NET-DNS-query-component</PackageProjectUrl>
     <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>git://github.com/DarekDan/Bdev.Net.Dns</RepositoryUrl>
-    <Version>1.0.7</Version>
+    <RepositoryUrl>https://github.com/DarekDan/Bdev.Net.Dns</RepositoryUrl>
+    <Version>1.0.9</Version>
     <ApplicationIcon></ApplicationIcon>    
-    <PackageReleaseNotes>
-    </PackageReleaseNotes>
+    <PackageReleaseNotes>1.0.9 Support for .Net Core 3.1 and .Net 4.8
+1.0.8 Added support for CNAME</PackageReleaseNotes>    
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>    
+    <PackageIcon>dns_128_px.png</PackageIcon>
   </PropertyGroup>
 
   <!--common NuGet package refs -->
   <ItemGroup>
+    <None Include="..\dns_128_px.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <!--.NET Standard 2.0 config -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <AssemblyTitle>Bdev.Net.Dns .NET Standard 2.0</AssemblyTitle>
+    <DefineConstants>NETCORE;NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+
+  <!--.NET Standard 3.1 config -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <AssemblyTitle>Bdev.Net.Dns .NET Core 3.1</AssemblyTitle>
     <DefineConstants>NETCORE;NETSTANDARD</DefineConstants>
   </PropertyGroup>
 
@@ -48,7 +60,13 @@
     <DefineConstants>NETFULL</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net472' or '$(TargetFramework)' == 'net462' ">
+  <!-- .NET 4.8 config -->
+  <PropertyGroup Condition=" '$(TargetFramework)'=='net48' ">
+    <AssemblyTitle>Bdev.Net.Dns .NET 4.8</AssemblyTitle>
+    <DefineConstants>NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48' or '$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net472' or '$(TargetFramework)' == 'net462' ">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -60,6 +60,13 @@ namespace Bdev.Net.Dns.NUnit
         }
 
         [Test]
+        public void CNameRecordMustExist()
+        {
+            var result = DnsServers.Resolve<CNameRecord>("mail.google.com").First();
+            Assert.IsNotEmpty(result.Value);
+        }
+
+        [Test]
         public void CorrectANameForCodeProject()
         {
             var response = DnsServers.Resolve("codeproject.com").ToList();

@@ -45,6 +45,9 @@ namespace Bdev.Net.Dns
                 case DnsType.ANAME:
                     Record = new ANameRecord(pointer);
                     break;
+                case DnsType.CNAME:
+                    Record = new CNameRecord(pointer);
+                    break;
                 case DnsType.SOA:
                     Record = new SoaRecord(pointer);
                     break;
