@@ -20,13 +20,13 @@ Return all TXT records for a domain
 
     Resolver.Lookup(new Request { RecursionDesired = true }.WithQuestion(new Question("google.com", DnsType.TXT)));
 
-Return a CNAME
-
-    DnsServers.Resolve<CNameRecord>("mail.google.com").First();
-
 or with a helper
 
      DnsServers.Resolve<TXTRecord>("google.com");
+
+Return a CNAME
+
+    DnsServers.Resolve<CNameRecord>("mail.google.com").First();
 
 Get all known DNS Servers on all active network interfaces
 
