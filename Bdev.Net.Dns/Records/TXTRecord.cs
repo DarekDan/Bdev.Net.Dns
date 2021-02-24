@@ -7,15 +7,26 @@ namespace Bdev.Net.Dns.Records
         public string Value { get; set; }
 
         public int Length { get; set; }
-        internal TXTRecord(Pointer pointer)
+        internal TXTRecord(Pointer pointer, int recordLength)
         {
-            Length = pointer.ReadByte();
-            var sb = new StringBuilder(Length);
-            for (int i = 0; i < Length; i++)
+            var position = pointer.Position;
+
+            var sb = new StringBuilder(recordLength);
+
+            // there can be multiple strings in one TXT record
+            // loop until full recordLength is read
+            while (pointer.Position - position < recordLength)
             {
-                sb.Append(pointer.ReadChar());
+                // read the string length
+                var length = pointer.ReadByte();
+                for (int i = 0; i < length; i++)
+                {
+                    sb.Append(pointer.ReadChar());
+                }
             }
+
             Value = sb.ToString();
+            Length = sb.Length;
         }
 
         public override string ToString()
