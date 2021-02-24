@@ -53,7 +53,7 @@ namespace Bdev.Net.Dns
                     Record = new SoaRecord(pointer);
                     break;
                 case DnsType.TXT:
-                    Record = new TXTRecord(pointer);
+                    Record = new TXTRecord(pointer, recordLength);
                     break;
                 default:
                 {
