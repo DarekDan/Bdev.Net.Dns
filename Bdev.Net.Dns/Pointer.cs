@@ -51,6 +51,11 @@ namespace Bdev.Net.Dns
         }
 
         /// <summary>
+        ///     Gets the cursor position
+        /// </summary>
+        public int Position { get { return _position; } }
+
+        /// <summary>
         ///     Overloads the + operator to allow advancing the pointer by so many bytes
         /// </summary>
         /// <param name="pointer">the initial pointer</param>
