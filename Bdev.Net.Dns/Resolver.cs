@@ -22,7 +22,7 @@ namespace Bdev.Net.Dns
     /// <summary>
     ///     Summary description for Dns.
     /// </summary>
-    public static class Resolver
+    public static partial class Resolver
     {
         private const int DnsPort = 53;
         private const int UdpRetryAttempts = 2;
@@ -69,11 +69,15 @@ namespace Bdev.Net.Dns
         ///     The principal look up function, which sends a request message to the given
         ///     DNS server and collects a response. This implementation re-sends the message
         ///     via UDP up to two times in the event of no response/packet loss
+        ///     
+        ///     If the message is truncated and tcpFallback is set it will attempt to retry
+        ///     via DNS over TCP.
         /// </summary>
         /// <param name="request">The logical request to send to the server</param>
         /// <param name="dnsServer">The IP address of the DNS server we are querying</param>
+        /// <param name="tcpFallback">Whether it should fall back to TCP if the message is truncated</param>
         /// <returns>The logical response from the DNS server or null if no response</returns>
-        public static Response Lookup(Request request, IPAddress dnsServer)
+        public static Response Lookup(Request request, IPAddress dnsServer, bool tcpFallback = true)
         {
             // check the inputs
             if (request == null) throw new ArgumentNullException(nameof(request));
@@ -90,8 +94,18 @@ namespace Bdev.Net.Dns
             // send the request and get the response
             var responseMessage = UdpTransfer(server, requestMessage);
 
-            // and populate a response object from that and return it
-            return new Response(responseMessage);
+            // populate a response object
+            var response = new Response(responseMessage);
+
+            if(response.MessageTruncated && tcpFallback)
+            {
+                // message is truncated, retry over TCP
+                responseMessage = TcpTransfer(server, requestMessage);
+
+                response = new Response(responseMessage);
+            }
+
+            return response;
         }
 
 
