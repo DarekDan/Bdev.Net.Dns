@@ -51,6 +51,9 @@ Resolve a record on a DNS server
 
 
 ### Release history
+1.0.11 Fix TXT records with multiple strings
+       Add DNS over TCP fallback for truncated messages
+
 1.0.10 Quality improvements
 
 1.0.9 Support for .Net Core 3.1 and .Net 4.8
