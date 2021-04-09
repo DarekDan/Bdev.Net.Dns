@@ -1,5 +1,8 @@
 # Bdev.Net.Dns
 
+[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Bdev.Net.Dns)](https://github.com/DarekDan/Bdev.Net.Dns)
+
+
 A .Net library to execute DNS lookups from one, or multiple DNS server.
 
 ## Sample usage
