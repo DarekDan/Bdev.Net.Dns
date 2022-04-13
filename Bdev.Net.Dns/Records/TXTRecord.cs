@@ -39,16 +39,9 @@ namespace Bdev.Net.Dns.Records
     {
         public string Value { get; set; }
 
-        public int Length { get; set; }
         internal CNameRecord(Pointer pointer)
         {
-            Length = pointer.ReadByte();
-            var sb = new StringBuilder(Length);
-            for (int i = 0; i < Length; i++)
-            {
-                sb.Append(pointer.ReadChar());
-            }
-            Value = sb.ToString();
+            Value = pointer.ReadDomain();
         }
 
         public override string ToString()
