@@ -69,6 +69,14 @@ namespace Bdev.Net.Dns.NUnit
         }
 
         [Test]
+        public void CorrectCNameForGmail()
+        {
+            var result = DnsServers.Resolve<CNameRecord>("mail.google.com").First();
+
+            Assert.AreEqual(result.Value, "googlemail.l.google.com");
+        }
+
+        [Test]
         public void CorrectANameForCodeProject()
         {
             var response = DnsServers.Resolve("codeproject.com").ToList();
