@@ -14,9 +14,10 @@
     <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/DarekDan/Bdev.Net.Dns</RepositoryUrl>
-    <Version>1.0.11</Version>
+    <Version>1.0.12</Version>
     <ApplicationIcon></ApplicationIcon>    
     <PackageReleaseNotes>
+      1.0.12 Fix CNAME lookup #7
       1.0.11 Fix TXT records with multiple strings
              Add DNS over TCP fallback for truncated messages
       1.0.10 Only code quality imporvements
