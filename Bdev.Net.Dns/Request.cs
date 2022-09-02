@@ -106,7 +106,7 @@ namespace Bdev.Net.Dns
                         data.WriteByte((byte) question.Class);
                     }
                 }
-                return data.GetBuffer();
+                return data.ToArray();
             }
         }
 
@@ -118,27 +118,15 @@ namespace Bdev.Net.Dns
         /// <param name="domainName">the domain name to encode and add to the array</param>
         private static void AddDomain(Stream data, string domainName)
         {
-            var position = 0;
-
-            // start from the beginning and go to the end
-            while (position < domainName.Length)
+            var splits = domainName.Split('.');
+            foreach (var split in splits)
             {
-                // look for a period, after where we are
-                var length = domainName.IndexOf('.', position) - position;
-
-                // if there isn't one then this labels length is to the end of the string
-                if (length < 0) length = domainName.Length - position;
-
-                // add the length
-                data.WriteByte((byte) length);
-
-                // copy a char at a time to the array
-                while (length-- > 0) data.WriteByte((byte) domainName[position++]);
-
-                // step over '.'
-                position++;
+                data.WriteByte((byte)split.Length);
+                foreach (var c in split.ToCharArray())
+                {
+                    data.WriteByte((byte)c);
+                }
             }
-
             // end of domain names
             data.WriteByte(0);
         }
