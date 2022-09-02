@@ -54,6 +54,8 @@ Resolve a record on a DNS server
 
 
 ### Release history
+1.0.13 Bug fix
+
 1.0.12 Fix CNAME lookup #7
 
 1.0.11 Fix TXT records with multiple strings
