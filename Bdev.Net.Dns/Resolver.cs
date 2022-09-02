@@ -26,7 +26,6 @@ namespace Bdev.Net.Dns
     {
         private const int DnsPort = 53;
         private const int UdpRetryAttempts = 2;
-        private static int _uniqueId;
 
         /// <summary>
         ///     Shorthand form to make MX querying easier, essentially wraps up the retrieval
@@ -130,12 +129,13 @@ namespace Bdev.Net.Dns
             // try repeatedly in case of failure
             while (attempts <= UdpRetryAttempts)
             {
+                var uniqueId = DateTime.Now.Ticks;
                 // firstly, uniquely mark this request with an id
                 unchecked
                 {
                     // substitute in an id unique to this lookup, the request has no idea about this
-                    requestMessage[0] = (byte) (_uniqueId >> 8);
-                    requestMessage[1] = (byte) _uniqueId;
+                    requestMessage[0] = (byte) (uniqueId >> 8);
+                    requestMessage[1] = (byte) uniqueId;
                 }
 
                 // we'll be send and receiving a UDP packet
@@ -167,9 +167,6 @@ namespace Bdev.Net.Dns
                 }
                 finally
                 {
-                    // increase the unique id
-                    _uniqueId++;
-
                     // close the socket
                     socket.Close();
                 }

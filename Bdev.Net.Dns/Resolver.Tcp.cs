@@ -1,4 +1,5 @@
 ﻿using Bdev.Net.Dns.Exceptions;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -13,6 +14,7 @@ namespace Bdev.Net.Dns
             var request = new byte[requestMessage.Length + 2];
             requestMessage.CopyTo(request, 2);
 
+            var uniqueId = DateTime.Now.Ticks;
             unchecked
             {
                 // message length
@@ -20,8 +22,8 @@ namespace Bdev.Net.Dns
                 request[1] = (byte)(requestMessage.Length);
 
                 // mark the request with an id
-                request[2] = (byte)(_uniqueId >> 8);
-                request[3] = (byte)_uniqueId;
+                request[2] = (byte)(uniqueId >> 8);
+                request[3] = (byte)uniqueId;
             }
 
             // this will use DNS over TCP
@@ -59,8 +61,6 @@ namespace Bdev.Net.Dns
             }
             finally
             {
-                _uniqueId++;
-
                 socket.Close();
             }
 

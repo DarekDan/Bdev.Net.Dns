@@ -53,17 +53,17 @@ namespace Bdev.Net.Dns.NUnit
         [Test]
         public void TextRecordsMustExist()
         {
-            var result = Resolver.Lookup(new Request { RecursionDesired = true }.WithQuestion(new Question("google.com", DnsType.TXT)));
-            var l = DnsServers.Resolve<TXTRecord>("google.com");
+            var result = Resolver.Lookup(new Request { RecursionDesired = true }.WithQuestion(new Question("test.txt.bisoftware.com", DnsType.TXT)));
+            var l = DnsServers.Resolve<TXTRecord>("test.txt.bisoftware.com");
             var list = result.Answers.Select(s => s.Record).OfType<TXTRecord>().Select(s => s.Value).OrderBy(o=>o).ToList();
-            Assert.True(result.Answers.Length>1);
+            Assert.True(result.Answers.Length>0);
             Assert.IsTrue(list.SequenceEqual(l.Select(s=>s.Value).OrderBy(o => o).ToList()));
         }
 
         [Test]
         public void CNameRecordMustExist()
         {
-            var result = DnsServers.Resolve<CNameRecord>("mail.google.com").First();
+            var result = DnsServers.Resolve<CNameRecord>("test.cname.bisoftware.com").First();
             Console.WriteLine(result);
             Assert.IsNotEmpty(result.Value);
         }
@@ -71,9 +71,9 @@ namespace Bdev.Net.Dns.NUnit
         [Test]
         public void CorrectCNameForGmail()
         {
-            var result = DnsServers.Resolve<CNameRecord>("mail.google.com").First();
+            var result = DnsServers.Resolve<CNameRecord>("test.cname.bisoftware.com").First();
 
-            Assert.AreEqual(result.Value, "googlemail.l.google.com");
+            Assert.AreEqual(result.Value, "bisoftware.com");
         }
 
         [Test]
