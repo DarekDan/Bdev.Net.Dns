@@ -38,8 +38,8 @@ namespace Bdev.Net.Dns
             try
             {
                 // connect with a timeout
-                var connect = socket.BeginConnect(server, null, null);
-                connect.AsyncWaitHandle.WaitOne(timeout, true);
+                var connect = socket.BeginConnect(server, callback: null, state: null);
+                connect.AsyncWaitHandle.WaitOne(timeout, exitContext: true);
 
                 if (!socket.Connected)
                 {

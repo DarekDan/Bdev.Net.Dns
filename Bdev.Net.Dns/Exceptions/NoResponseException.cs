@@ -24,7 +24,7 @@ namespace Bdev.Net.Dns.Exceptions
             // no implementation
         }
 
-        public NoResponseException(Exception innerException) : base(null, innerException)
+        public NoResponseException(Exception innerException) : base(message: null, innerException)
         {
             // no implementation
         }
