@@ -10,7 +10,7 @@ using Bdev.Net.Dns.Records;
 
 namespace Bdev.Net.Dns.Helpers
 {
-    public class DnsServers
+    public static class DnsServers
     {
         public static IEnumerable<IPAddress> IP4 => All.Where(w => w.AddressFamily.Equals(AddressFamily.InterNetwork));
 

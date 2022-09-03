@@ -6,7 +6,7 @@ using System.Net.Sockets;
 
 namespace Bdev.Net.Dns
 {
-    public partial class Resolver
+    public static partial class Resolver
     {
         private static byte[] TcpTransfer(IPEndPoint server, byte[] requestMessage, int timeout = 2000)
         {
