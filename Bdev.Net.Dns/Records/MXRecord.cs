@@ -78,8 +78,8 @@ namespace Bdev.Net.Dns.Records
         public override int GetHashCode()
         {
             var hashCode = 1394496566;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(DomainName);
-            hashCode = hashCode * -1521134295 + Preference.GetHashCode();
+            hashCode = (hashCode * -1521134295) + EqualityComparer<string>.Default.GetHashCode(DomainName);
+            hashCode = (hashCode * -1521134295) + Preference.GetHashCode();
             return hashCode;
         }
 

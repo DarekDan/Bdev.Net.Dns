@@ -71,13 +71,13 @@ namespace Bdev.Net.Dns.Records
         public override int GetHashCode()
         {
             var hashCode = 1152426255;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PrimaryNameServer);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ResponsibleMailAddress);
-            hashCode = hashCode * -1521134295 + Serial.GetHashCode();
-            hashCode = hashCode * -1521134295 + Refresh.GetHashCode();
-            hashCode = hashCode * -1521134295 + Retry.GetHashCode();
-            hashCode = hashCode * -1521134295 + Expire.GetHashCode();
-            hashCode = hashCode * -1521134295 + DefaultTtl.GetHashCode();
+            hashCode = (hashCode * -1521134295) + EqualityComparer<string>.Default.GetHashCode(PrimaryNameServer);
+            hashCode = (hashCode * -1521134295) + EqualityComparer<string>.Default.GetHashCode(ResponsibleMailAddress);
+            hashCode = (hashCode * -1521134295) + Serial.GetHashCode();
+            hashCode = (hashCode * -1521134295) + Refresh.GetHashCode();
+            hashCode = (hashCode * -1521134295) + Retry.GetHashCode();
+            hashCode = (hashCode * -1521134295) + Expire.GetHashCode();
+            hashCode = (hashCode * -1521134295) + DefaultTtl.GetHashCode();
             return hashCode;
         }
 
