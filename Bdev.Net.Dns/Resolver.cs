@@ -37,8 +37,8 @@ namespace Bdev.Net.Dns
         public static MXRecord[] MXLookup(string domain, IPAddress dnsServer)
         {
             // check the inputs
-            if (domain == null) throw new ArgumentNullException(nameof(domain));
-            if (dnsServer == null) throw new ArgumentNullException(nameof(dnsServer));
+            if (domain is null) throw new ArgumentNullException(nameof(domain));
+            if (dnsServer is null) throw new ArgumentNullException(nameof(dnsServer));
 
             // create a request for this
             var request = new Request();
@@ -50,7 +50,7 @@ namespace Bdev.Net.Dns
             var response = Lookup(request, dnsServer);
 
             // if we didn't get a response, then return null
-            if (response == null) return null;
+            if (response is null) return null;
 
             // create a expandable array of MX records
             var resourceRecords = response.Answers.Where(w => w.Record is MXRecord).Select(s => s.Record as MXRecord)
@@ -79,8 +79,8 @@ namespace Bdev.Net.Dns
         public static Response Lookup(Request request, IPAddress dnsServer, bool tcpFallback = true)
         {
             // check the inputs
-            if (request == null) throw new ArgumentNullException(nameof(request));
-            if (dnsServer == null) throw new ArgumentNullException(nameof(dnsServer));
+            if (request is null) throw new ArgumentNullException(nameof(request));
+            if (dnsServer is null) throw new ArgumentNullException(nameof(dnsServer));
 
             // We will not catch exceptions here, rather just refer them to the caller
 

@@ -70,7 +70,7 @@ namespace Bdev.Net.Dns.Records
 
         public bool Equals(MXRecord other)
         {
-            return other != null &&
+            return other is not null &&
                    DomainName == other.DomainName &&
                    Preference == other.Preference;
         }

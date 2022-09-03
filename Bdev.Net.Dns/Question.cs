@@ -32,7 +32,7 @@ namespace Bdev.Net.Dns
         public Question(string domain, DnsType dnsType, DnsClass dnsClass = DnsClass.IN)
         {
             // check the input parameters
-            if (domain == null) throw new ArgumentNullException(nameof(domain));
+            if (domain is null) throw new ArgumentNullException(nameof(domain));
 
             // do a sanity check on the domain name to make sure its legal
             if (domain.Length == 0 || domain.Length > 255 ||

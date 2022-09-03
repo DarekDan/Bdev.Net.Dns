@@ -77,7 +77,7 @@ namespace Bdev.Net.Dns
 
         public bool Equals(ResourceRecord other)
         {
-            return other != null && Type.Equals(other.Type) && Class.Equals(other.Class) &&
+            return other is not null && Type.Equals(other.Type) && Class.Equals(other.Class) &&
                    Domain.Equals(other.Domain) &&
                    Record.Equals(other.Record);
         }

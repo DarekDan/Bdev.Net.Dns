@@ -62,7 +62,7 @@ namespace Bdev.Net.Dns
         public void AddQuestion(Question question)
         {
             // abandon if null
-            if (question == null) throw new ArgumentNullException(nameof(question));
+            if (question is null) throw new ArgumentNullException(nameof(question));
 
             // add this question to our collection
             _questions.Add(question);

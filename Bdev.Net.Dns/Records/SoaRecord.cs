@@ -53,7 +53,7 @@ namespace Bdev.Net.Dns.Records
 
         public bool Equals(SoaRecord other)
         {
-            return other != null &&
+            return other is not null &&
                    PrimaryNameServer == other.PrimaryNameServer &&
                    ResponsibleMailAddress == other.ResponsibleMailAddress &&
                    Serial == other.Serial &&
