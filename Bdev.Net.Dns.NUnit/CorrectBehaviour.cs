@@ -37,8 +37,7 @@ namespace Bdev.Net.Dns.NUnit
         [TestCaseSource(nameof(_dnsServersTable))]
         public void CompareTwoRecords(string firstDns, string secondDns)
         {
-            var request = new Request();
-            request.AddQuestion(new Question("google.com", DnsType.ANAME));
+            var request = Request.Question(new Question("google.com", DnsType.ANAME));
 
             var first = Resolver.Lookup(request, IPAddress.Parse(firstDns)).Answers.OrderBy(o => o.Record).First();
             var second = Resolver.Lookup(request, IPAddress.Parse(secondDns)).Answers.OrderBy(o => o.Record).First();

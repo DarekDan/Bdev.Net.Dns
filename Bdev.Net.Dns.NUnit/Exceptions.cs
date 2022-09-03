@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using Bdev.Net.Dns.Exceptions;
 using NUnit.Framework;
 
 namespace Bdev.Net.Dns.NUnit
@@ -11,6 +12,15 @@ namespace Bdev.Net.Dns.NUnit
     public class Exceptions
     {
         // --------------------------   
+
+        [Test]
+        [ExpectedException(typeof(NoResponseException))]
+        public void BadDnsServerShouldFail()
+        {
+            var request = new Request();
+            request.AddQuestion(new Question("bisoftware.com", DnsType.ANAME));
+            var resolved = Resolver.Lookup(request, IPAddress.Parse("127.0.0.1"), false);
+        }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -79,7 +89,7 @@ namespace Bdev.Net.Dns.NUnit
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void NewQuestionBadType()
         {
-            _ = new Question("codeproject.com", (DnsType) 1999);
+            _ = new Question("codeproject.com", (DnsType)1999);
         }
 
         [Test]

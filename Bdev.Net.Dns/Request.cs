@@ -40,6 +40,11 @@ namespace Bdev.Net.Dns
 
         }
 
+        public static Request Question(Question question)
+        {
+            return new Request().WithQuestion(question);
+        }
+
         public Request WithQuestion(Question question)
         {
             AddQuestion(question);
