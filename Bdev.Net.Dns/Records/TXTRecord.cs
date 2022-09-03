@@ -29,10 +29,7 @@ namespace Bdev.Net.Dns.Records
             Length = sb.Length;
         }
 
-        public override string ToString()
-        {
-            return $"{Value}";
-        }
+        public override string ToString() => Value;
     }
 
     public class CNameRecord : RecordBase
@@ -44,9 +41,6 @@ namespace Bdev.Net.Dns.Records
             Value = pointer.ReadDomain();
         }
 
-        public override string ToString()
-        {
-            return $"{Value}";
-        }
+        public override string ToString() => Value;
     }
 }
