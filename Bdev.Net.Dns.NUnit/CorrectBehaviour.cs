@@ -15,6 +15,15 @@ namespace Bdev.Net.Dns.NUnit
     [TestFixture]
     public class CorrectBehaviour
     {
+        private static object[] _dnsServersTable =
+        {
+            new object[] { "1.1.1.1", "1.0.0.1" },
+            new object[] { "208.67.222.222", "208.67.220.220" },
+            new object[] { "8.8.8.8", "8.8.4.4" },
+            new object[] { "9.9.9.9", "149.112.112.112" },
+            new object[] { "8.8.4.4", "1.1.1.1" }
+        };
+
         [TestCase("mercedes-benz.com")]
         [TestCase("Google.com")]
         [TestCase("ibm.com")]
@@ -25,27 +34,27 @@ namespace Bdev.Net.Dns.NUnit
             Console.WriteLine(string.Join(Environment.NewLine, res.Select(s => s.IPAddress)));
         }
 
-        [Test]
-        public void CompareTwoRecords()
+        [TestCaseSource(nameof(_dnsServersTable))]
+        public void CompareTwoRecords(string firstDns, string secondDns)
         {
             var request = new Request();
             request.AddQuestion(new Question("google.com", DnsType.ANAME));
 
-            var first = Resolver.Lookup(request, IPAddress.Parse("1.1.1.1")).Answers.OrderBy(o => o.Record).First();
-            var second = Resolver.Lookup(request, IPAddress.Parse("1.0.0.1")).Answers.OrderBy(o => o.Record).First();
+            var first = Resolver.Lookup(request, IPAddress.Parse(firstDns)).Answers.OrderBy(o => o.Record).First();
+            var second = Resolver.Lookup(request, IPAddress.Parse(secondDns)).Answers.OrderBy(o => o.Record).First();
             Assert.True(first.Equals(second));
         }
 
         [Test]
         public void CompareTwoRecordsOneDefault()
         {
-            var request = new Request {RecursionDesired = true};
+            var request = new Request { RecursionDesired = true };
             const string value = "google.com";
             request.AddQuestion(new Question(value, DnsType.ANAME));
 
             var firstAnswers = Resolver.Lookup(value).Answers;
             var first = firstAnswers.OrderBy(o => o.Record).First();
-            var secondAnswers = Resolver.Lookup(request, IPAddress.Parse("192.168.3.1")).Answers;
+            var secondAnswers = Resolver.Lookup(request, IPAddress.Parse("1.1.1.1")).Answers;
             var second = secondAnswers.OrderBy(o => o.Record).First();
             Assert.True(first.Equals(second));
         }
@@ -53,11 +62,15 @@ namespace Bdev.Net.Dns.NUnit
         [Test]
         public void TextRecordsMustExist()
         {
-            var result = Resolver.Lookup(new Request { RecursionDesired = true }.WithQuestion(new Question("test.txt.bisoftware.com", DnsType.TXT)));
+            var result =
+                Resolver.Lookup(
+                    new Request { RecursionDesired = true }.WithQuestion(new Question("test.txt.bisoftware.com",
+                        DnsType.TXT)));
             var l = DnsServers.Resolve<TXTRecord>("test.txt.bisoftware.com");
-            var list = result.Answers.Select(s => s.Record).OfType<TXTRecord>().Select(s => s.Value).OrderBy(o=>o).ToList();
-            Assert.True(result.Answers.Length>0);
-            Assert.IsTrue(list.SequenceEqual(l.Select(s=>s.Value).OrderBy(o => o).ToList()));
+            var list = result.Answers.Select(s => s.Record).OfType<TXTRecord>().Select(s => s.Value).OrderBy(o => o)
+                .ToList();
+            Assert.True(result.Answers.Length > 0);
+            Assert.IsTrue(list.SequenceEqual(l.Select(s => s.Value).OrderBy(o => o).ToList()));
         }
 
         [Test]
