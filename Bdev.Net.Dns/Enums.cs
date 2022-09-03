@@ -18,20 +18,20 @@ namespace Bdev.Net.Dns
     /// </summary>
     public enum DnsType
     {
-        None = 0, //INVALID
-        A = 1, //host address
-        ANAME = 1, //host address
-        NS = 2, //authoritative name server
-        MD = 3, //mail destination - obsolete, use MX
-        MF = 4, //mail forwarder -  obsolete, use MX
-        CNAME = 5, //canonical name for an alias
-        SOA = 6, //start of a zone authority
-        WKS = 11, //well known service description
-        PTR = 12, //domain name pointer
-        HINFO = 13, //host information
-        MINFO = 14, //mailbox or mail list information
-        MX = 15, //mail exchange
-        TXT = 16 //text strings
+        None = 0,   // INVALID
+        A = 1,      // host address
+        ANAME = A,  // host address
+        NS = 2,     // authoritative name server
+        MD = 3,     // mail destination - obsolete, use MX
+        MF = 4,     // mail forwarder - obsolete, use MX
+        CNAME = 5,  // canonical name for an alias
+        SOA = 6,    // start of a zone authority
+        WKS = 11,   // well known service description
+        PTR = 12,   // domain name pointer
+        HINFO = 13, // host information
+        MINFO = 14, // mailbox or mail list information
+        MX = 15,    // mail exchange
+        TXT = 16    // text strings
     }
 
     /// <summary>
@@ -41,11 +41,11 @@ namespace Bdev.Net.Dns
     /// </summary>
     public enum DnsClass
     {
-        None = 0, //INVALID
-        IN = 1, //Internet
-        CS = 2, //OBSOLETE
-        CH = 3, //CHAOS
-        HS = 4 //HESIOD
+        None = 0, // INVALID
+        IN = 1,   // Internet
+        CS = 2,   // OBSOLETE
+        CH = 3,   // CHAOS
+        HS = 4    // HESIOD
     }
 
     /// <summary>
