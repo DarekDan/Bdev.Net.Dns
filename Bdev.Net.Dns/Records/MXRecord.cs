@@ -60,7 +60,7 @@ namespace Bdev.Net.Dns.Records
             if (mxOther.Preference > Preference) return -1;
 
             // order mail servers of same preference by name
-            return -string.Compare(mxOther.DomainName, DomainName, StringComparison.Ordinal);
+            return -string.CompareOrdinal(mxOther.DomainName, DomainName);
         }
 
         public override bool Equals(object obj)
