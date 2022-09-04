@@ -125,10 +125,7 @@ namespace Bdev.Net.Dns
             foreach (var split in splits)
             {
                 data.WriteByte((byte)split.Length);
-                foreach (var c in split.ToCharArray())
-                {
-                    data.WriteByte((byte)c);
-                }
+                foreach (var c in split) data.WriteByte((byte)c);
             }
             // end of domain names
             data.WriteByte(0);
