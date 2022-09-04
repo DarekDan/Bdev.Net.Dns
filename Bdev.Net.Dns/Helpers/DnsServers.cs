@@ -14,27 +14,23 @@ namespace Bdev.Net.Dns.Helpers
     {
         public static IEnumerable<IPAddress> IP4 => All.Where(w => w.AddressFamily.Equals(AddressFamily.InterNetwork));
 
-        public static IEnumerable<IPAddress> IP6 =>
-            All.Where(w => w.AddressFamily.Equals(AddressFamily.InterNetworkV6));
+        public static IEnumerable<IPAddress> IP6 => All.Where(w => w.AddressFamily.Equals(AddressFamily.InterNetworkV6));
 
         public static IEnumerable<IPAddress> All => GetAliveNetworks()
             .SelectMany(s1 => s1.GetIPProperties().DnsAddresses)
             .Distinct();
 
-        private static IEnumerable<NetworkInterface> GetAliveNetworks()
-        {
-            return NetworkInterface.GetAllNetworkInterfaces()
-                .Where(w1 => w1.OperationalStatus.Equals(OperationalStatus.Up));
-        }
+        private static IEnumerable<NetworkInterface> GetAliveNetworks() => NetworkInterface.GetAllNetworkInterfaces()
+            .Where(w1 => w1.OperationalStatus.Equals(OperationalStatus.Up));
 
-        private static readonly Dictionary<Type,DnsType> RecordTypeToDnsTypeMapper = new Dictionary<Type, DnsType>()
+        private static readonly Dictionary<Type, DnsType> RecordTypeToDnsTypeMapper = new()
         {
-            {typeof(ANameRecord), DnsType.A},
-            {typeof(CNameRecord), DnsType.CNAME},
-            {typeof(MXRecord), DnsType.MX},
-            {typeof(NSRecord), DnsType.NS},
-            {typeof(SoaRecord), DnsType.SOA},
-            {typeof(TXTRecord), DnsType.TXT}
+            { typeof(ANameRecord), DnsType.A },
+            { typeof(CNameRecord), DnsType.CNAME },
+            { typeof(MXRecord), DnsType.MX },
+            { typeof(NSRecord), DnsType.NS },
+            { typeof(SoaRecord), DnsType.SOA },
+            { typeof(TXTRecord), DnsType.TXT }
         };
 
         public static IEnumerable<ANameRecord> Resolve(string name)

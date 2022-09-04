@@ -33,14 +33,9 @@ namespace Bdev.Net.Dns.Records
 
         // expose these fields public read/only
         public string DomainName { get; }
-
         public int Preference { get; }
 
-        public override string ToString()
-        {
-            return $"Mail Server = {DomainName}, Preference = {Preference}";
-        }
-
+        public override string ToString() => $"Mail Server = {DomainName}, Preference = {Preference}";
 
         #region IComparable Members
 
@@ -95,15 +90,8 @@ namespace Bdev.Net.Dns.Records
             return false;
         }
 
-        public static bool operator ==(MXRecord record1, MXRecord record2)
-        {
-            return EqualityComparer<MXRecord>.Default.Equals(record1, record2);
-        }
-
-        public static bool operator !=(MXRecord record1, MXRecord record2)
-        {
-            return !(record1 == record2);
-        }
+        public static bool operator ==(MXRecord record1, MXRecord record2) => EqualityComparer<MXRecord>.Default.Equals(record1, record2);
+        public static bool operator !=(MXRecord record1, MXRecord record2) => !(record1 == record2);
 
         #endregion
     }

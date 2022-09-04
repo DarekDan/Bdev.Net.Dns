@@ -33,83 +33,62 @@ namespace Bdev.Net.Dns
         }
 
         /// <summary>
-        ///     Shallow copy function
+        ///     Shallow copy function.
         /// </summary>
-        /// <returns></returns>
-        public Pointer Copy()
-        {
-            return new Pointer(_message, _position);
-        }
+        /// <returns>Pointer.</returns>
+        public Pointer Copy() => new(_message, _position);
 
         /// <summary>
-        ///     Adjust the pointers position within the message
+        ///     Adjust the pointers position within the message.
         /// </summary>
-        /// <param name="position">new position in the message</param>
-        public void SetPosition(int position)
-        {
-            _position = position;
-        }
+        /// <param name="position">new position in the message.</param>
+        public void SetPosition(int position) => _position = position;
 
         /// <summary>
-        ///     Gets the cursor position
+        ///     Gets the cursor position.
         /// </summary>
-        public int Position { get { return _position; } }
+        public int Position => _position;
 
         /// <summary>
-        ///     Overloads the + operator to allow advancing the pointer by so many bytes
+        ///     Overloads the + operator to allow advancing the pointer by so many bytes.
         /// </summary>
-        /// <param name="pointer">the initial pointer</param>
-        /// <param name="offset">the offset to add to the pointer in bytes</param>
-        /// <returns>a reference to a new pointer moved forward by offset bytes</returns>
+        /// <param name="pointer">the initial pointer.</param>
+        /// <param name="offset">the offset to add to the pointer in bytes.</param>
+        /// <returns>a reference to a new pointer moved forward by offset bytes.</returns>
         public static Pointer operator +(Pointer pointer, int offset)
         {
             return new Pointer(pointer._message, pointer._position + offset);
         }
 
         /// <summary>
-        ///     Reads a single byte at the current pointer, does not advance pointer
+        ///     Reads a single byte at the current pointer, does not advance pointer.
         /// </summary>
-        /// <returns>the byte at the pointer</returns>
-        public byte Peek()
-        {
-            return _message[_position];
-        }
+        /// <returns>the byte at the pointer.</returns>
+        public byte Peek() => _message[_position];
 
         /// <summary>
-        ///     Reads a single byte at the current pointer, advancing pointer
+        ///     Reads a single byte at the current pointer, advancing pointer.
         /// </summary>
-        /// <returns>the byte at the pointer</returns>
-        public byte ReadByte()
-        {
-            return _message[_position++];
-        }
+        /// <returns>the byte at the pointer.</returns>
+        public byte ReadByte() => _message[_position++];
 
         /// <summary>
-        ///     Reads two bytes to form a short at the current pointer, advancing pointer
+        ///     Reads two bytes to form a short at the current pointer, advancing pointer.
         /// </summary>
-        /// <returns>the byte at the pointer</returns>
-        public short ReadShort()
-        {
-            return (short) ((ReadByte() << 8) | ReadByte());
-        }
+        /// <returns>the byte at the pointer.</returns>
+        public short ReadShort() => (short)((ReadByte() << 8) | ReadByte());
 
         /// <summary>
-        ///     Reads four bytes to form a int at the current pointer, advancing pointer
+        ///     Reads four bytes to form a int at the current pointer, advancing pointer.
         /// </summary>
-        /// <returns>the byte at the pointer</returns>
-        public int ReadInt()
-        {
-            return (ReadByte() << 24 | ReadByte() << 16 | ReadByte() << 8 | ReadByte());
-        }
+        /// <returns>the byte at the pointer.</returns>
+        public int ReadInt() => ReadByte() << 24 | ReadByte() << 16 | ReadByte() << 8 | ReadByte();
 
         /// <summary>
-        ///     Reads a single byte as a char at the current pointer, advancing pointer
+        ///     Reads a single byte as a char at the current pointer, advancing pointer.
         /// </summary>
-        /// <returns>the byte at the pointer</returns>
-        public char ReadChar()
-        {
-            return (char) ReadByte();
-        }
+        /// <returns>the byte at the pointer.</returns>
+        public char ReadChar() => (char)ReadByte();
 
         /// <summary>
         ///     Reads a domain name from the byte array. The method by which this works is described
@@ -160,15 +139,8 @@ namespace Bdev.Net.Dns
             return domain.ToString();
         }
 
-        public void Seek(int offset)
-        {
-            _position += offset;
-        }
+        public void Seek(int offset) => _position += offset;
 
-        public override string ToString()
-        {
-            return string.Concat(_message.Select(s => $"{s:x2}"));
-        }
-
+        public override string ToString() => string.Concat(_message.Select(s => $"{s:x2}"));
     }
 }

@@ -38,17 +38,11 @@ namespace Bdev.Net.Dns.Records
 
         // expose these fields public read/only
         public string PrimaryNameServer { get; }
-
         public string ResponsibleMailAddress { get; }
-
         public int Serial { get; }
-
         public int Refresh { get; }
-
         public int Retry { get; }
-
         public int Expire { get; }
-
         public int DefaultTtl { get; }
 
         public bool Equals(SoaRecord other)
@@ -81,20 +75,17 @@ namespace Bdev.Net.Dns.Records
             return hashCode;
         }
 
-        public override string ToString()
-        {
-            return
-                $"primary name server = {PrimaryNameServer}\nresponsible mail addr = {ResponsibleMailAddress}\nserial  = {Serial}\nrefresh = {Refresh}\nretry   = {Retry}\nexpire  = {Expire}\ndefault TTL = {DefaultTtl}";
-        }
+        public override string ToString() => $"""
+            primary name server = {PrimaryNameServer}
+            responsible mail addr = {ResponsibleMailAddress}
+            serial  = {Serial}
+            refresh = {Refresh}
+            retry   = {Retry}
+            expire  = {Expire}
+            default TTL = {DefaultTtl}
+            """;
 
-        public static bool operator ==(SoaRecord record1, SoaRecord record2)
-        {
-            return EqualityComparer<SoaRecord>.Default.Equals(record1, record2);
-        }
-
-        public static bool operator !=(SoaRecord record1, SoaRecord record2)
-        {
-            return !(record1 == record2);
-        }
+        public static bool operator ==(SoaRecord record1, SoaRecord record2) => EqualityComparer<SoaRecord>.Default.Equals(record1, record2);
+        public static bool operator !=(SoaRecord record1, SoaRecord record2) => !(record1 == record2);
     }
 }

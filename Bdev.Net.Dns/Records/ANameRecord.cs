@@ -38,36 +38,14 @@ namespace Bdev.Net.Dns.Records
 
         // expose this IP address r/o to the world
         public IPAddress IPAddress { get; }
- 
-        public bool Equals(ANameRecord other)
-        {
-            return other != null &&
-                   EqualityComparer<IPAddress>.Default.Equals(IPAddress, other.IPAddress);
-        }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ANameRecord);
-        }
+        public bool Equals(ANameRecord other) => other is not null && EqualityComparer<IPAddress>.Default.Equals(IPAddress, other.IPAddress);
+        public override bool Equals(object obj) => Equals(obj as ANameRecord);
+        public override int GetHashCode() => -2138420020 + EqualityComparer<IPAddress>.Default.GetHashCode(IPAddress);
 
-        public override int GetHashCode()
-        {
-            return -2138420020 + EqualityComparer<IPAddress>.Default.GetHashCode(IPAddress);
-        }
+        public override string ToString() => IPAddress.ToString();
 
-        public override string ToString()
-        {
-            return IPAddress.ToString();
-        }
-
-        public static bool operator ==(ANameRecord record1, ANameRecord record2)
-        {
-            return EqualityComparer<ANameRecord>.Default.Equals(record1, record2);
-        }
-
-        public static bool operator !=(ANameRecord record1, ANameRecord record2)
-        {
-            return !(record1 == record2);
-        }
+        public static bool operator ==(ANameRecord record1, ANameRecord record2) => EqualityComparer<ANameRecord>.Default.Equals(record1, record2);
+        public static bool operator !=(ANameRecord record1, ANameRecord record2) => !(record1 == record2);
     }
 }
