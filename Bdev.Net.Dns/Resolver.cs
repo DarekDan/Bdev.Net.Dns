@@ -96,7 +96,7 @@ namespace Bdev.Net.Dns
             // populate a response object
             var response = new Response(responseMessage);
 
-            if(response.MessageTruncated && tcpFallback)
+            if (response.MessageTruncated && tcpFallback)
             {
                 // message is truncated, retry over TCP
                 responseMessage = TcpTransfer(server, requestMessage);
@@ -127,7 +127,7 @@ namespace Bdev.Net.Dns
             // try repeatedly in case of failure
             while (attempts <= UdpRetryAttempts)
             {
-                var uniqueId = DateTime.Now.Ticks;
+                var uniqueId = DateTime.UtcNow.Ticks;
                 // firstly, uniquely mark this request with an id
                 unchecked
                 {
