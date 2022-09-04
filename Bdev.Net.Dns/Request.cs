@@ -72,45 +72,45 @@ namespace Bdev.Net.Dns
         /// <returns>byte[].</returns>
         public byte[] GetMessage()
         {
-            using (var data = new MemoryStream())
+            using var data = new MemoryStream();
+
+            // the id of this message - this will be filled in by the resolver
+            data.WriteByte(0);
+            data.WriteByte(0);
+
+            // write the bit fields
+            data.WriteByte((byte)(((byte)Opcode << 3) | (RecursionDesired ? 0x01 : 0)));
+            data.WriteByte(0);
+
+            // tell it how many questions
+            unchecked
             {
-                // the id of this message - this will be filled in by the resolver
-                data.WriteByte(0);
-                data.WriteByte(0);
+                data.WriteByte((byte)(_questions.Count >> 8));
+                data.WriteByte((byte)_questions.Count);
+            }
 
-                // write the bit fields
-                data.WriteByte((byte) (((byte) Opcode << 3) | (RecursionDesired ? 0x01 : 0)));
-                data.WriteByte(0);
+            // the are no requests, name servers or additional records in a request
+            data.WriteByte(0);
+            data.WriteByte(0);
+            data.WriteByte(0);
+            data.WriteByte(0);
+            data.WriteByte(0);
+            data.WriteByte(0);
 
-                // tell it how many questions
+            // that's the header done - now add the questions
+            foreach (var question in _questions)
+            {
+                AddDomain(data, question.Domain);
                 unchecked
                 {
-                    data.WriteByte((byte) (_questions.Count >> 8));
-                    data.WriteByte((byte) _questions.Count);
+                    data.WriteByte(0);
+                    data.WriteByte((byte)question.Type);
+                    data.WriteByte(0);
+                    data.WriteByte((byte)question.Class);
                 }
-
-                // the are no requests, name servers or additional records in a request
-                data.WriteByte(0);
-                data.WriteByte(0);
-                data.WriteByte(0);
-                data.WriteByte(0);
-                data.WriteByte(0);
-                data.WriteByte(0);
-
-                // that's the header done - now add the questions
-                foreach (var question in _questions)
-                {
-                    AddDomain(data, question.Domain);
-                    unchecked
-                    {
-                        data.WriteByte(0);
-                        data.WriteByte((byte) question.Type);
-                        data.WriteByte(0);
-                        data.WriteByte((byte) question.Class);
-                    }
-                }
-                return data.ToArray();
             }
+
+            return data.ToArray();
         }
 
         /// <summary>
