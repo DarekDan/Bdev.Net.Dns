@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -28,11 +28,11 @@ namespace Bdev.Net.Dns
 
         /// <summary>
         ///     Shorthand form to make MX querying easier, essentially wraps up the retrieval
-        ///     of the MX records, and sorts them by preference
+        ///     of the MX records, and sorts them by preference.
         /// </summary>
-        /// <param name="domain">domain name to retrieve MX RRs for</param>
-        /// <param name="dnsServer">the server we're going to ask</param>
-        /// <returns>An array of MXRecords</returns>
+        /// <param name="domain">domain name to retrieve MX RRs for.</param>
+        /// <param name="dnsServer">the server we're going to ask.</param>
+        /// <returns>An array of MXRecords.</returns>
         public static MXRecord[] MXLookup(string domain, IPAddress dnsServer)
         {
             // check the inputs
@@ -64,17 +64,18 @@ namespace Bdev.Net.Dns
         }
 
         /// <summary>
+        /// <para>
         ///     The principal look up function, which sends a request message to the given
         ///     DNS server and collects a response. This implementation re-sends the message
-        ///     via UDP up to two times in the event of no response/packet loss
-        ///     
+        ///     via UDP up to two times in the event of no response/packet loss.</para>
+        /// <para>
         ///     If the message is truncated and tcpFallback is set it will attempt to retry
-        ///     via DNS over TCP.
+        ///     via DNS over TCP.</para>
         /// </summary>
-        /// <param name="request">The logical request to send to the server</param>
-        /// <param name="dnsServer">The IP address of the DNS server we are querying</param>
-        /// <param name="tcpFallback">Whether it should fall back to TCP if the message is truncated</param>
-        /// <returns>The logical response from the DNS server or null if no response</returns>
+        /// <param name="request">The logical request to send to the server.</param>
+        /// <param name="dnsServer">The IP address of the DNS server we are querying.</param>
+        /// <param name="tcpFallback">Whether it should fall back to TCP if the message is truncated.</param>
+        /// <returns>The logical response from the DNS server or null if no response.</returns>
         public static Response Lookup(Request request, IPAddress dnsServer, bool tcpFallback = true)
         {
             // check the inputs
@@ -105,8 +106,6 @@ namespace Bdev.Net.Dns
 
             return response;
         }
-
-
 
         public static Response Lookup(string value, DnsType type = DnsType.ANAME, IPAddress dnsServer = null)
         {

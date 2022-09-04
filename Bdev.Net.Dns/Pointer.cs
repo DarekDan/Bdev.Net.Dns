@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -17,7 +17,7 @@ namespace Bdev.Net.Dns
     ///     Logical representation of a pointer, but in fact a byte array reference and a position in it. This
     ///     is used to read logical units (bytes, shorts, integers, domain names etc.) from a byte array, keeping
     ///     the pointer updated and pointing to the next record. This type of Pointer can be considered the logical
-    ///     equivalent of an (unsigned char*) in C++
+    ///     equivalent of an (unsigned char*) in C++.
     /// </summary>
     internal class Pointer
     {
@@ -122,7 +122,7 @@ namespace Bdev.Net.Dns
         ///     [2]  "uk"
         ///     [1]  0 (NULL)
         /// </summary>
-        /// <returns>the byte at the pointer</returns>
+        /// <returns>the byte at the pointer.</returns>
         public string ReadDomain()
         {
             var domain = new StringBuilder();

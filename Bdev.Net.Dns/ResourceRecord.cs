@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -14,15 +14,15 @@ using Bdev.Net.Dns.Records;
 namespace Bdev.Net.Dns
 {
     /// <summary>
-    ///     Represents a Resource Record as detailed in RFC1035 4.1.3
+    ///     Represents a Resource Record as detailed in RFC1035 4.1.3.
     /// </summary>
     [Serializable]
     public class ResourceRecord : IEquatable<ResourceRecord>
     {
         /// <summary>
-        ///     Construct a resource record from a pointer to a byte array
+        ///     Construct a resource record from a pointer to a byte array.
         /// </summary>
-        /// <param name="pointer">the position in the byte array of the record</param>
+        /// <param name="pointer">the position in the byte array of the record.</param>
         internal ResourceRecord(Pointer pointer)
         {
             // extract the domain, question type, question class and Ttl

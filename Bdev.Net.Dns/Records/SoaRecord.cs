@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -14,16 +14,16 @@ using System.Collections.Generic;
 namespace Bdev.Net.Dns.Records
 {
     /// <summary>
-    ///     An SOA Resource Record (RR) (RFC1035 3.3.13)
+    ///     An SOA Resource Record (RR) (RFC1035 3.3.13).
     /// </summary>
     public class SoaRecord : RecordBase, IEquatable<SoaRecord>
     {
         // these fields constitute an SOA RR
 
         /// <summary>
-        ///     Constructs an SOA record by reading bytes from a return message
+        ///     Constructs an SOA record by reading bytes from a return message.
         /// </summary>
-        /// <param name="pointer">A logical pointer to the bytes holding the record</param>
+        /// <param name="pointer">A logical pointer to the bytes holding the record.</param>
         internal SoaRecord(Pointer pointer)
         {
             // read all fields RFC1035 3.3.13

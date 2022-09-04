@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -14,16 +14,16 @@ using Bdev.Net.Dns.Exceptions;
 namespace Bdev.Net.Dns
 {
     /// <summary>
-    ///     A Response is a logical representation of the byte data returned from a DNS query
+    ///     A Response is a logical representation of the byte data returned from a DNS query.
     /// </summary>
     public class Response
     {
         // these are fields we're interested in from the message
 
         /// <summary>
-        ///     Construct a Response object from the supplied byte array
+        ///     Construct a Response object from the supplied byte array.
         /// </summary>
-        /// <param name="message">a byte array returned from a DNS server query</param>
+        /// <param name="message">a byte array returned from a DNS server query.</param>
         internal Response(byte[] message)
         {
             // the bit flags are in bytes 2 and 3
@@ -89,11 +89,11 @@ namespace Bdev.Net.Dns
 
         /// <summary>
         ///     Convert 2 bytes to a short. It would have been nice to use BitConverter for this,
-        ///     it however reads the bytes in the wrong order (at least on Windows)
+        ///     it however reads the bytes in the wrong order (at least on Windows).
         /// </summary>
-        /// <param name="message">byte array to look in</param>
-        /// <param name="position">position to look at</param>
-        /// <returns>short representation of the two bytes</returns>
+        /// <param name="message">byte array to look in.</param>
+        /// <param name="position">position to look at.</param>
+        /// <returns>short representation of the two bytes.</returns>
         private static short GetShort(byte[] message, int position)
         {
             return (short) ((message[position] << 8) | message[position + 1]);

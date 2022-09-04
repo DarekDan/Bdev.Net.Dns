@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -14,7 +14,7 @@ using System.Collections.Generic;
 namespace Bdev.Net.Dns.Records
 {
     /// <summary>
-    ///     An MX (Mail Exchanger) Resource Record (RR) (RFC1035 3.3.9)
+    ///     An MX (Mail Exchanger) Resource Record (RR) (RFC1035 3.3.9).
     /// </summary>
     [Serializable]
     public class MXRecord : RecordBase, IComparable, IEquatable<MXRecord>
@@ -22,9 +22,9 @@ namespace Bdev.Net.Dns.Records
         // an MX record is a domain name and an integer preference
 
         /// <summary>
-        ///     Constructs an MX record by reading bytes from a return message
+        ///     Constructs an MX record by reading bytes from a return message.
         /// </summary>
-        /// <param name="pointer">A logical pointer to the bytes holding the record</param>
+        /// <param name="pointer">A logical pointer to the bytes holding the record.</param>
         internal MXRecord(Pointer pointer)
         {
             Preference = pointer.ReadShort();
@@ -47,10 +47,10 @@ namespace Bdev.Net.Dns.Records
         /// <inheritdoc />
         /// <summary>
         ///     Implements the IComparable interface so that we can sort the MX records by their
-        ///     lowest preference
+        ///     lowest preference.
         /// </summary>
-        /// <param name="other">the other MxRecord to compare against</param>
-        /// <returns>1, 0, -1</returns>
+        /// <param name="other">the other MxRecord to compare against.</param>
+        /// <returns>1, 0, -1 (preference greater, equal or less than other).</returns>
         public int CompareTo(object other)
         {
             var mxOther = (MXRecord) other;

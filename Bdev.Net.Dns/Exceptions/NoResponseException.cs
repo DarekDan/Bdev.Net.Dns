@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -14,7 +14,7 @@ using System.Runtime.Serialization;
 namespace Bdev.Net.Dns.Exceptions
 {
     /// <summary>
-    ///     Thrown when the server does not respond
+    ///     Thrown when the server does not respond.
     /// </summary>
     [Serializable]
     public class NoResponseException : SystemException

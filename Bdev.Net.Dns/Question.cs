@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -16,7 +16,7 @@ namespace Bdev.Net.Dns
     /// <summary>
     ///     Represents a DNS Question, comprising of a domain to query, the type of query (QTYPE) and the class
     ///     of query (QCLASS). This class is an encapsulation of these three things, and extensive argument checking
-    ///     in the constructor as this may well be created outside the assembly (public protection)
+    ///     in the constructor as this may well be created outside the assembly (public protection).
     /// </summary>
     [Serializable]
     public class Question
@@ -24,11 +24,11 @@ namespace Bdev.Net.Dns
         // A question is these three things combined
 
         /// <summary>
-        ///     Construct the question from parameters, checking for safety
+        ///     Construct the question from parameters, checking for safety.
         /// </summary>
-        /// <param name="domain">the domain name to query eg. bigdevelopments.co.uk</param>
-        /// <param name="dnsType">the QTYPE of query eg. DnsType.MX</param>
-        /// <param name="dnsClass">the CLASS of query, invariably DnsClass.IN</param>
+        /// <param name="domain">the domain name to query eg. 'bigdevelopments.co.uk'.</param>
+        /// <param name="dnsType">the QTYPE of query eg. 'DnsType.MX'.</param>
+        /// <param name="dnsClass">the CLASS of query, invariably 'DnsClass.IN'.</param>
         public Question(string domain, DnsType dnsType, DnsClass dnsClass = DnsClass.IN)
         {
             // check the input parameters
@@ -56,9 +56,9 @@ namespace Bdev.Net.Dns
 
         /// <summary>
         ///     Construct the question reading from a DNS Server response. Consult RFC1035 4.1.2
-        ///     for byte-wise details of this structure in byte array form
+        ///     for byte-wise details of this structure in byte array form.
         /// </summary>
-        /// <param name="pointer">a logical pointer to the Question in byte array form</param>
+        /// <param name="pointer">a logical pointer to the Question in byte array form.</param>
         internal Question(Pointer pointer)
         {
             // extract from the message

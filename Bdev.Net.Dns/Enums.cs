@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -14,7 +14,7 @@ namespace Bdev.Net.Dns
     /// <summary>
     ///     The DNS TYPE (RFC1035 3.2.2/3) - 4 types are currently supported. Also, I know that this
     ///     enumeration goes against naming guidelines, but I have done this as an ANAME is most
-    ///     definitely an 'ANAME' and not an 'Aname'. See also https://tools.ietf.org/html/rfc1035#section-3.2.2
+    ///     definitely an 'ANAME' and not an 'Aname'. See also https://tools.ietf.org/html/rfc1035#section-3.2.2.
     /// </summary>
     public enum DnsType
     {
@@ -37,7 +37,7 @@ namespace Bdev.Net.Dns
     /// <summary>
     ///     The DNS CLASS (RFC1035 3.2.4/5)
     ///     Internet will be the one we'll be using (IN), the others are for completeness
-    ///     https://tools.ietf.org/html/rfc1035#section-3.2.4
+    ///     https://tools.ietf.org/html/rfc1035#section-3.2.4.
     /// </summary>
     public enum DnsClass
     {
@@ -49,7 +49,7 @@ namespace Bdev.Net.Dns
     }
 
     /// <summary>
-    ///     (RFC1035 4.1.1) These are the return codes the server can send back
+    ///     (RFC1035 4.1.1) These are the return codes the server can send back.
     /// </summary>
     public enum ReturnCode
     {
@@ -63,7 +63,7 @@ namespace Bdev.Net.Dns
     }
 
     /// <summary>
-    ///     (RFC1035 4.1.1) These are the Query Types which apply to all questions in a request
+    ///     (RFC1035 4.1.1) These are the Query Types which apply to all questions in a request.
     /// </summary>
     public enum Opcode
     {

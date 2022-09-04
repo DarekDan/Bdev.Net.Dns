@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -14,7 +14,7 @@ using System.Collections.Generic;
 namespace Bdev.Net.Dns.Records
 {
     /// <summary>
-    ///     A Name Server Resource Record (RR) (RFC1035 3.3.11)
+    ///     A Name Server Resource Record (RR) (RFC1035 3.3.11).
     /// </summary>
     public class NSRecord : RecordBase, IEquatable<NSRecord>
     {
@@ -23,9 +23,9 @@ namespace Bdev.Net.Dns.Records
         // expose this domain name address r/o to the world
 
         /// <summary>
-        ///     Constructs a NS record by reading bytes from a return message
+        ///     Constructs a NS record by reading bytes from a return message.
         /// </summary>
-        /// <param name="pointer">A logical pointer to the bytes holding the record</param>
+        /// <param name="pointer">A logical pointer to the bytes holding the record.</param>
         internal NSRecord(Pointer pointer)
         {
             DomainName = pointer.ReadDomain();
