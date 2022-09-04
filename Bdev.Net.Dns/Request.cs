@@ -4,7 +4,7 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
 
@@ -25,18 +25,17 @@ namespace Bdev.Net.Dns
     {
         // A request is a series of questions, an 'opcode' (RFC1035 4.1.1) and a flag to denote
         // whether recursion is required (don't ask..., just assume it is)
-        private readonly List<Question> _questions = new List<Question>();
+        private readonly List<Question> _questions = new();
 
         /// <summary>
         ///     Construct this object with the default values and a List to hold
-        ///     the questions as they are added
+        ///     the questions as they are added.
         /// </summary>
         public Request()
         {
             // default for a request is that recursion is desired and using standard query
             RecursionDesired = true;
             Opcode = Opcode.StandardQuery;
-
         }
 
         public static Request Question(Question question)
@@ -57,7 +56,7 @@ namespace Bdev.Net.Dns
         /// <summary>
         ///     Adds a question to the request to be sent to the DNS server.
         /// </summary>
-        /// <param name="question">The question to add to the request</param>
+        /// <param name="question">The question to add to the request.</param>
         public void AddQuestion(Question question)
         {
             // abandon if null
@@ -68,9 +67,9 @@ namespace Bdev.Net.Dns
         }
 
         /// <summary>
-        ///     Convert this request into a byte array ready to send direct to the DNS server
+        ///     Convert this request into a byte array ready to send direct to the DNS server.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>byte[].</returns>
         public byte[] GetMessage()
         {
             using (var data = new MemoryStream())
@@ -99,7 +98,7 @@ namespace Bdev.Net.Dns
                 data.WriteByte(0);
 
                 // that's the header done - now add the questions
-                foreach (Question question in _questions)
+                foreach (var question in _questions)
                 {
                     AddDomain(data, question.Domain);
                     unchecked
@@ -118,8 +117,8 @@ namespace Bdev.Net.Dns
         ///     Adds a domain name to the array of bytes. This implementation does not use
         ///     the domain name compression used in the class Pointer - maybe it should.
         /// </summary>
-        /// <param name="data">The memory stream to which add</param>
-        /// <param name="domainName">the domain name to encode and add to the array</param>
+        /// <param name="data">The memory stream to which add.</param>
+        /// <param name="domainName">the domain name to encode and add to the array.</param>
         private static void AddDomain(Stream data, string domainName)
         {
             var splits = domainName.Split('.');
