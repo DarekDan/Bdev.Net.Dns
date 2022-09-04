@@ -33,8 +33,8 @@ namespace Bdev.Net.Dns.Records
 
         public string DomainName { get; }
 
-        public bool Equals(NSRecord other) => other is not null && DomainName == other.DomainName;
-        public override bool Equals(object obj) => Equals(obj as NSRecord);
+        public bool Equals(NSRecord? other) => other is not null && DomainName == other.DomainName;
+        public override bool Equals(object? obj) => Equals(obj as NSRecord);
         public override int GetHashCode() => 1022487930 + EqualityComparer<string>.Default.GetHashCode(DomainName);
 
         public override string ToString() => DomainName;

@@ -66,19 +66,16 @@ namespace Bdev.Net.Dns
 
         // read only properties applicable for all records
         public string Domain { get; }
-
         public DnsType Type { get; }
-
         public DnsClass Class { get; }
-
         public int Ttl { get; }
+        public RecordBase? Record { get; } // TODO: Necessary? Set a default type!
 
-        public RecordBase Record { get; }
-
-        public bool Equals(ResourceRecord other)
+        public bool Equals(ResourceRecord? other)
         {
             return other is not null && Type.Equals(other.Type) && Class.Equals(other.Class) &&
                    Domain.Equals(other.Domain) &&
+                   Record is not null && // TODO: Necessary?
                    Record.Equals(other.Record);
         }
     }

@@ -46,29 +46,22 @@ namespace Bdev.Net.Dns.Records
         /// </summary>
         /// <param name="other">the other MxRecord to compare against.</param>
         /// <returns>1, 0, -1 (preference greater, equal or less than other).</returns>
-        public int CompareTo(object other)
+        public int CompareTo(object? other)
         {
-            var mxOther = (MXRecord) other;
+            var mxOther = other as MXRecord;
+
+            // TODO: Early return if other is null, what value or throw?
 
             // we want to be able to sort them by preference
-            if (mxOther.Preference < Preference) return 1;
-            if (mxOther.Preference > Preference) return -1;
+            if (mxOther?.Preference < Preference) return 1;
+            if (mxOther?.Preference > Preference) return -1;
 
             // order mail servers of same preference by name
-            return -string.CompareOrdinal(mxOther.DomainName, DomainName);
+            return -string.CompareOrdinal(mxOther?.DomainName, DomainName);
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as MXRecord);
-        }
-
-        public bool Equals(MXRecord other)
-        {
-            return other is not null &&
-                   DomainName == other.DomainName &&
-                   Preference == other.Preference;
-        }
+        public override bool Equals(object? obj) => Equals(obj as MXRecord);
+        public bool Equals(MXRecord? other) => other is not null && DomainName == other.DomainName && Preference == other.Preference;
 
         public override int GetHashCode()
         {

@@ -45,7 +45,7 @@ namespace Bdev.Net.Dns.Records
         public int Expire { get; }
         public int DefaultTtl { get; }
 
-        public bool Equals(SoaRecord other)
+        public bool Equals(SoaRecord? other)
         {
             return other is not null &&
                    PrimaryNameServer == other.PrimaryNameServer &&
@@ -57,10 +57,7 @@ namespace Bdev.Net.Dns.Records
                    DefaultTtl == other.DefaultTtl;
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as SoaRecord);
-        }
+        public override bool Equals(object? obj) => Equals(obj as SoaRecord);
 
         public override int GetHashCode()
         {

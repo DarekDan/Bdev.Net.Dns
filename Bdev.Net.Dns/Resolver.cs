@@ -33,7 +33,7 @@ namespace Bdev.Net.Dns
         /// <param name="domain">domain name to retrieve MX RRs for.</param>
         /// <param name="dnsServer">the server we're going to ask.</param>
         /// <returns>An array of MXRecords.</returns>
-        public static MXRecord[] MXLookup(string domain, IPAddress dnsServer)
+        public static MXRecord?[]? MXLookup(string domain, IPAddress dnsServer) // TODO: Safer to return empty array?
         {
             // check the inputs
             if (domain is null) throw new ArgumentNullException(nameof(domain));
@@ -49,16 +49,16 @@ namespace Bdev.Net.Dns
             var response = Lookup(request, dnsServer);
 
             // if we didn't get a response, then return null
-            if (response is null) return null;
+            if (response is null) return default; // null
 
             // create a expandable array of MX records
             var resourceRecords = response.Answers.Where(w => w.Record is MXRecord).Select(s => s.Record as MXRecord)
-                .OrderBy(o => o.Preference).ToArray();
+                .OrderBy(o => o?.Preference).ToArray();
 
             return resourceRecords;
         }
 
-        public static MXRecord[] MXLookup(string domain)
+        public static MXRecord?[]? MXLookup(string domain) // TODO: Safer to return empty array?
         {
             return MXLookup(domain, DnsServers.IP4.First());
         }
@@ -107,7 +107,7 @@ namespace Bdev.Net.Dns
             return response;
         }
 
-        public static Response Lookup(string value, DnsType type = DnsType.ANAME, IPAddress dnsServer = null)
+        public static Response Lookup(string value, DnsType type = DnsType.ANAME, IPAddress? dnsServer = null)
         {
             var request = new Request();
             request.AddQuestion(new Question(value, type));

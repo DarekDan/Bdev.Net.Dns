@@ -26,7 +26,8 @@
       1.0.8 Added support for CNAME
     </PackageReleaseNotes>    
     <PackageLicenseExpression>MIT</PackageLicenseExpression>    
-    <PackageIcon>dns_128_px.png</PackageIcon>
+    <PackageIcon>dns_128_px.png</PackageIcon>    
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <!--common NuGet package refs -->
