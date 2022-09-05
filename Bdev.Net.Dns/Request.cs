@@ -4,14 +4,9 @@
 // Bdev.Net.Dns by Rob Philpott, Big Developments Ltd. Please send all bugs/enhancements to
 // rob@bigdevelopments.co.uk  This file and the code contained within is freeware and may be
 // distributed and edited without restriction.
-// 
+//
 
 #endregion
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Bdev.Net.Dns
 {
@@ -26,18 +21,17 @@ namespace Bdev.Net.Dns
     {
         // A request is a series of questions, an 'opcode' (RFC1035 4.1.1) and a flag to denote
         // whether recursion is required (don't ask..., just assume it is)
-        private readonly List<Question> _questions = new List<Question>();
+        private readonly List<Question> _questions = new();
 
         /// <summary>
         ///     Construct this object with the default values and a List to hold
-        ///     the questions as they are added
+        ///     the questions as they are added.
         /// </summary>
         public Request()
         {
             // default for a request is that recursion is desired and using standard query
             RecursionDesired = true;
             Opcode = Opcode.StandardQuery;
-
         }
 
         public static Request Question(Question question)
@@ -53,84 +47,77 @@ namespace Bdev.Net.Dns
 
         public bool RecursionDesired { get; set; }
 
-        public Opcode Opcode { get; set; }
+        public Opcode Opcode { get; }
 
-        /// <summary>
-        ///     Adds a question to the request to be sent to the DNS server.
-        /// </summary>
-        /// <param name="question">The question to add to the request</param>
+        /// <summary>Adds a question to the request to be sent to the DNS server.</summary>
+        /// <param name="question">The question to add to the request.</param>
         public void AddQuestion(Question question)
         {
             // abandon if null
-            if (question == null) throw new ArgumentNullException(nameof(question));
+            if (question is null) throw new ArgumentNullException(nameof(question));
 
             // add this question to our collection
             _questions.Add(question);
         }
 
-        /// <summary>
-        ///     Convert this request into a byte array ready to send direct to the DNS server
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Convert this request into a byte array ready to send direct to the DNS server.</summary>
+        /// <returns>A byte array.</returns>
         public byte[] GetMessage()
         {
-            using (var data = new MemoryStream())
+            using var data = new MemoryStream();
+
+            // the id of this message - this will be filled in by the resolver
+            data.WriteByte(0);
+            data.WriteByte(0);
+
+            // write the bit fields
+            data.WriteByte((byte)(((byte)Opcode << 3) | (RecursionDesired ? 0x01 : 0)));
+            data.WriteByte(0);
+
+            // tell it how many questions
+            unchecked
             {
-                // the id of this message - this will be filled in by the resolver
-                data.WriteByte(0);
-                data.WriteByte(0);
+                data.WriteByte((byte)(_questions.Count >> 8));
+                data.WriteByte((byte)_questions.Count);
+            }
 
-                // write the bit fields
-                data.WriteByte((byte) (((byte) Opcode << 3) | (RecursionDesired ? 0x01 : 0)));
-                data.WriteByte(0);
+            // the are no requests, name servers or additional records in a request
+            data.WriteByte(0);
+            data.WriteByte(0);
+            data.WriteByte(0);
+            data.WriteByte(0);
+            data.WriteByte(0);
+            data.WriteByte(0);
 
-                // tell it how many questions
+            // that's the header done - now add the questions
+            foreach (var question in _questions)
+            {
+                AddDomain(data, question.Domain);
                 unchecked
                 {
-                    data.WriteByte((byte) (_questions.Count >> 8));
-                    data.WriteByte((byte) _questions.Count);
+                    data.WriteByte(0);
+                    data.WriteByte((byte)question.Type);
+                    data.WriteByte(0);
+                    data.WriteByte((byte)question.Class);
                 }
-
-                // the are no requests, name servers or additional records in a request
-                data.WriteByte(0);
-                data.WriteByte(0);
-                data.WriteByte(0);
-                data.WriteByte(0);
-                data.WriteByte(0);
-                data.WriteByte(0);
-
-                // that's the header done - now add the questions
-                foreach (Question question in _questions)
-                {
-                    AddDomain(data, question.Domain);
-                    unchecked
-                    {
-                        data.WriteByte(0);
-                        data.WriteByte((byte) question.Type);
-                        data.WriteByte(0);
-                        data.WriteByte((byte) question.Class);
-                    }
-                }
-                return data.ToArray();
             }
+
+            return data.ToArray();
         }
 
         /// <summary>
         ///     Adds a domain name to the array of bytes. This implementation does not use
         ///     the domain name compression used in the class Pointer - maybe it should.
         /// </summary>
-        /// <param name="data">The memory stream to which add</param>
-        /// <param name="domainName">the domain name to encode and add to the array</param>
+        /// <param name="data">The memory stream to which add.</param>
+        /// <param name="domainName">The domain name to encode and add to the array.</param>
         private static void AddDomain(Stream data, string domainName)
         {
             var splits = domainName.Split('.');
             foreach (var split in splits)
             {
                 data.WriteByte((byte)split.Length);
-                foreach (var c in split.ToCharArray())
-                {
-                    data.WriteByte((byte)c);
-                }
+                foreach (var c in split) data.WriteByte((byte)c);
             }
             // end of domain names
             data.WriteByte(0);

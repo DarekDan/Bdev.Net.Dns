@@ -1,12 +1,10 @@
-﻿using Bdev.Net.Dns.Exceptions;
-using System;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
+using Bdev.Net.Dns.Exceptions;
 
 namespace Bdev.Net.Dns
 {
-    public partial class Resolver
+    public static partial class Resolver
     {
         private static byte[] TcpTransfer(IPEndPoint server, byte[] requestMessage, int timeout = 2000)
         {
@@ -14,12 +12,12 @@ namespace Bdev.Net.Dns
             var request = new byte[requestMessage.Length + 2];
             requestMessage.CopyTo(request, 2);
 
-            var uniqueId = DateTime.Now.Ticks;
+            var uniqueId = DateTime.UtcNow.Ticks;
             unchecked
             {
                 // message length
                 request[0] = (byte)(requestMessage.Length >> 8);
-                request[1] = (byte)(requestMessage.Length);
+                request[1] = (byte)requestMessage.Length;
 
                 // mark the request with an id
                 request[2] = (byte)(uniqueId >> 8);
@@ -27,10 +25,7 @@ namespace Bdev.Net.Dns
             }
 
             // this will use DNS over TCP
-            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-            socket.SendTimeout = 2000;
-            socket.ReceiveTimeout = 2000;
+            using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp) { SendTimeout = 2000, ReceiveTimeout = 2000 };
 
             // there is no limit of 512 on DNS over TCP
             var responseMessage = new byte[65535];
@@ -38,8 +33,8 @@ namespace Bdev.Net.Dns
             try
             {
                 // connect with a timeout
-                var connect = socket.BeginConnect(server, null, null);
-                connect.AsyncWaitHandle.WaitOne(timeout, true);
+                var connect = socket.BeginConnect(server, callback: null, state: null);
+                connect.AsyncWaitHandle.WaitOne(timeout, exitContext: true);
 
                 if (!socket.Connected)
                 {
@@ -55,13 +50,9 @@ namespace Bdev.Net.Dns
                 // receive the response
                 socket.Receive(responseMessage);
             }
-            catch(SocketException)
+            catch (SocketException)
             {
                 throw new NoResponseException();
-            }
-            finally
-            {
-                socket.Close();
             }
 
             // strip the length and return

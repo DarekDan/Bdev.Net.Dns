@@ -2,11 +2,11 @@ using System.Text;
 
 namespace Bdev.Net.Dns.Records
 {
-    public class TXTRecord : RecordBase
+    public record TXTRecord : RecordBase
     {
-        public string Value { get; set; }
+        public string Value { get; }
+        public int Length { get; }
 
-        public int Length { get; set; }
         internal TXTRecord(Pointer pointer, int recordLength)
         {
             var position = pointer.Position;
@@ -19,34 +19,22 @@ namespace Bdev.Net.Dns.Records
             {
                 // read the string length
                 var length = pointer.ReadByte();
-                for (int i = 0; i < length; i++)
-                {
-                    sb.Append(pointer.ReadChar());
-                }
+                for (var i = 0; i < length; i++) sb.Append(pointer.ReadChar());
             }
 
             Value = sb.ToString();
             Length = sb.Length;
         }
 
-        public override string ToString()
-        {
-            return $"{Value}";
-        }
+        public override string ToString() => Value;
     }
 
-    public class CNameRecord : RecordBase
+    public record CNameRecord : RecordBase
     {
-        public string Value { get; set; }
+        public string Value { get; }
 
-        internal CNameRecord(Pointer pointer)
-        {
-            Value = pointer.ReadDomain();
-        }
+        internal CNameRecord(Pointer pointer) => Value = pointer.ReadDomain();
 
-        public override string ToString()
-        {
-            return $"{Value}";
-        }
+        public override string ToString() => Value;
     }
 }

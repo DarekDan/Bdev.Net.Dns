@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-	
-	  <PropertyGroup>
+
+  <PropertyGroup>
     <TargetFrameworks>net48;net45;net462;net472;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <Title>Bdev.Net.Dns</Title>
     <Description>.NET DNS query library</Description>
@@ -26,9 +26,15 @@
       1.0.8 Added support for CNAME
     </PackageReleaseNotes>    
     <PackageLicenseExpression>MIT</PackageLicenseExpression>    
-    <PackageIcon>dns_128_px.png</PackageIcon>
+    <PackageIcon>dns_128_px.png</PackageIcon>    
+    <Nullable>enable</Nullable>    
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Using Remove="System.Net.Http" />
+  </ItemGroup>
+  
   <!--common NuGet package refs -->
   <ItemGroup>
     <None Include="..\dns_128_px.png">
@@ -73,13 +79,6 @@
     <DefineConstants>NETFULL</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48' or '$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net472' or '$(TargetFramework)' == 'net462' ">
-    <Reference Include="mscorlib" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  
    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>Full</DebugType>
   </PropertyGroup>
