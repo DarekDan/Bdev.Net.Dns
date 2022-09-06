@@ -8,7 +8,6 @@
 
 #endregion
 
-using System.Net;
 using System.Net.Sockets;
 using Bdev.Net.Dns.Exceptions;
 using Bdev.Net.Dns.Helpers;
@@ -29,7 +28,7 @@ namespace Bdev.Net.Dns
         /// <param name="domain">domain name to retrieve MX RRs for.</param>
         /// <param name="dnsServer">the server we're going to ask.</param>
         /// <returns>An array of MXRecords.</returns>
-        public static MXRecord?[]? MXLookup(string? domain, IPAddress? dnsServer)
+        public static MXRecord?[] MXLookup(string? domain, IPAddress? dnsServer)
         {
             // check the inputs
             if (domain is null) throw new ArgumentNullException(nameof(domain));
@@ -45,7 +44,7 @@ namespace Bdev.Net.Dns
             var response = Lookup(request, dnsServer);
 
             // if we didn't get a response, then return null
-            if (response is null) return null;
+            if (response is null) return Array.Empty<MXRecord>(); // null?
 
             // create a expandable array of MX records
             var resourceRecords = response.Answers
@@ -56,7 +55,7 @@ namespace Bdev.Net.Dns
             return resourceRecords;
         }
 
-        public static MXRecord?[]? MXLookup(string? domain) => MXLookup(domain, DnsServers.IP4.First());
+        public static MXRecord?[] MXLookup(string? domain) => MXLookup(domain, DnsServers.IP4.First());
 
         /// <summary>
         /// <para>

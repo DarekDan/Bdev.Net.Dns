@@ -12,7 +12,7 @@ public class Exceptions
     {
         var request = new Request();
         request.AddQuestion(new Question("bisoftware.com", DnsType.ANAME));
-        Assert.Throws<NoResponseException>(() => Resolver.Lookup(request, IPAddress.Parse("127.0.0.1"), false));
+        Assert.Throws<NoResponseException>(() => Resolver.Lookup(request, IPAddress.Parse("127.0.0.1"), tcpFallback: false));
     }
     [Test]
     public void LookupNullBothParameters()

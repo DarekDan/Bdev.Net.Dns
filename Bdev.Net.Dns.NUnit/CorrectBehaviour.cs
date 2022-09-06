@@ -98,7 +98,7 @@ public class CorrectBehaviour
         var records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());
 
         Assert.IsNotNull(records, "MXLookup returning null denoting lookup failure");
-        Assert.IsTrue(records?.Length > 0);
+        Assert.IsTrue(records.Length > 0);
     }
 
     [Test]
@@ -108,7 +108,7 @@ public class CorrectBehaviour
 
         var records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());
         Assert.IsNotNull(records, "MXLookup returning null denoting lookup failure");
-        Assert.IsTrue(records?.Length > 0);
+        Assert.IsTrue(records.Length > 0);
 
         Assert.IsTrue(records.All(a => result.Contains(a)));
         Assert.IsTrue(result.All(a => records.Contains(a)));

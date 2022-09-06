@@ -11,23 +11,15 @@
 namespace Bdev.Net.Dns.Records
 {
     /// <summary>A Name Server Resource Record (RR) (RFC1035 3.3.11).</summary>
-    public record NSRecord : RecordBase //, IEquatable<NSRecord>
+    public record NSRecord : RecordBase
     {
         /// <summary>Constructs a NS record by reading bytes from a return message.</summary>
         /// <param name="pointer">A logical pointer to the bytes holding the record.</param>
         internal NSRecord(Pointer pointer) => DomainName = pointer.ReadDomain();
 
-        // expose this domain name address r/o to the world
+        // expose this domain name r/o to the world
         public string DomainName { get; }
 
-        // TODO: Clean when test ok.
-        //public bool Equals(NSRecord? other) => other is not null && DomainName == other.DomainName;
-        //public override bool Equals(object? obj) => Equals(obj as NSRecord);
-        //public override int GetHashCode() => 1022487930 + EqualityComparer<string>.Default.GetHashCode(DomainName);
-
         public override string ToString() => DomainName;
-
-        //public static bool operator ==(NSRecord record1, NSRecord record2) => EqualityComparer<NSRecord>.Default.Equals(record1, record2);
-        //public static bool operator !=(NSRecord record1, NSRecord record2) => !(record1 == record2);
     }
 }

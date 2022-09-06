@@ -21,6 +21,7 @@ namespace Bdev.Net.Dns
     {
         // A request is a series of questions, an 'opcode' (RFC1035 4.1.1) and a flag to denote
         // whether recursion is required (don't ask..., just assume it is)
+
         private readonly List<Question> _questions = new();
 
         /// <summary>
@@ -34,19 +35,18 @@ namespace Bdev.Net.Dns
             Opcode = Opcode.StandardQuery;
         }
 
-        public static Request Question(Question question)
-        {
-            return new Request().WithQuestion(question);
-        }
-
+        public static Request Question(Question question) => new Request().WithQuestion(question);
         public Request WithQuestion(Question question)
         {
             AddQuestion(question);
             return this;
         }
 
+#if NET5_0_OR_GREATER
+        public bool RecursionDesired { get; init; }
+#else
         public bool RecursionDesired { get; set; }
-
+#endif
         public Opcode Opcode { get; }
 
         /// <summary>Adds a question to the request to be sent to the DNS server.</summary>

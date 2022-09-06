@@ -8,8 +8,6 @@
 
 #endregion
 
-using System.Text;
-
 namespace Bdev.Net.Dns
 {
     /// <summary>
@@ -32,7 +30,7 @@ namespace Bdev.Net.Dns
         }
 
         /// <summary>Shallow copy function.</summary>
-        /// <returns>A Pointer.</returns>
+        /// <returns>A new Pointer.</returns>
         public Pointer Copy() => new(_message, _position);
 
         /// <summary>Adjust the pointers position within the message.</summary>
@@ -60,11 +58,11 @@ namespace Bdev.Net.Dns
         public byte ReadByte() => _message[_position++];
 
         /// <summary>Reads two bytes to form a short at the current pointer, advancing pointer.</summary>
-        /// <returns>The byte at the pointer.</returns>
+        /// <returns>The 2 bytes at the pointer.</returns>
         public short ReadShort() => (short)((ReadByte() << 8) | ReadByte());
 
         /// <summary>Reads four bytes to form a int at the current pointer, advancing pointer.</summary>
-        /// <returns>The byte at the pointer.</returns>
+        /// <returns>The 4 bytes at the pointer.</returns>
         public int ReadInt() => ReadByte() << 24 | ReadByte() << 16 | ReadByte() << 8 | ReadByte();
 
         /// <summary>Reads a single byte as a char at the current pointer, advancing pointer.</summary>
@@ -82,7 +80,7 @@ namespace Bdev.Net.Dns
         ///     [2]  "uk"
         ///     [1]  0 (NULL)
         /// </summary>
-        /// <returns>The byte at the pointer.</returns>
+        /// <returns>The x length string at the pointer.</returns>
         public string ReadDomain()
         {
             var domain = new StringBuilder();

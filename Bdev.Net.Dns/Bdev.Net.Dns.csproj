@@ -30,6 +30,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Using Include="System.Net"/>
+    <Using Include="System.Text"/>
+  </ItemGroup>
+
   <!-- common NuGet package refs -->
   <ItemGroup>
     <None Include="..\dns_128_px.png">

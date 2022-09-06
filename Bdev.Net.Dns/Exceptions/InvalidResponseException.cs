@@ -16,7 +16,7 @@ namespace Bdev.Net.Dns.Exceptions
     [Serializable]
     public class InvalidResponseException : Exception
     {
-        const string Msg = "Something grim has happened, we can't continue...";
+        private const string Msg = "Something grim has happened, we can't continue...";
         public InvalidResponseException() : base(Msg) { /* empty */ }
         public InvalidResponseException(Exception innerException) : base(Msg, innerException) { /* empty */ }
         public InvalidResponseException(string message, Exception innerException) : base(message, innerException) { /* empty */ }

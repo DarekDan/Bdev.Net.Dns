@@ -26,6 +26,7 @@ namespace Bdev.Net.Dns
         MF = 4,     // mail forwarder - obsolete, use MX
         CNAME = 5,  // canonical name for an alias
         SOA = 6,    // start of a zone authority
+                    //
         WKS = 11,   // well known service description
         PTR = 12,   // domain name pointer
         HINFO = 13, // host information

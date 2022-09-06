@@ -32,7 +32,7 @@ namespace Bdev.Net.Dns
             // do a sanity check on the domain name to make sure its legal
             if (domain.Length == 0 || domain.Length > 255 ||
                 !Regex.IsMatch(domain, @"^[a-z|A-Z|0-9|\-|_]{1,63}(\.[a-z|A-Z|0-9|\-|_]{1,63})+$"))
-                // domain names can't be bigger tan 255 chars, and individual labels can't be bigger than 63 chars
+                // domain names can't be bigger than 255 chars, and individual labels can't be bigger than 63 chars
                 throw new ArgumentException("The supplied domain name was not in the correct form.", nameof(domain));
 
             // sanity check the DnsType parameter
@@ -62,7 +62,7 @@ namespace Bdev.Net.Dns
             Class = (DnsClass)pointer.ReadShort();
         }
 
-        // expose them read/only to the world
+        // expose these fields r/o to the world
         public string Domain { get; }
         public DnsType Type { get; }
         public DnsClass Class { get; }

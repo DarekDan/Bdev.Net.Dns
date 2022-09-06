@@ -62,7 +62,7 @@ namespace Bdev.Net.Dns
             for (var index = 0; index < AdditionalRecords.Length; index++) AdditionalRecords[index] = new AdditionalRecord(pointer);
         }
 
-        // these fields are readonly outside the assembly - use r/o properties
+        // expose these fields r/o to the world
         public ReturnCode ReturnCode { get; }
         public bool AuthoritativeAnswer { get; }
         public bool RecursionAvailable { get; }

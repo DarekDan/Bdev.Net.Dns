@@ -14,7 +14,7 @@ namespace Bdev.Net.Dns
 {
     /// <summary>Represents a Resource Record as detailed in RFC1035 4.1.3.</summary>
     [Serializable]
-    public record ResourceRecord // : IEquatable<ResourceRecord>
+    public record ResourceRecord
     {
         /// <summary>Construct a resource record from a pointer to a byte array.</summary>
         /// <param name="pointer">the position in the byte array of the record.</param>
@@ -36,12 +36,12 @@ namespace Bdev.Net.Dns
                 DnsType.MX => new MXRecord(pointer),
                 DnsType.ANAME => new ANameRecord(pointer),
                 DnsType.CNAME => new CNameRecord(pointer),
-                DnsType.SOA => new SoaRecord(pointer),
+                DnsType.SOA => new SOARecord(pointer),
                 DnsType.TXT => new TXTRecord(pointer, recordLength),
-                _ => null
+                _ => new EmptyRecord() /* null */
             };
 
-            if (Record is null) pointer.Seek(recordLength); // move the pointer over this unrecognized record
+            if (Record is EmptyRecord) pointer.Seek(recordLength); // move the pointer over this unrecognized record /* null */
         }
 
         // read only properties applicable for all records
@@ -49,15 +49,7 @@ namespace Bdev.Net.Dns
         public DnsType Type { get; }
         public DnsClass Class { get; }
         public int Ttl { get; }
-        public RecordBase? Record { get; } // TODO: Necessary? Set a default value!
-
-        // TODO: Clean when test ok.
-        //public bool Equals(ResourceRecord? other)
-        //{
-        //    return other is not null && Type.Equals(other.Type) && Class.Equals(other.Class) &&
-        //           Domain.Equals(other.Domain) &&
-        //           Record is not null && Record.Equals(other.Record); // TODO: Necessary?
-        //}
+        public RecordBase Record { get; } // = new EmptyRecord(); /* null */
     }
 
     // Answers, Name Servers and Additional Records all share the same RR format.
