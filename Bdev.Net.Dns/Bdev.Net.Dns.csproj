@@ -1,8 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net45;net462;net472;netstandard2.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0</TargetFrameworks>
     <Title>Bdev.Net.Dns</Title>
     <Description>.NET DNS query library</Description>
     <Authors>Rob Philpott, Indra, and Dariusz Danielewski</Authors>
@@ -15,7 +14,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/DarekDan/Bdev.Net.Dns</RepositoryUrl>
     <Version>1.0.13</Version>
-    <ApplicationIcon></ApplicationIcon>    
+    <ApplicationIcon></ApplicationIcon>
     <PackageReleaseNotes>
       1.0.13 Bug fix for MemoryStream
       1.0.12 Fix CNAME lookup #7
@@ -24,18 +23,14 @@
       1.0.10 Only code quality imporvements
       1.0.9 Support for .Net Core 3.1 and .Net 4.8
       1.0.8 Added support for CNAME
-    </PackageReleaseNotes>    
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>    
-    <PackageIcon>dns_128_px.png</PackageIcon>    
-    <Nullable>enable</Nullable>    
+    </PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>dns_128_px.png</PackageIcon>
+    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Using Remove="System.Net.Http" />
-  </ItemGroup>
-  
-  <!--common NuGet package refs -->
+  <!-- common NuGet package refs -->
   <ItemGroup>
     <None Include="..\dns_128_px.png">
       <Pack>True</Pack>
@@ -43,43 +38,22 @@
     </None>
   </ItemGroup>
 
-  <!--.NET Standard 2.0 config -->
+  <!-- .NET 6.0 config -->
+  <PropertyGroup Condition=" '$(TargetFramework)'=='net6.0' ">
+    <AssemblyTitle>$(Title) .NET 6.0</AssemblyTitle>
+  </PropertyGroup>
+
+  <!-- .NET Standard 2.1 config -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
+    <AssemblyTitle>$(Title) .NET Standard 2.1</AssemblyTitle>
+  </PropertyGroup>
+
+  <!-- .NET Standard 2.0 config -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <AssemblyTitle>Bdev.Net.Dns .NET Standard 2.0</AssemblyTitle>
-    <DefineConstants>NETCORE;NETSTANDARD</DefineConstants>
+    <AssemblyTitle>$(Title) .NET Standard 2.0</AssemblyTitle>
   </PropertyGroup>
 
-  <!--.NET Standard 3.1 config -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <AssemblyTitle>Bdev.Net.Dns .NET Core 3.1</AssemblyTitle>
-    <DefineConstants>NETCORE;NETSTANDARD</DefineConstants>
-  </PropertyGroup>
-
-  <!-- .NET 4.5 config -->
-  <PropertyGroup Condition=" '$(TargetFramework)'=='net45' ">
-    <AssemblyTitle>Bdev.Net.Dns .NET 4.5</AssemblyTitle>
-    <DefineConstants>NETFULL</DefineConstants>
-  </PropertyGroup>
-
-  <!-- .NET 4.6.2 config -->
-  <PropertyGroup Condition=" '$(TargetFramework)'=='net462' ">
-    <AssemblyTitle>Bdev.Net.Dns .NET 4.6.2</AssemblyTitle>
-    <DefineConstants>NETFULL</DefineConstants>
-  </PropertyGroup>
-
-  <!-- .NET 4.7.2 config -->
-  <PropertyGroup Condition=" '$(TargetFramework)'=='net472' ">
-    <AssemblyTitle>Bdev.Net.Dns .NET 4.7.2</AssemblyTitle>
-    <DefineConstants>NETFULL</DefineConstants>
-  </PropertyGroup>
-
-  <!-- .NET 4.8 config -->
-  <PropertyGroup Condition=" '$(TargetFramework)'=='net48' ">
-    <AssemblyTitle>Bdev.Net.Dns .NET 4.8</AssemblyTitle>
-    <DefineConstants>NETFULL</DefineConstants>
-  </PropertyGroup>
-
-   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>Full</DebugType>
   </PropertyGroup>
 
