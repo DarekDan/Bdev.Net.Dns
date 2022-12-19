@@ -10,6 +10,12 @@
 
 namespace Bdev.Net.Dns.Records
 {
-    /// <summary>A simple base class for the different ResourceRecords, ANAME, MX, SOA, NS etc.</summary>
-    public abstract record RecordBase { }
+    /// <summary>Empty record as a replacement for 'null'.</summary>
+    public record EmptyRecord : RecordBase
+    {
+        /// <summary>Constructs an empty record to signal null or error.</summary>
+        internal EmptyRecord() { }
+
+        public override string ToString() => "n/a";
+    }
 }

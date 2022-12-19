@@ -1,82 +1,54 @@
-using System;
-using System.Linq;
 using System.Net;
 using Bdev.Net.Dns;
 using Bdev.Net.Dns.Helpers;
 
-namespace DnsExample
+IPAddress dnsServer = DnsServers.IP4.First();
+
+Console.Write("Please enter the address of the DNS server to query (or hit enter for first IP4 available): ");
+var ip = Console.ReadLine();
+
+try { if (!string.IsNullOrWhiteSpace(ip)) dnsServer = IPAddress.Parse(ip); }
+catch { Console.WriteLine("Not a valid address, using first IP4 available."); }
+
+Console.WriteLine($"DNS Query Tool using '{dnsServer}', type 'quit' to exit.");
+
+while (true)
 {
-    internal class DnsTestApp
+    Console.Write("> "); var domain = Console.ReadLine();
+
+    // Break out on no input or the quit command.
+    if (string.IsNullOrWhiteSpace(domain) || string.Equals(domain, "quit", StringComparison.InvariantCultureIgnoreCase)) break;
+
+    // Show information.
+    Console.WriteLine($"Querying DNS records for domain: '{domain}'.");
+
+    // Query AName, MX, NS, SOA.
+    Query(dnsServer, domain, DnsType.ANAME);
+    Query(dnsServer, domain, DnsType.MX);
+    Query(dnsServer, domain, DnsType.NS);
+    Query(dnsServer, domain, DnsType.SOA);
+}
+
+void Query(IPAddress dnsServer, string domain, DnsType type)
+{
+    try
     {
-        [STAThread]
-        private static void Main(string[] args)
-        {
-            Console.Write("Please enter the address of the DNS server to query (or hit enter for first IP4 available): ");
-            var ip = Console.ReadLine();
+        var request = new Request();                         // Create a DNS request.
+        request.AddQuestion(new Question(domain, type));    // Create a question for this domain and DNS CLASS.
+        var response = Resolver.Lookup(request, dnsServer); // Send it to the DNS server and get the response.
 
-            var dnsServer = String.IsNullOrWhiteSpace(ip) ? DnsServers.IP4.First() : IPAddress.Parse(ip);
-            Console.WriteLine("DNS Query Tool, type 'quit' to exit");
+        Console.WriteLine("--------------------------------------------------------------");        // Display each RR returned and whether
+        Console.WriteLine($"{(response.AuthoritativeAnswer ? "A" : "Non-a")}uthoritative answer:"); // this is an authoritative answer or not.
 
-            while (true)
-            {
-                Console.Write(">");
-                var domain = Console.ReadLine();
+        foreach (var answer in response.Answers)                        // Dump all the records - answers / name servers / additional records.
+            Console.WriteLine($"{answer.Type} ({answer.Domain}) : {answer.Record}");
 
-                // break out on quit command
-                if (domain?.ToLower() == "quit") break;
+        foreach (var nameServer in response.NameServers)
+            Console.WriteLine($"{nameServer.Type} ({nameServer.Domain}) : {nameServer.Record}");
 
-                // Information
-                Console.WriteLine("Querying DNS records for domain: " + domain);
-
-                // query AName, MX, NS, SOA
-                Query(dnsServer, domain, DnsType.ANAME);
-                Query(dnsServer, domain, DnsType.MX);
-                Query(dnsServer, domain, DnsType.NS);
-                Query(dnsServer, domain, DnsType.SOA);
-            }
-        }
-
-        private static void Query(IPAddress dnsServer, string domain, DnsType type)
-        {
-            try
-            {
-                // create a DNS request
-                var request = new Request();
-
-                // create a question for this domain and DNS CLASS
-                request.AddQuestion(new Question(domain, type));
-
-                // send it to the DNS server and get the response
-                var response = Resolver.Lookup(request, dnsServer);
-
-                // check we have a response
-                if (response == null)
-                {
-                    Console.WriteLine("No answer");
-                    return;
-                }
-
-                // display each RR returned
-                Console.WriteLine("--------------------------------------------------------------");
-
-                // display whether this is an authoritative answer or not
-                Console.WriteLine(response.AuthoritativeAnswer ? "authoritative answer" : "Non-authoritative answer");
-
-                // Dump all the records - answers/name servers/additional records
-                foreach (var answer in response.Answers)
-                    Console.WriteLine("{0} ({1}) : {2}", answer.Type, answer.Domain, answer.Record);
-
-                foreach (var nameServer in response.NameServers)
-                    Console.WriteLine("{0} ({1}) : {2}", nameServer.Type, nameServer.Domain, nameServer.Record);
-
-                foreach (var additionalRecord in response.AdditionalRecords)
-                    Console.WriteLine("{0} ({1}) : {2}", additionalRecord.Type, additionalRecord.Domain,
-                        additionalRecord.Record);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
+        foreach (var additionalRecord in response.AdditionalRecords)
+            Console.WriteLine($"{additionalRecord.Type} ({additionalRecord.Domain}) : {additionalRecord.Record}");
     }
+    // catch (NoResponseException ex) { Console.WriteLine(ex.Message); } // Kind of redundant...
+    catch (Exception ex) { Console.WriteLine(ex.Message); }
 }
