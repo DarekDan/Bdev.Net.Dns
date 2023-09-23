@@ -31,7 +31,8 @@ namespace Bdev.Net.Dns
         HINFO = 13, //host information
         MINFO = 14, //mailbox or mail list information
         MX = 15, //mail exchange
-        TXT = 16 //text strings
+        TXT = 16, //text strings
+        AAAA = 28 //ipv6 host address
     }
 
     /// <summary>
