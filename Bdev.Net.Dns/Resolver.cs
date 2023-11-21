@@ -141,8 +141,8 @@ namespace Bdev.Net.Dns
                 // we'll be send and receiving a UDP packet
                 var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-                // we will wait at most 1 second for a dns reply
-                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
+                // we will wait at most 5 seconds for a dns reply
+                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 5000);
 
                 // send it off to the server
                 socket.SendTo(requestMessage, requestMessage.Length, SocketFlags.None, server);
