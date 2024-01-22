@@ -54,6 +54,10 @@ Resolve a record on a DNS server
 
 
 ### Release history
+
+1.0.14 Wait 5 seconds for a dns request to complete.
+       Discontinue support for .Net 3.1
+
 1.0.13 Bug fix
 
 1.0.12 Fix CNAME lookup #7
