@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Project Sdk="Microsoft.NET.Sdk">
-	
-	  <PropertyGroup>
-    <TargetFrameworks>net48;net45;net462;net472;netstandard2.0;netcoreapp3.1</TargetFrameworks>
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;net45;net462;net472</TargetFrameworks>
     <Title>Bdev.Net.Dns</Title>
     <Description>.NET DNS query library</Description>
     <Authors>Rob Philpott, Indra, and Dariusz Danielewski</Authors>
@@ -14,19 +15,22 @@
     <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/DarekDan/Bdev.Net.Dns</RepositoryUrl>
-    <Version>1.0.13</Version>
-    <ApplicationIcon></ApplicationIcon>    
+    <Version>1.0.14</Version>
+    <ApplicationIcon></ApplicationIcon>
     <PackageReleaseNotes>
+      1.0.14 Wait 5 seconds for a dns request to complete.
+      Discontinue support for .Net 3.1
       1.0.13 Bug fix for MemoryStream
       1.0.12 Fix CNAME lookup #7
       1.0.11 Fix TXT records with multiple strings
-             Add DNS over TCP fallback for truncated messages
+      Add DNS over TCP fallback for truncated messages
       1.0.10 Only code quality imporvements
       1.0.9 Support for .Net Core 3.1 and .Net 4.8
       1.0.8 Added support for CNAME
-    </PackageReleaseNotes>    
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>    
+    </PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>dns_128_px.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <!--common NuGet package refs -->
@@ -35,19 +39,8 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
-
-  <!--.NET Standard 2.0 config -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <AssemblyTitle>Bdev.Net.Dns .NET Standard 2.0</AssemblyTitle>
-    <DefineConstants>NETCORE;NETSTANDARD</DefineConstants>
-  </PropertyGroup>
-
-  <!--.NET Standard 3.1 config -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <AssemblyTitle>Bdev.Net.Dns .NET Core 3.1</AssemblyTitle>
-    <DefineConstants>NETCORE;NETSTANDARD</DefineConstants>
-  </PropertyGroup>
 
   <!-- .NET 4.5 config -->
   <PropertyGroup Condition=" '$(TargetFramework)'=='net45' ">
@@ -73,14 +66,15 @@
     <DefineConstants>NETFULL</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48' or '$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net472' or '$(TargetFramework)' == 'net462' ">
+  <ItemGroup
+    Condition="'$(TargetFramework)' == 'net48' or '$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net472' or '$(TargetFramework)' == 'net462' ">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-  
-   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>Full</DebugType>
   </PropertyGroup>
 
