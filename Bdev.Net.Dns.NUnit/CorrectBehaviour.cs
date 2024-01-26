@@ -55,7 +55,7 @@ namespace Bdev.Net.Dns.NUnit
             var first = firstAnswers.OrderBy(o => o.Record).First();
             var secondAnswers = Resolver.Lookup(request, IPAddress.Parse("1.1.1.1")).Answers;
             var second = secondAnswers.OrderBy(o => o.Record).First();
-            Assert.True(first.Equals(second));
+            Assert.True(first.Record.ToString().Equals(second.Record.ToString()));
         }
 
         [Test]

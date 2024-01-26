@@ -3,7 +3,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net45;net462;net472;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net7.0;net48;net45;net462;net472;netstandard2.0</TargetFrameworks>
     <Title>Bdev.Net.Dns</Title>
     <Description>.NET DNS query library</Description>
     <Authors>Rob Philpott, Indra, and Dariusz Danielewski</Authors>
@@ -15,9 +15,10 @@
     <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/DarekDan/Bdev.Net.Dns</RepositoryUrl>
-    <Version>1.0.15</Version>
+    <Version>1.0.16</Version>
     <ApplicationIcon></ApplicationIcon>
     <PackageReleaseNotes>
+      1.0.16 Added version for .Net 7.0 and 8.0
       1.0.15 Restored support for .Net 2.0
       1.0.14 Wait 5 seconds for a dns request to complete.
              Discontinue support for .Net 3.1
@@ -72,6 +73,20 @@
   <PropertyGroup Condition=" '$(TargetFramework)'=='net48' ">
     <AssemblyTitle>Bdev.Net.Dns .NET 4.8</AssemblyTitle>
     <DefineConstants>NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <!-- .NET 7 config -->
+  <PropertyGroup Condition=" '$(TargetFramework)'=='net7.0' ">
+    <AssemblyTitle>Bdev.Net.Dns .NET 7</AssemblyTitle>
+    <DefineConstants>$(DefineConstants);NET7_0</DefineConstants>
+    <!-- Other .NET 7 specific settings -->
+  </PropertyGroup>
+
+  <!-- .NET 8 config -->
+  <PropertyGroup Condition=" '$(TargetFramework)'=='net8.0' ">
+    <AssemblyTitle>Bdev.Net.Dns .NET 8</AssemblyTitle>
+    <DefineConstants>$(DefineConstants);NET8_0</DefineConstants>
+    <!-- Other .NET 8 specific settings -->
   </PropertyGroup>
 
   <ItemGroup
