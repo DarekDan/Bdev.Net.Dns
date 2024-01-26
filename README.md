@@ -55,6 +55,8 @@ Resolve a record on a DNS server
 
 ### Release history
 
+1.0.15 Bring-back .Net 2.0
+
 1.0.14 Wait 5 seconds for a dns request to complete.
        Discontinue support for .Net 3.1
 
