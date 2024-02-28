@@ -8,6 +8,7 @@
 
 #endregion
 
+using System;
 using System.Linq;
 using System.Text;
 
@@ -109,6 +110,21 @@ namespace Bdev.Net.Dns
         public char ReadChar()
         {
             return (char) ReadByte();
+        }
+
+        /// <summary>
+        ///     Reads a specified number of bytes at the current pointer, advancing pointer
+        /// </summary>
+        /// <param name="length">The number of bytes to read</param>
+        /// <returns>the bytes at the pointer</returns>
+        public byte[] ReadBytes(int length)
+        {
+            var data = new byte[length];
+
+            Buffer.BlockCopy(_message, _position, data, 0, length);
+            _position += length;
+
+            return data;
         }
 
         /// <summary>
