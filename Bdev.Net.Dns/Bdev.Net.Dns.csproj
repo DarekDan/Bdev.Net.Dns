@@ -3,7 +3,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net7.0;net48;net45;net462;net472;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net48;net45;net462;net472;netstandard2.0</TargetFrameworks>
     <Title>Bdev.Net.Dns</Title>
     <Description>.NET DNS query library</Description>
     <Authors>Rob Philpott, Indra, and Dariusz Danielewski</Authors>
