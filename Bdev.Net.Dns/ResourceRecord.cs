@@ -56,7 +56,7 @@ namespace Bdev.Net.Dns
                     Record = new TXTRecord(pointer, recordLength);
                     break;
                 case DnsType.AAAA:
-                    Record = new AAAARecord(pointer);
+                    Record = new AaaaRecord(pointer);
                     break;
                 default:
                 {

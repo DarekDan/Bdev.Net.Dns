@@ -35,7 +35,7 @@ namespace Bdev.Net.Dns.Helpers
             {typeof(NSRecord), DnsType.NS},
             {typeof(SoaRecord), DnsType.SOA},
             {typeof(TXTRecord), DnsType.TXT},
-            {typeof(AAAARecord), DnsType.AAAA}
+            {typeof(AaaaRecord), DnsType.AAAA},
         };
 
         public static IEnumerable<ANameRecord> Resolve(string name)

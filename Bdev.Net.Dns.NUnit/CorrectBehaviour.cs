@@ -144,7 +144,7 @@ namespace Bdev.Net.Dns.NUnit
         [Test]
         public void CorrectAAAAForCloudflare()
         {
-            var result = DnsServers.Resolve<AAAARecord>("one.one.one.one").ToList();
+            var result = DnsServers.Resolve<AaaaRecord>("one.one.one.one").ToList();
 
             Assert.AreEqual(IPAddress.Parse("2606:4700:4700::1111"), result[0].IPAddress);
             Assert.AreEqual(IPAddress.Parse("2606:4700:4700::1001"), result[1].IPAddress);

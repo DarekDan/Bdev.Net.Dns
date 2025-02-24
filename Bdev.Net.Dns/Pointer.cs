@@ -115,7 +115,7 @@ namespace Bdev.Net.Dns
         /// <summary>
         ///     Reads a specified number of bytes at the current pointer, advancing pointer
         /// </summary>
-        /// <param name="length">The number of bytes to read</param>
+        /// <param name="length">the number of bytes to read</param>
         /// <returns>the bytes at the pointer</returns>
         public byte[] ReadBytes(int length)
         {
