@@ -5,9 +5,9 @@
     <TargetFrameworks>net48;net45;net462;net472;netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <Title>Bdev.Net.Dns</Title>
     <Description>.NET DNS query library</Description>
-    <Authors>Rob Philpott, Indra, and Dariusz Danielewski</Authors>
+    <Authors>Rob Philpott, Indra van den Berg, and Dariusz Danielewski</Authors>
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-    <Copyright>Copyright (c) $(CurrentYear) Rob Philpott, Indra and Dariusz Danielewski</Copyright>
+    <Copyright>Copyright (c) $(CurrentYear) Rob Philpott, Indra van den Berg and Dariusz Danielewski</Copyright>
     <PackageTags>dns</PackageTags>
     <PackageIconUrl></PackageIconUrl>
     <PackageProjectUrl>https://www.codeproject.com/Articles/12072/C-NET-DNS-query-component</PackageProjectUrl>
