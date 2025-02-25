@@ -1,12 +1,15 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Bdev.Net.Dns.Records
 {
-    public class TXTRecord : RecordBase
+    [Serializable]
+    public class TXTRecord : RecordBase, IComparable, IEquatable<TXTRecord>
     {
-        public string Value { get; set; }
+        public string Value { get; }
 
-        public int Length { get; set; }
+        public int Length { get; }
         internal TXTRecord(Pointer pointer, int recordLength)
         {
             var position = pointer.Position;
@@ -29,24 +32,40 @@ namespace Bdev.Net.Dns.Records
             Length = sb.Length;
         }
 
+        public bool Equals(TXTRecord other)
+        {
+            return other != null && this.Value.Equals(other.Value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals(obj as TXTRecord);
+        }
+
+        public override int GetHashCode()
+        {
+            return EqualityComparer<string>.Default.GetHashCode(Value);
+        }
+
         public override string ToString()
         {
             return $"{Value}";
         }
-    }
 
-    public class CNameRecord : RecordBase
-    {
-        public string Value { get; set; }
-
-        internal CNameRecord(Pointer pointer)
+        public int CompareTo(object obj)
         {
-            Value = pointer.ReadDomain();
-        }
+            if (obj == null) return 1;
 
-        public override string ToString()
-        {
-            return $"{Value}";
+            if (obj is TXTRecord otherRecord)
+            {
+                return string.Compare(this.Value, otherRecord.Value, StringComparison.Ordinal);
+            }
+            else
+            {
+                throw new ArgumentException("Object is not a TXTRecord");
+            }
         }
     }
 }
