@@ -39,8 +39,10 @@ namespace Bdev.Net.Dns.NUnit
         {
             var request = Request.Question(new Question("google.com", DnsType.ANAME));
 
-            var first = Resolver.Lookup(request, IPAddress.Parse(firstDns)).Answers.OrderBy(o => o.Record).First();
-            var second = Resolver.Lookup(request, IPAddress.Parse(secondDns)).Answers.OrderBy(o => o.Record).First();
+            var firstAnswers = Resolver.Lookup(request, IPAddress.Parse(firstDns)).Answers;
+            var secondAnswers = Resolver.Lookup(request, IPAddress.Parse(secondDns)).Answers;
+            var first = firstAnswers.OrderBy(o => o.Record).First();
+            var second = secondAnswers.OrderBy(o => o.Record).First();
             Assert.True(first.Equals(second));
         }
 
