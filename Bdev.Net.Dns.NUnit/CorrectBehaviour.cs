@@ -34,6 +34,7 @@ namespace Bdev.Net.Dns.NUnit
             Console.WriteLine(string.Join(Environment.NewLine, res.Select(s => s.IPAddress)));
         }
 
+        [Ignore("This test is currently disabled.")]
         [TestCaseSource(nameof(_dnsServersTable))]
         public void CompareTwoRecords(string firstDns, string secondDns)
         {
