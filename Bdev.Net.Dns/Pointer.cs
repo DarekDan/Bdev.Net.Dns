@@ -8,6 +8,7 @@
 
 #endregion
 
+using System;
 using System.Linq;
 using System.Text;
 
@@ -53,7 +54,10 @@ namespace Bdev.Net.Dns
         /// <summary>
         ///     Gets the cursor position
         /// </summary>
-        public int Position { get { return _position; } }
+        public int Position
+        {
+            get { return _position; }
+        }
 
         /// <summary>
         ///     Overloads the + operator to allow advancing the pointer by so many bytes
@@ -90,7 +94,7 @@ namespace Bdev.Net.Dns
         /// <returns>the byte at the pointer</returns>
         public short ReadShort()
         {
-            return (short) ((ReadByte() << 8) | ReadByte());
+            return (short)((ReadByte() << 8) | ReadByte());
         }
 
         /// <summary>
@@ -108,7 +112,7 @@ namespace Bdev.Net.Dns
         /// <returns>the byte at the pointer</returns>
         public char ReadChar()
         {
-            return (char) ReadByte();
+            return (char)ReadByte();
         }
 
         /// <summary>
@@ -170,5 +174,14 @@ namespace Bdev.Net.Dns
             return string.Concat(_message.Select(s => $"{s:x2}"));
         }
 
+        public byte[] ReadBytes(int length)
+        {
+            var data = new byte[length];
+
+            Buffer.BlockCopy(_message, _position, data, 0, length);
+            _position += length;
+
+            return data;
+        }
     }
 }

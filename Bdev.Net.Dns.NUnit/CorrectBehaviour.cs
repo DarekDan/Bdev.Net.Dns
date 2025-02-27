@@ -166,5 +166,18 @@ namespace Bdev.Net.Dns.NUnit
                 Assert.AreEqual(1, response.Length);
             });
         }
+
+        [Test]
+        public void CorrectAAAAForCloudflare()
+        {
+            var result = DnsServers.Resolve<AAAARecord>("one.one.one.one").ToList();
+            Logger.Info($"{result[0].IPAddress}");
+            Logger.Info($"{result[1].IPAddress}");
+
+            Assert.True(result.Select(s=>s.IPAddress).SequenceEqual(new []{ IPAddress.Parse("2606:4700:4700::1111"), IPAddress.Parse("2606:4700:4700::1001") }));
+
+           
+        }
+
     }
 }
