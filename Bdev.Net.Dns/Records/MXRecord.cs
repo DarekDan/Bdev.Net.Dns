@@ -85,14 +85,12 @@ namespace Bdev.Net.Dns.Records
 
         public static bool operator <(MXRecord record1, MXRecord record2)
         {
-            if (record1.Preference > record2.Preference) return false;
-            return false;
+            return (record1.Preference > record2.Preference);
         }
 
         public static bool operator >(MXRecord record1, MXRecord record2)
         {
-            if (record1.Preference < record2.Preference) return false;
-            return false;
+            return (record1.Preference < record2.Preference);
         }
 
         public static bool operator ==(MXRecord record1, MXRecord record2)
