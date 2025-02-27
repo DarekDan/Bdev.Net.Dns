@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Bdev.Net.Dns.Exceptions;
 using Bdev.Net.Dns.Helpers;
 using Bdev.Net.Dns.Records;
+using NLog;
 using NUnit.Framework;
 
 namespace Bdev.Net.Dns.NUnit
@@ -15,6 +16,8 @@ namespace Bdev.Net.Dns.NUnit
     [TestFixture]
     public class CorrectBehaviour
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static object[] _dnsServersTable =
         {
             new object[] { "1.1.1.1", "1.0.0.1" },
@@ -34,16 +37,16 @@ namespace Bdev.Net.Dns.NUnit
             Console.WriteLine(string.Join(Environment.NewLine, res.Select(s => s.IPAddress)));
         }
 
-        [Ignore("This test is currently disabled.")]
         [TestCaseSource(nameof(_dnsServersTable))]
         public void CompareTwoRecords(string firstDns, string secondDns)
         {
-            var request = Request.Question(new Question("google.com", DnsType.ANAME));
+            var request = Request.Question(new Question("bisoftware.com", DnsType.ANAME));
 
             var firstAnswers = Resolver.Lookup(request, IPAddress.Parse(firstDns)).Answers;
             var secondAnswers = Resolver.Lookup(request, IPAddress.Parse(secondDns)).Answers;
             var first = firstAnswers.OrderBy(o => o.Record).First();
             var second = secondAnswers.OrderBy(o => o.Record).First();
+            Logger.Info($"First: {first.Record} Second: {second.Record}");
             Assert.True(first.Equals(second));
         }
 
@@ -51,7 +54,7 @@ namespace Bdev.Net.Dns.NUnit
         public void CompareTwoRecordsOneDefault()
         {
             var request = new Request { RecursionDesired = true };
-            const string value = "google.com";
+            const string value = "bisoftware.com";
             request.AddQuestion(new Question(value, DnsType.ANAME));
 
             var firstAnswers = Resolver.Lookup(value).Answers;
