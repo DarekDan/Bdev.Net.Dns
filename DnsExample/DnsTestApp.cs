@@ -30,6 +30,8 @@ namespace DnsExample
 
                 // query AName, MX, NS, SOA
                 Query(dnsServer, domain, DnsType.ANAME);
+                Query(dnsServer, domain, DnsType.A);
+                Query(dnsServer, domain, DnsType.AAAA);
                 Query(dnsServer, domain, DnsType.MX);
                 Query(dnsServer, domain, DnsType.NS);
                 Query(dnsServer, domain, DnsType.SOA);
