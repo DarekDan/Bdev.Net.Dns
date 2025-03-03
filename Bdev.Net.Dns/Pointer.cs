@@ -98,6 +98,15 @@ namespace Bdev.Net.Dns
         }
 
         /// <summary>
+        ///     Reads two bytes to form an unsigned short at the current pointer, advancing pointer
+        /// </summary>
+        /// <returns>the byte at the pointer</returns>
+        public ushort ReadUShort()
+        {
+            return (ushort)((ReadByte() << 8) | ReadByte());
+        }
+
+        /// <summary>
         ///     Reads four bytes to form a int at the current pointer, advancing pointer
         /// </summary>
         /// <returns>the byte at the pointer</returns>

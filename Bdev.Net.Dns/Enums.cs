@@ -32,7 +32,14 @@ namespace Bdev.Net.Dns
         MINFO = 14, //mailbox or mail list information
         MX = 15, //mail exchange
         TXT = 16, //text strings
-        AAAA = 28 // ipv6 host address
+        AAAA = 28, // ipv6 host address
+        SRV = 33, //server selection
+        DS = 43, //delegation signer
+        RRSIG = 46, //resource record signature
+        NSEC = 47, //next secure
+        DNSKEY = 48, //public key
+        NSEC3 = 50, //hashed next secure
+        CAA = 257 //certification authority authorization
     }
 
     /// <summary>
@@ -84,5 +91,46 @@ namespace Bdev.Net.Dns
         Reserved13 = 13,
         Reserved14 = 14,
         Reserved15 = 15
+    }
+
+    /// <summary>
+    /// The DNSSEC Algorithm Numbers (RFC4034)
+    /// https://www.iana.org/assignments/dns-sec-alg-numbers/dns-sec-alg-numbers.xhtml
+    /// </summary>
+    public enum DnsSecAlgorithm
+    {
+        RSAMD5 = 1, //RSA/MD5
+        DH = 2, //Diffie-Hellman
+        DSA = 3, //DSA/SHA1
+        ECC = 4, //Elliptic Curve
+        RSASHA1 = 5, //RSA/SHA-1
+        DSANSEC3SHA1 = 6, //DSA-NSEC3-SHA1
+        RSASHA1NSEC3SHA1 = 7, //RSASHA1-NSEC3-SHA1
+        RSASHA256 = 8, //RSA/SHA-256
+        RSASHA512 = 10, //RSA/SHA-512
+        ECCGOST = 12, //GOST R 34.10-2001
+        ECDSAP256SHA256 = 13, //ECDSA Curve P-256 with SHA-256
+        ECDSAP384SHA384 = 14, //ECDSA Curve P-384 with SHA-384
+        ED25519 = 15, //Ed25519
+        ED448 = 16, //Ed448
+        SM2SM3 = 17, //SM2 signing algorithm with SM3 hashing algorithm
+        ECCGOST12 = 23, //GOST R 34.10-2012
+        INDIRECT = 252,
+        PRIVATEDNS = 253,
+        PRIVATEOID = 254
+    }
+
+    /// <summary>
+    /// The DNSSEC Type Digest Algorithms (RFC4034)
+    /// https://www.iana.org/assignments/ds-rr-types/ds-rr-types.xhtml
+    /// </summary>
+    public enum DnsSecDigestType
+    {
+        SHA1 = 1, //SHA-1
+        SHA256 = 2, //SHA-256
+        GOST = 3, //GOST R 34.11-94
+        SHA384 = 4, //SHA-384
+        GOST12 = 5, //GOST R 34.11-2012
+        SM3 = 6 //SM3
     }
 }
