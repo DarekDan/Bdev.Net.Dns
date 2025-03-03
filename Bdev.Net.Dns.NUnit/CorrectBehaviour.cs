@@ -175,9 +175,38 @@ namespace Bdev.Net.Dns.NUnit
             Logger.Info($"{result[1].IPAddress}");
 
             Assert.True(result.Select(s=>s.IPAddress).SequenceEqual(new []{ IPAddress.Parse("2606:4700:4700::1111"), IPAddress.Parse("2606:4700:4700::1001") }));
-
-           
         }
 
+        [Test]
+        public void CorrectSRVForDebian()
+        {
+            var result = DnsServers.Resolve<SRVRecord>("_http._tcp.ftp.debian.org").First();
+
+            Assert.AreEqual(10, result.Priority);
+            Assert.AreEqual(1, result.Weight);
+            Assert.AreEqual(80, result.Port);
+            Assert.AreEqual("debian.map.fastlydns.net", result.Target);
+        }
+
+        [Test]
+        public void CorrectDSForIana()
+        {
+            var result = DnsServers.Resolve<DSRecord>("iana.org").First();
+
+            Assert.AreEqual(39229, result.KeyTag);
+            Assert.AreEqual(DnsSecAlgorithm.ECDSAP256SHA256, result.Algorithm);
+            Assert.AreEqual(DnsSecDigestType.SHA256, result.DigestType);
+            Assert.IsNotEmpty(result.Digest);
+        }
+
+        [Test]
+        public void LookupShortRecordType()
+        {
+            // looks up a record type that exceeds a single octet
+            var result = Resolver.Lookup("google.com", DnsType.CAA);
+
+            Assert.True(result.Questions.All(q => q.Type == DnsType.CAA));
+            Assert.True(result.Answers.All(a => a.Type == DnsType.CAA));
+        }
     }
 }

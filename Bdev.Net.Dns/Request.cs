@@ -105,7 +105,7 @@ namespace Bdev.Net.Dns
                     AddDomain(data, question.Domain);
                     unchecked
                     {
-                        data.WriteByte(0);
+                        data.WriteByte((byte) ((short) question.Type >> 8));
                         data.WriteByte((byte) question.Type);
                         data.WriteByte(0);
                         data.WriteByte((byte) question.Class);

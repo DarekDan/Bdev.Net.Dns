@@ -34,7 +34,7 @@ namespace Bdev.Net.Dns.Exceptions
             // no implementation
         }
 
-#if !NET7_0 && !NET8_0  && !NET9_0
+#if !NET7_0_OR_GREATER
         protected NoResponseException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
             // no implementation

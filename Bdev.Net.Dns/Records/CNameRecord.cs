@@ -4,7 +4,7 @@ namespace Bdev.Net.Dns.Records
 {
     public class CNameRecord : RecordBase, IComparable, IEquatable<CNameRecord>
     {
-        public string Value { get; set; }
+        public string Value { get; }
 
         internal CNameRecord(Pointer pointer)
         {
