@@ -55,6 +55,16 @@ Resolve a record on a DNS server
 
 ### Release history
 
+1.0.19 Added implementation for two new record types (SRV & DS) and extends the list with more popular record types.
+       Fixes a bug where the record type was sent as single octet (which breaks types exceeding 255), and added an appropriate test for it.
+
+1.0.18 Bug fix for MXRecords
+       Added support for AAAA records
+
+1.0.17 Bug fixes and added support for .Net 9.0
+
+1.0.16 Added version for .Net 7.0 and 8.0
+
 1.0.15 Bring-back .Net 2.0
 
 1.0.14 Wait 5 seconds for a dns request to complete.

@@ -300,3 +300,4 @@ __pycache__/
 
 # NuGet Packager
 *.nupkg.bak
+/Bdev.Net.Dns.NUnit/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
