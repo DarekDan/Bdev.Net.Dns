@@ -208,5 +208,14 @@ namespace Bdev.Net.Dns.NUnit
             Assert.True(result.Questions.All(q => q.Type == DnsType.CAA));
             Assert.True(result.Answers.All(a => a.Type == DnsType.CAA));
         }
+
+        [Test]
+        public void CheckCAARecord()
+        {
+            CAARecord google = DnsServers.Resolve<CAARecord>("google.com").First();
+            Assert.That(google.Flags, Is.EqualTo(0));
+            Assert.That(google.Tag, Is.EqualTo("issue"));
+            Assert.That(google.Value, Is.EqualTo("pki.goog"));
+        }
     }
 }

@@ -64,6 +64,9 @@ namespace Bdev.Net.Dns
                 case DnsType.DS:
                     Record = new DSRecord(pointer, recordLength);
                     break;
+                case DnsType.CAA:
+                    Record = new CAARecord(pointer, recordLength);
+                    break;
                 default:
                 {
                     // move the pointer over this unrecognized record

@@ -35,6 +35,7 @@ namespace DnsExample
                 Query(dnsServer, domain, DnsType.MX);
                 Query(dnsServer, domain, DnsType.NS);
                 Query(dnsServer, domain, DnsType.SOA);
+                Query(dnsServer, domain, DnsType.CAA);
             }
         }
 
