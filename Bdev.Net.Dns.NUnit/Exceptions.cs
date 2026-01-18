@@ -5,105 +5,117 @@ using NUnit.Framework;
 
 namespace Bdev.Net.Dns.NUnit
 {
-    /// <summary>
-    ///     Summary description for Class1.
-    /// </summary>
-    [TestFixture]
-    public class Exceptions
-    {
-        // --------------------------   
+	/// <summary>
+	///     Summary description for Class1.
+	/// </summary>
+	[TestFixture]
+	public class Exceptions
+	{
+		// --------------------------   
+		[Test]
+		public void BadDnsServerShouldFail()
+		{
+			var request = new Request();
+			request.AddQuestion(new Question("bisoftware.com", DnsType.ANAME));
+			Assert.Throws<NoResponseException>(() =>
+				Resolver.Lookup(request, IPAddress.Parse("127.0.0.1"), false)
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(NoResponseException))]
-        public void BadDnsServerShouldFail()
-        {
-            var request = new Request();
-            request.AddQuestion(new Question("bisoftware.com", DnsType.ANAME));
-            var resolved = Resolver.Lookup(request, IPAddress.Parse("127.0.0.1"), false);
-        }
+		[Test]
+		public void LookupNullBothParameters()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				Resolver.Lookup(null, null)
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void LookupNullBothParameters()
-        {
-            Resolver.Lookup(null, null);
-        }
+		[Test]
+		public void LookupNullFirstParameter()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				Resolver.Lookup(null, IPAddress.Parse("127.0.0.1"))
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void LookupNullFirstParameter()
-        {
-            Resolver.Lookup(null, IPAddress.Parse("127.0.0.1"));
-        }
+		[Test]
+		public void LookupNullSecondParameter()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				Resolver.Lookup(new Request(), null)
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void LookupNullSecondParameter()
-        {
-            Resolver.Lookup(new Request(), null);
-        }
+		[Test]
+		public void MXLookupBadDomainName()
+		{
+			Assert.Throws<ArgumentException>(() =>
+				Resolver.MXLookup("!£$%^&*()", IPAddress.Parse("127.0.0.1"))
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void MXLookupBadDomainName()
-        {
-            Resolver.MXLookup("!£$%^&*()", IPAddress.Parse("127.0.0.1"));
-        }
+		[Test]
+		public void MXLookupEmptyDomainName()
+		{
+			Assert.Throws<ArgumentException>(() =>
+				Resolver.MXLookup(string.Empty, IPAddress.Parse("127.0.0.1"))
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void MXLookupEmptyDomainName()
-        {
-            Resolver.MXLookup(string.Empty, IPAddress.Parse("127.0.0.1"));
-        }
+		[Test]
+		public void MXLookupNullBothParameters()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				Resolver.MXLookup(null, null)
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MXLookupNullBothParameters()
-        {
-            Resolver.MXLookup(null, null);
-        }
+		[Test]
+		public void MXLookupNullFirstParameter()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				Resolver.MXLookup(null, IPAddress.Parse("127.0.0.1"))
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MXLookupNullFirstParameter()
-        {
-            Resolver.MXLookup(null, IPAddress.Parse("127.0.0.1"));
-        }
+		[Test]
+		public void MXLookupNullSecondParameter()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				Resolver.MXLookup("codeproject.com", null)
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MXLookupNullSecondParameter()
-        {
-            Resolver.MXLookup("codeproject.com", null);
-        }
+		[Test]
+		public void NewQuestionBadClass()
+		{
+			Assert.Throws<ArgumentOutOfRangeException>(() =>
+				_ = new Question("codeproject.com", DnsType.ANAME, (DnsClass)1999)
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void NewQuestionBadClass()
-        {
-            _ = new Question("codeproject.com", DnsType.ANAME, (DnsClass)1999);
-        }
+		[Test]
+		public void NewQuestionBadType()
+		{
+			Assert.Throws<ArgumentOutOfRangeException>(() =>
+				_ = new Question("codeproject.com", (DnsType)1999)
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void NewQuestionBadType()
-        {
-            _ = new Question("codeproject.com", (DnsType)1999);
-        }
+		[Test]
+		public void NewQuestionDomainBad()
+		{
+			Assert.Throws<ArgumentException>(() =>
+				_ = new Question("$$$$$.com", DnsType.MX)
+			);
+		}
 
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void NewQuestionDomainBad()
-        {
-            _ = new Question("$$$$$.com", DnsType.MX);
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void NewQuestionDomainNull()
-        {
-            _ = new Question(null, DnsType.MX);
-        }
-    }
+		[Test]
+		public void NewQuestionDomainNull()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				_ = new Question(null, DnsType.MX)
+			);
+		}
+	}
 }

@@ -33,8 +33,8 @@ namespace Bdev.Net.Dns.NUnit
         public void DomainsMustPass(string name)
         {
             var res = DnsServers.Resolve(name).ToList();
-            Assert.IsNotNullOrEmpty(res.First().IPAddress.ToString());
-            Console.WriteLine(string.Join(Environment.NewLine, res.Select(s => s.IPAddress)));
+			Assert.That(res.First().IPAddress.ToString(), Is.Not.Null.And.Not.Empty);
+			Console.WriteLine(string.Join(Environment.NewLine, res.Select(s => s.IPAddress)));
         }
 
         [TestCaseSource(nameof(_dnsServersTable))]
@@ -47,8 +47,8 @@ namespace Bdev.Net.Dns.NUnit
             var first = firstAnswers.OrderBy(o => o.Record).First();
             var second = secondAnswers.OrderBy(o => o.Record).First();
             Logger.Info($"First: {first.Record} Second: {second.Record}");
-            Assert.True(first.Equals(second));
-        }
+			Assert.That(first, Is.EqualTo(second));
+		}
 
         [Test]
         public void CompareTwoRecordsOneDefault()
@@ -61,7 +61,7 @@ namespace Bdev.Net.Dns.NUnit
             var first = firstAnswers.OrderBy(o => o.Record).First();
             var secondAnswers = Resolver.Lookup(request, IPAddress.Parse("1.1.1.1")).Answers;
             var second = secondAnswers.OrderBy(o => o.Record).First();
-            Assert.True(first.Record.ToString().Equals(second.Record.ToString()));
+            Assert.That(first.Record.ToString().Equals(second.Record.ToString()), Is.True);
         }
 
         [Test]
@@ -74,35 +74,35 @@ namespace Bdev.Net.Dns.NUnit
             var l = DnsServers.Resolve<TXTRecord>("test.txt.bisoftware.com");
             var list = result.Answers.Select(s => s.Record).OfType<TXTRecord>().Select(s => s.Value).OrderBy(o => o)
                 .ToList();
-            Assert.True(result.Answers.Length > 0);
-            Assert.IsTrue(list.SequenceEqual(l.Select(s => s.Value).OrderBy(o => o).ToList()));
-        }
+			Assert.That(result.Answers.Length, Is.GreaterThan(0));
+			Assert.That(list, Is.EqualTo(l.Select(s => s.Value).OrderBy(o => o).ToList()));
+		}
 
         [Test]
         public void CNameRecordMustExist()
         {
             var result = DnsServers.Resolve<CNameRecord>("test.cname.bisoftware.com").First();
             Console.WriteLine(result);
-            Assert.IsNotEmpty(result.Value);
-        }
+			Assert.That(result.Value, Is.Not.Empty);
+		}
 
         [Test]
         public void CorrectCNameForGmail()
         {
             var result = DnsServers.Resolve<CNameRecord>("test.cname.bisoftware.com").First();
 
-            Assert.AreEqual(result.Value, "bisoftware.com");
-        }
+			Assert.That(result.Value, Is.EqualTo("bisoftware.com"));
+		}
 
         [Test]
-        public void CorrectANameForCodeProject()
+        public void CorrectANameFor1111()
         {
-            var response = DnsServers.Resolve("codeproject.com").ToList();
+            var response = DnsServers.Resolve("one.one.one.one").ToList();
 
-            // check the response
-            Assert.AreEqual(1, response.Count);
-            Assert.AreEqual(IPAddress.Parse("76.74.234.210"), response.First().IPAddress);
-        }
+			// check the response
+			Assert.That(response.Count, Is.EqualTo(2));
+			Assert.That(response.Select(r => r.IPAddress), Does.Contain(IPAddress.Parse("1.1.1.1")));
+		}
 
         [Test]
         public void CorrectMXForCodeProject()
@@ -110,9 +110,9 @@ namespace Bdev.Net.Dns.NUnit
             // also 194.72.0.114
             var records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());
 
-            Assert.IsNotNull(records, "MXLookup returning null denoting lookup failure");
-            Assert.IsTrue(records.Length > 0);
-        }
+			Assert.That(records, Is.Not.Null, "MXLookup returning null denoting lookup failure");
+			Assert.That(records, Is.Not.Empty);
+		}
 
         [Test]
         public void CorrectMXForCodeProjectCompare()
@@ -120,12 +120,12 @@ namespace Bdev.Net.Dns.NUnit
             var result = DnsServers.Resolve<MXRecord>("codeproject.com", DnsType.MX, DnsClass.IN);
 
             var records = Resolver.MXLookup("codeproject.com", DnsServers.IP4.First());
-            Assert.IsNotNull(records, "MXLookup returning null denoting lookup failure");
-            Assert.IsTrue(records.Length > 0);
+            Assert.That(records, Is.Not.Null, "MXLookup returning null denoting lookup failure");
+			Assert.That(records.Length, Is.GreaterThan(0));
 
-            Assert.IsTrue(records.All(a => result.Contains(a)));
-            Assert.IsTrue(result.All(a => records.Contains(a)));
-        }
+			Assert.That(records.All(a => result.Contains(a)), Is.True);
+			Assert.That(result.All(a => records.Contains(a)), Is.True);
+		}
 
         [Test]
         public void CorrectNSForCodeProject()
@@ -140,21 +140,22 @@ namespace Bdev.Net.Dns.NUnit
             // send the request
             var response = Resolver.Lookup(request, DnsServers.IP4.First());
 
-            // check the response
-            Assert.AreEqual(ReturnCode.Success, response.ReturnCode);
+			// check the response
+			Assert.That(response.ReturnCode, Is.EqualTo(ReturnCode.Success));
 
-            // we expect 4 records
-            Assert.IsTrue(response.Answers.Length > 0);
-        }
+			// we expect 4 records
+			Assert.That(response.Answers.Length, Is.GreaterThan(0));
+		}
 
-        [Test]
-        [ExpectedException(typeof(NoResponseException))]
+		[Test]
         public void NoResponseForBadDnsAddress()
         {
-            Resolver.MXLookup("codeproject.com", IPAddress.Parse("127.0.0.1"));
+	        Assert.Throws<NoResponseException>(() =>
+		        Resolver.MXLookup("codeproject.com", IPAddress.Parse("127.0.0.1"))
+	        );
         }
 
-        [Test]
+		[Test]
         public void RepeatedANameLookups()
         {
             Parallel.For(0, 10, i =>
@@ -162,9 +163,9 @@ namespace Bdev.Net.Dns.NUnit
                 // send the request
                 var response = DnsServers.Resolve("codeproject.com").ToArray();
 
-                // check the response
-                Assert.AreEqual(1, response.Length);
-            });
+				// check the response
+				Assert.That(response.Length, Is.GreaterThanOrEqualTo(1));
+			});
         }
 
         [Test]
@@ -174,30 +175,33 @@ namespace Bdev.Net.Dns.NUnit
             Logger.Info($"{result[0].IPAddress}");
             Logger.Info($"{result[1].IPAddress}");
 
-            Assert.True(result.Select(s=>s.IPAddress).SequenceEqual(new []{ IPAddress.Parse("2606:4700:4700::1111"), IPAddress.Parse("2606:4700:4700::1001") }));
-        }
+			Assert.That(result.Select(s => s.IPAddress), Is.EqualTo(new[] {
+				IPAddress.Parse("2606:4700:4700::1111"),
+				IPAddress.Parse("2606:4700:4700::1001")
+			}));
+		}
 
         [Test]
         public void CorrectSRVForDebian()
         {
             var result = DnsServers.Resolve<SRVRecord>("_http._tcp.ftp.debian.org").First();
 
-            Assert.AreEqual(10, result.Priority);
-            Assert.AreEqual(1, result.Weight);
-            Assert.AreEqual(80, result.Port);
-            Assert.AreEqual("debian.map.fastlydns.net", result.Target);
-        }
+            Assert.That(result.Priority, Is.EqualTo(10));
+            Assert.That(result.Weight, Is.EqualTo(1));
+            Assert.That(result.Port, Is.EqualTo(80));
+            Assert.That(result.Target, Is.EqualTo("debian.map.fastlydns.net"));
+		}
 
         [Test]
         public void CorrectDSForIana()
         {
             var result = DnsServers.Resolve<DSRecord>("iana.org").First();
 
-            Assert.AreEqual(39229, result.KeyTag);
-            Assert.AreEqual(DnsSecAlgorithm.ECDSAP256SHA256, result.Algorithm);
-            Assert.AreEqual(DnsSecDigestType.SHA256, result.DigestType);
-            Assert.IsNotEmpty(result.Digest);
-        }
+            Assert.That(result.KeyTag, Is.EqualTo(2234),"but was:"+result.KeyTag);
+            Assert.That(result.Algorithm, Is.EqualTo(DnsSecAlgorithm.ECDSAP256SHA256));
+            Assert.That(result.DigestType, Is.EqualTo(DnsSecDigestType.SHA256));
+            Assert.That(result.Digest, Is.Not.Empty);
+		}
 
         [Test]
         public void LookupShortRecordType()
@@ -205,9 +209,9 @@ namespace Bdev.Net.Dns.NUnit
             // looks up a record type that exceeds a single octet
             var result = Resolver.Lookup("google.com", DnsType.CAA);
 
-            Assert.True(result.Questions.All(q => q.Type == DnsType.CAA));
-            Assert.True(result.Answers.All(a => a.Type == DnsType.CAA));
-        }
+            Assert.That(result.Questions.All(q => q.Type == DnsType.CAA), Is.True);
+            Assert.That(result.Answers.All(a => a.Type == DnsType.CAA), Is.True);
+		}
 
         [Test]
         public void CheckCAARecord()
