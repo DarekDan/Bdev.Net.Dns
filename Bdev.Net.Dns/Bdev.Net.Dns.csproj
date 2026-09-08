@@ -103,7 +103,7 @@
   </PropertyGroup>
 
   <!-- .NET 10 config -->
-  <PropertyGroup Condition=" '$(TargetFramework)'=='net9.0' ">
+  <PropertyGroup Condition=" '$(TargetFramework)'=='net10.0' ">
     <AssemblyTitle>Bdev.Net.Dns .NET 10</AssemblyTitle>
     <DefineConstants>$(DefineConstants);NET10_0</DefineConstants>
     <!-- Other .NET 9 specific settings -->
