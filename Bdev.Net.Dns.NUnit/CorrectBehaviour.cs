@@ -64,6 +64,19 @@ namespace Bdev.Net.Dns.NUnit
             Assert.That(first.Record.ToString().Equals(second.Record.ToString()), Is.True);
         }
 
+[Test]
+public void DoHLookup_Google_ReturnsA()
+{
+    var doh = new Uri("https://dns.google/dns-query");
+    var request = new Request { RecursionDesired = true };
+    request.AddQuestion(new Question("example.com", DnsType.ANAME));
+
+    var response = Resolver.LookupOverHttps(doh, request, timeoutMs: 5000);
+
+    Assert.That(response, Is.Not.Null);
+    Assert.That(response.Answers.Length, Is.GreaterThan(0));
+}
+		
         [Test]
         public void TextRecordsMustExist()
         {

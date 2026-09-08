@@ -11,10 +11,12 @@ namespace DnsExample
         [STAThread]
         private static void Main(string[] args)
         {
-            Console.Write("Please enter the address of the DNS server to query (or hit enter for first IP4 available): ");
-            var ip = Console.ReadLine();
+            Console.Write("Please enter the address of the DNS server to query (or hit enter to use google https://dns.google/dns-query): ");
+            //var ip = Console.ReadLine();
+            var url = Console.ReadLine();
+            //var dnsServer = String.IsNullOrWhiteSpace(ip) ? DnsServers.IP4.First() : IPAddress.Parse(ip);
+            var dnsServer = string.IsNullOrWhiteSpace(url) ? new Uri("https://dns.google/dns-query") : new Uri(url);
 
-            var dnsServer = String.IsNullOrWhiteSpace(ip) ? DnsServers.IP4.First() : IPAddress.Parse(ip);
             Console.WriteLine("DNS Query Tool, type 'quit' to exit");
 
             while (true)
@@ -39,7 +41,7 @@ namespace DnsExample
             }
         }
 
-        private static void Query(IPAddress dnsServer, string domain, DnsType type)
+        private static void Query(Uri dohServer, string domain, DnsType type)
         {
             try
             {
@@ -50,7 +52,7 @@ namespace DnsExample
                 request.AddQuestion(new Question(domain, type));
 
                 // send it to the DNS server and get the response
-                var response = Resolver.Lookup(request, dnsServer);
+                var response = Resolver.LookupOverHttps(dohServer, request);
 
                 // check we have a response
                 if (response == null)

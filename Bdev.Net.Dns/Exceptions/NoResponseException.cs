@@ -24,7 +24,14 @@ namespace Bdev.Net.Dns.Exceptions
             // no implementation
         }
 
-        public NoResponseException(Exception innerException) : base(null, innerException)
+        // Add standard message-only constructor so callers can throw with an explanatory message.
+        public NoResponseException(string message) : base(message)
+        {
+            // no implementation
+        }
+
+        // Preserve existing constructor patterns, but forward a useful message when only an inner exception is provided.
+        public NoResponseException(Exception innerException) : base(innerException?.Message ?? "No response from server", innerException)
         {
             // no implementation
         }
